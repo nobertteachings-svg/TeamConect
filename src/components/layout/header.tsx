@@ -36,10 +36,10 @@ export function Header() {
   );
 
   return (
-    <header className="sticky top-0 z-50 border-b border-stone-200/80 bg-white/90 shadow-sm shadow-stone-900/[0.04] backdrop-blur-md backdrop-saturate-150">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex min-h-[4rem] items-center justify-between sm:min-h-[4.25rem]">
-          <Logo href={`/${locale}`} locale={locale} size="md" />
+    <header className="sticky top-0 z-50 border-b border-stone-200/80 bg-white/90 pt-[env(safe-area-inset-top)] shadow-sm shadow-stone-900/[0.04] backdrop-blur-md backdrop-saturate-150">
+      <div className="container mx-auto max-w-[100vw] pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] sm:pl-[max(1.5rem,env(safe-area-inset-left))] sm:pr-[max(1.5rem,env(safe-area-inset-right))] lg:pl-[max(2rem,env(safe-area-inset-left))] lg:pr-[max(2rem,env(safe-area-inset-right))]">
+        <div className="flex min-h-[3.75rem] items-center justify-between gap-3 xs:min-h-[4rem] sm:min-h-[4.25rem]">
+          <Logo href={`/${locale}`} locale={locale} size="md" className="min-w-0 shrink" />
 
           <nav className="hidden items-center gap-1 lg:flex">
             {navLinks}

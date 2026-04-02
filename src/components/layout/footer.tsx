@@ -13,8 +13,8 @@ export function Footer() {
   const tCommon = useTranslations("common");
 
   return (
-    <footer className="mt-auto border-t border-stone-200/80 bg-gradient-to-b from-white via-stone-50/50 to-stone-100/40">
-      <div className="container mx-auto px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
+    <footer className="mt-auto border-t border-stone-200/80 bg-gradient-to-b from-white via-stone-50/50 to-stone-100/40 pb-[max(0px,env(safe-area-inset-bottom))]">
+      <div className="container mx-auto max-w-[100vw] py-14 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] sm:py-16 sm:pl-[max(1.5rem,env(safe-area-inset-left))] sm:pr-[max(1.5rem,env(safe-area-inset-right))] lg:pl-[max(2rem,env(safe-area-inset-left))] lg:pr-[max(2rem,env(safe-area-inset-right))]">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4 md:gap-12">
           <div className="md:col-span-2">
             <Logo href={`/${locale}`} locale={locale} size="lg" className="mb-5" />

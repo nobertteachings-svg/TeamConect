@@ -48,9 +48,16 @@ export function validateProductionServerEnv(): void {
     );
   }
 
-  if (!process.env.RESEND_API_KEY?.trim()) {
+  const hasSmtp =
+    Boolean(process.env.SMTP_URL?.trim()) ||
+    (Boolean(process.env.GMAIL_USER?.trim()) && Boolean(process.env.GMAIL_APP_PASSWORD?.trim())) ||
+    (Boolean(process.env.SMTP_HOST?.trim()) &&
+      Boolean(process.env.SMTP_USER?.trim()) &&
+      Boolean(process.env.SMTP_PASS?.trim()));
+
+  if (!hasSmtp && !process.env.RESEND_API_KEY?.trim()) {
     console.warn(
-      "[teamconnect/env] RESEND_API_KEY is unset — email OTP and transactional mail will not send."
+      "[teamconnect/env] No mail provider: set GMAIL_USER + GMAIL_APP_PASSWORD (or SMTP_* / SMTP_URL), or RESEND_API_KEY — otherwise email OTP and transactional mail will not send."
     );
   }
 

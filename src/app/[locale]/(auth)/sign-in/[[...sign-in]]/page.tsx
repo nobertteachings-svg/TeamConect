@@ -1,9 +1,11 @@
 import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
+import { isEmailOtpOffered } from "@/lib/email-otp-availability";
 import { SignInClient } from "./sign-in-client";
 
 export default async function SignInPage() {
   const t = await getTranslations("common");
+  const emailOtpOffered = isEmailOtpOffered();
   return (
     <Suspense
       fallback={
@@ -12,7 +14,7 @@ export default async function SignInPage() {
         </div>
       }
     >
-      <SignInClient />
+      <SignInClient emailOtpOffered={emailOtpOffered} />
     </Suspense>
   );
 }

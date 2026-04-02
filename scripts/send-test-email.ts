@@ -1,9 +1,8 @@
 /**
- * Send a one-off test email via Resend (same API as src/lib/mail.ts).
+ * Send a test message using the same transport as the app (SMTP if configured, else Resend).
  * Loads `.env` from the project root without extra dependencies.
  *
- * Usage: npx tsx scripts/send-test-email.ts
- *        npx tsx scripts/send-test-email.ts you@example.com
+ * Usage: npm run email:test -- you@example.com
  */
 import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
@@ -31,37 +30,22 @@ function loadDotEnv() {
 
 loadDotEnv();
 
-const key = process.env.RESEND_API_KEY?.trim();
-if (!key) {
-  console.error("Missing RESEND_API_KEY in .env");
+const to = (process.argv[2] ?? "").trim();
+if (!to) {
+  console.error("Usage: npm run email:test -- you@example.com");
   process.exit(1);
 }
 
-const from =
-  process.env.EMAIL_FROM?.trim().replace(/^["']|["']$/g, "") ?? "onboarding@resend.dev";
-const to = (process.argv[2] ?? "ekfuingeinkwain@gmail.com").trim();
-
 async function main() {
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${key}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from,
-      to: [to],
-      subject: "Hello World",
-      html: "<p>Congrats on sending your <strong>first email</strong>!</p>",
-    }),
-  });
-
-  const body = await res.text();
-  if (!res.ok) {
-    console.error("Resend error:", res.status, body);
+  const { isSmtpMailConfigured } = await import("../src/lib/mail-config");
+  const hasResend = Boolean(process.env.RESEND_API_KEY?.trim());
+  if (!isSmtpMailConfigured() && !hasResend) {
+    console.error("Configure GMAIL_USER + GMAIL_APP_PASSWORD (or SMTP_* / SMTP_URL), or RESEND_API_KEY in .env");
     process.exit(1);
   }
-  console.log("Email sent:", body);
+  const { sendTestEmail } = await import("../src/lib/mail");
+  await sendTestEmail(to);
+  console.log("Sent test email to", to);
 }
 
 main().catch((e) => {

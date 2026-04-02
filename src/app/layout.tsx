@@ -1,5 +1,12 @@
+import type { Viewport } from "next";
 import { headers } from "next/headers";
 import { routing } from "@/i18n/routing";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export default async function RootLayout({
   children,

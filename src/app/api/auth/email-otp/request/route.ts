@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
+import { isEmailOtpOffered } from "@/lib/email-otp-availability";
 import { prisma } from "@/lib/prisma";
 import { isValidCountryCode } from "@/lib/countries-full";
 import { hashOtpCode, generateNumericOtp } from "@/lib/otp";
-import { sendSignInOtpEmail } from "@/lib/mail";
+import { EmailSendError, sendSignInOtpEmail } from "@/lib/mail";
 import { checkAuthRateLimit } from "@/lib/rate-limit";
 import { emailOtpRequestBodySchema } from "@/lib/schemas/public-api";
 
@@ -16,6 +17,16 @@ function normalizeEmail(email: string) {
 export async function POST(request: Request) {
   const authRl = await checkAuthRateLimit(request);
   if (authRl) return authRl;
+
+  if (!isEmailOtpOffered()) {
+    return NextResponse.json(
+      {
+        error:
+          "Email sign-in codes are not enabled on this deployment. Use Google or GitHub, or add RESEND_API_KEY and a verified sender domain.",
+      },
+      { status: 503 }
+    );
+  }
 
   let json: unknown;
   try {
@@ -36,34 +47,46 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid country" }, { status: 400 });
   }
 
-  const since = new Date(Date.now() - 60 * 60 * 1000);
-  const recent = await prisma.emailOtpChallenge.count({
-    where: { email, createdAt: { gte: since } },
-  });
-  if (recent >= MAX_REQUESTS_PER_HOUR) {
+  try {
+    const since = new Date(Date.now() - 60 * 60 * 1000);
+    const recent = await prisma.emailOtpChallenge.count({
+      where: { email, createdAt: { gte: since } },
+    });
+    if (recent >= MAX_REQUESTS_PER_HOUR) {
+      return NextResponse.json(
+        { error: "Too many code requests. Try again later." },
+        { status: 429 }
+      );
+    }
+
+    const code = generateNumericOtp(6);
+    const codeHash = hashOtpCode(code);
+    const expiresAt = new Date(Date.now() + OTP_TTL_MS);
+
+    await prisma.emailOtpChallenge.deleteMany({ where: { email } });
+
+    await prisma.emailOtpChallenge.create({
+      data: { email, codeHash, country, expiresAt },
+    });
+
+    try {
+      await sendSignInOtpEmail(email, code);
+    } catch (e) {
+      await prisma.emailOtpChallenge.deleteMany({ where: { email } });
+      console.error(e);
+      const message =
+        e instanceof EmailSendError
+          ? e.userMessage
+          : "Could not send the sign-in email. Try again in a moment.";
+      return NextResponse.json({ error: message }, { status: 502 });
+    }
+
+    return NextResponse.json({ ok: true });
+  } catch (e) {
+    console.error("[email-otp/request]", e);
     return NextResponse.json(
-      { error: "Too many code requests. Try again later." },
-      { status: 429 }
+      { error: "Something went wrong. Try again later." },
+      { status: 503 }
     );
   }
-
-  const code = generateNumericOtp(6);
-  const codeHash = hashOtpCode(code);
-  const expiresAt = new Date(Date.now() + OTP_TTL_MS);
-
-  await prisma.emailOtpChallenge.deleteMany({ where: { email } });
-
-  await prisma.emailOtpChallenge.create({
-    data: { email, codeHash, country, expiresAt },
-  });
-
-  try {
-    await sendSignInOtpEmail(email, code);
-  } catch (e) {
-    await prisma.emailOtpChallenge.deleteMany({ where: { email } });
-    console.error(e);
-    return NextResponse.json({ error: "Failed to send email" }, { status: 502 });
-  }
-
-  return NextResponse.json({ ok: true });
 }

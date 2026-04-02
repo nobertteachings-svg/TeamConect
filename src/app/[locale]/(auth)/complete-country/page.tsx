@@ -40,9 +40,9 @@ export default async function CompleteCountryPage({
   const tCommon = await getTranslations({ locale, namespace: "common" });
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-stone-100/80 via-white to-stone-50 px-4 py-14 sm:py-20">
-      <Logo href={`/${locale}`} locale={locale} size="lg" className="mb-10 drop-shadow-sm" />
-      <div className="w-full max-w-md tc-card p-8 shadow-tc-md sm:p-10">
+    <div className="flex min-h-[100dvh] min-h-screen flex-col items-center justify-center bg-gradient-to-b from-stone-100/80 via-white to-stone-50 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pb-[max(3rem,env(safe-area-inset-bottom))] pt-[max(3rem,env(safe-area-inset-top))] sm:pb-[max(5rem,env(safe-area-inset-bottom))] sm:pt-[max(5rem,env(safe-area-inset-top))]">
+      <Logo href={`/${locale}`} locale={locale} size="xl" prominent className="mb-8 xs:mb-10" />
+      <div className="tc-card w-full max-w-md min-w-0 p-6 shadow-tc-md xs:p-8 sm:p-10">
         <h1 className="mb-3 text-center text-2xl font-bold tracking-tight text-brand-green sm:text-[1.65rem]">
           {t("completeCountryTitle")}
         </h1>

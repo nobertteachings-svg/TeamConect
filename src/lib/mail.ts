@@ -1,12 +1,18 @@
 /**
- * Transactional email via Resend (https://resend.com).
- * Without RESEND_API_KEY, messages are logged to the server console only.
+ * Transactional email: SMTP (Gmail / Nodemailer) when configured, otherwise Resend (https://resend.com).
+ *
+ * Auto transport: if `GMAIL_USER` + `GMAIL_APP_PASSWORD`, `SMTP_URL`, or `SMTP_HOST`+user+pass are set, SMTP is used;
+ * else Resend. Override with `EMAIL_TRANSPORT=smtp` or `EMAIL_TRANSPORT=resend`.
+ *
+ * Without any provider: in development, messages are logged to the server console only; in production, sends throw EmailSendError.
  *
  * Logo: prefers `logo.png` at project root or `public/logo.png`, else `public/teamconnect-mark.svg`
  * as an inline CID attachment (displays in the header and is included as an email attachment part).
  */
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import nodemailer from "nodemailer";
+import { isSmtpMailConfigured } from "./mail-config";
 
 const SITE_NAME = "TeamConnect";
 const LOGO_CID = "teamconnect-logo";
@@ -26,6 +32,11 @@ export type LogoAttachment = {
   content_id: string;
   content_type: string;
 };
+
+/** Text-only header (no CID attachments) — used for sign-in OTP to keep payloads small. */
+function textOnlyLogoBlock(): string {
+  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td style="font-size:22px;font-weight:700;color:${BRAND_PRIMARY};letter-spacing:-0.02em;font-family:system-ui,-apple-system,sans-serif;">${SITE_NAME}</td></tr></table>`;
+}
 
 /**
  * Load logo for inline CID + attachment. Falls back to text-only header if no file found.
@@ -67,7 +78,7 @@ export function getEmailLogoAttachments(): {
 
   return {
     attachments: [],
-    logoBlock: `<table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td style="font-size:22px;font-weight:700;color:${BRAND_PRIMARY};letter-spacing:-0.02em;font-family:system-ui,-apple-system,sans-serif;">${SITE_NAME}</td></tr></table>`,
+    logoBlock: textOnlyLogoBlock(),
   };
 }
 
@@ -77,6 +88,142 @@ function escapeHtml(s: string): string {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+}
+
+/** Thrown when transactional email fails; `userMessage` is safe to return to the client. */
+export class EmailSendError extends Error {
+  constructor(
+    message: string,
+    readonly userMessage: string
+  ) {
+    super(message);
+    this.name = "EmailSendError";
+  }
+}
+
+type SendEmailInput = {
+  to: string[];
+  subject: string;
+  html: string;
+  text: string;
+  attachments: LogoAttachment[];
+  tags?: { name: string; value: string }[];
+};
+
+function userMessageFromResendBody(status: number, body: string): string {
+  const lower = body.toLowerCase();
+  if (
+    lower.includes("only send testing emails to your own email") ||
+    lower.includes("verify a domain")
+  ) {
+    return "Sign-in email cannot be sent to this address yet: add a verified domain in Resend and set EMAIL_FROM, or sign in with Google or GitHub.";
+  }
+  if (lower.includes("domain") && (lower.includes("verify") || lower.includes("not verified"))) {
+    return "Email could not be sent: check your Resend domain verification and EMAIL_FROM address.";
+  }
+  if (status === 401 || lower.includes("invalid api key") || lower.includes("unauthorized")) {
+    return "Email could not be sent: Resend API key is missing or invalid (check RESEND_API_KEY on the server).";
+  }
+  return "Could not send the sign-in email. Try again in a moment, or use Google or GitHub sign-in.";
+}
+
+function userMessageFromSmtpError(message: string): string {
+  const lower = message.toLowerCase();
+  if (
+    lower.includes("invalid login") ||
+    lower.includes("authentication failed") ||
+    lower.includes("eauth") ||
+    lower.includes("535-5.7.8") ||
+    lower.includes("username and password not accepted")
+  ) {
+    return "Email could not be sent: check GMAIL_USER and GMAIL_APP_PASSWORD (use a Google App Password, not your normal password).";
+  }
+  if (lower.includes("quota") || lower.includes("limit exceeded")) {
+    return "Email could not be sent: sending limit reached. Try again later or use another mail provider.";
+  }
+  return "Could not send the sign-in email. Try again in a moment, or use Google or GitHub sign-in.";
+}
+
+function resolveSmtpFromAddress(): string {
+  const explicit = process.env.EMAIL_FROM?.trim();
+  if (explicit) return explicit.replace(/^["']|["']$/g, "");
+  const gu = process.env.GMAIL_USER?.trim();
+  if (gu) return `${SITE_NAME} <${gu}>`;
+  const su = process.env.SMTP_USER?.trim();
+  if (su) return `${SITE_NAME} <${su}>`;
+  return `${SITE_NAME} <noreply@localhost>`;
+}
+
+function createSmtpTransporter(): nodemailer.Transporter {
+  const url = process.env.SMTP_URL?.trim();
+  if (url) {
+    return nodemailer.createTransport(url);
+  }
+  const gmailUser = process.env.GMAIL_USER?.trim();
+  const gmailPass = process.env.GMAIL_APP_PASSWORD?.trim();
+  if (gmailUser && gmailPass) {
+    return nodemailer.createTransport({
+      service: "gmail",
+      auth: { user: gmailUser, pass: gmailPass },
+    });
+  }
+  const host = process.env.SMTP_HOST?.trim();
+  const port = Number.parseInt(process.env.SMTP_PORT ?? "587", 10);
+  const user = process.env.SMTP_USER?.trim();
+  const pass = process.env.SMTP_PASS?.trim();
+  if (!host || !user || !pass) {
+    throw new Error("SMTP transport incomplete: set SMTP_URL or GMAIL_* or SMTP_HOST+SMTP_USER+SMTP_PASS");
+  }
+  const secure =
+    process.env.SMTP_SECURE === "1" ||
+    process.env.SMTP_SECURE === "true" ||
+    port === 465;
+  return nodemailer.createTransport({
+    host,
+    port,
+    secure,
+    auth: { user, pass },
+  });
+}
+
+async function sendViaSmtp(input: SendEmailInput): Promise<void> {
+  let transporter: nodemailer.Transporter;
+  try {
+    transporter = createSmtpTransporter();
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    throw new EmailSendError(
+      msg,
+      "SMTP configuration is incomplete. Set GMAIL_USER + GMAIL_APP_PASSWORD, SMTP_URL, or SMTP_HOST + SMTP_USER + SMTP_PASS."
+    );
+  }
+  const from = resolveSmtpFromAddress();
+  const replyTo = process.env.EMAIL_REPLY_TO?.trim() || undefined;
+  const attachments =
+    input.attachments.length > 0
+      ? input.attachments.map((a) => ({
+          filename: a.filename,
+          content: Buffer.from(a.content, "base64"),
+          cid: a.content_id,
+          contentType: a.content_type,
+        }))
+      : undefined;
+
+  try {
+    await transporter.sendMail({
+      from,
+      to: input.to,
+      replyTo,
+      subject: input.subject,
+      text: input.text,
+      html: input.html,
+      attachments,
+    });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    console.error("[mail] SMTP:", msg);
+    throw new EmailSendError(msg, userMessageFromSmtpError(msg));
+  }
 }
 
 function emailShell(options: {
@@ -145,21 +292,18 @@ function emailShell(options: {
 </html>`;
 }
 
-type SendEmailInput = {
-  to: string[];
-  subject: string;
-  html: string;
-  text: string;
-  attachments: LogoAttachment[];
-  tags?: { name: string; value: string }[];
-};
-
 async function sendViaResend(input: SendEmailInput): Promise<void> {
-  const key = process.env.RESEND_API_KEY;
+  const key = process.env.RESEND_API_KEY?.trim();
   const from = process.env.EMAIL_FROM ?? `${SITE_NAME} <onboarding@resend.dev>`;
   const replyTo = process.env.EMAIL_REPLY_TO?.trim() || undefined;
 
   if (!key) {
+    if (process.env.NODE_ENV === "production") {
+      throw new EmailSendError(
+        "RESEND_API_KEY is unset in production",
+        "Sign-in email is not configured on this server. Use Google or GitHub, or contact support."
+      );
+    }
     console.info(`[mail] (no RESEND_API_KEY) → ${input.to.join(", ")} | ${input.subject}`);
     console.info(input.text);
     return;
@@ -187,8 +331,33 @@ async function sendViaResend(input: SendEmailInput): Promise<void> {
 
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`Resend error: ${res.status} ${text}`);
+    const userMessage = userMessageFromResendBody(res.status, text);
+    console.error(`[mail] Resend ${res.status}: ${text}`);
+    throw new EmailSendError(`Resend error: ${res.status} ${text}`, userMessage);
   }
+}
+
+async function sendEmail(input: SendEmailInput): Promise<void> {
+  const mode = process.env.EMAIL_TRANSPORT?.trim().toLowerCase();
+  if (mode === "smtp") {
+    if (!isSmtpMailConfigured()) {
+      throw new EmailSendError(
+        "EMAIL_TRANSPORT=smtp but SMTP is not fully configured",
+        "Email is not configured: set GMAIL_USER + GMAIL_APP_PASSWORD, or SMTP_URL, or SMTP_HOST + SMTP_USER + SMTP_PASS."
+      );
+    }
+    await sendViaSmtp(input);
+    return;
+  }
+  if (mode === "resend") {
+    await sendViaResend(input);
+    return;
+  }
+  if (isSmtpMailConfigured()) {
+    await sendViaSmtp(input);
+    return;
+  }
+  await sendViaResend(input);
 }
 
 async function sendBrandedEmail(params: {
@@ -200,8 +369,13 @@ async function sendBrandedEmail(params: {
   text: string;
   footerExtra?: string;
   tags?: { name: string; value: string }[];
+  /** `"text"` = no logo attachments (recommended for OTP and deliverability). */
+  branding?: "full" | "text";
 }): Promise<void> {
-  const { attachments, logoBlock } = getEmailLogoAttachments();
+  const { attachments, logoBlock } =
+    params.branding === "text"
+      ? { attachments: [] as LogoAttachment[], logoBlock: textOnlyLogoBlock() }
+      : getEmailLogoAttachments();
   const html = emailShell({
     preheader: params.preheader,
     title: params.headerTitle,
@@ -209,13 +383,26 @@ async function sendBrandedEmail(params: {
     footerExtra: params.footerExtra,
     logoBlock,
   });
-  await sendViaResend({
+  await sendEmail({
     to: params.to,
     subject: params.subject,
     html,
     text: params.text,
     attachments,
     tags: params.tags,
+  });
+}
+
+/** One-off test send (same transport as production). Use: `npm run email:test -- you@example.com` */
+export async function sendTestEmail(to: string): Promise<void> {
+  await sendBrandedEmail({
+    to: [to],
+    subject: `${SITE_NAME} test email`,
+    preheader: "Outbound mail test",
+    headerTitle: "Test email",
+    bodyHtml: "<p>If you received this, outbound mail is configured correctly.</p>",
+    text: "If you received this, outbound mail is configured correctly.",
+    branding: "text",
   });
 }
 
@@ -247,6 +434,7 @@ export async function sendSignInOtpEmail(to: string, code: string): Promise<void
     preheader: `Your ${SITE_NAME} sign-in code is ${code}. Valid for 10 minutes.`,
     headerTitle: "Secure sign-in verification",
     bodyHtml,
+    branding: "text",
     footerExtra: `Need help? Reply to this email or visit our website at <a href="${base}" style="color:${BRAND_ACCENT};text-decoration:none;">${escapeHtml(base.replace(/^https?:\/\//, ""))}</a>.`,
     text: [
       `${SITE_NAME} — secure sign-in`,

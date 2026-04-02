@@ -8,7 +8,11 @@ import { useState } from "react";
 import { Logo } from "@/components/brand/logo";
 import { CountrySelect } from "@/components/forms/country-select";
 
-export function SignInClient() {
+type SignInClientProps = {
+  emailOtpOffered: boolean;
+};
+
+export function SignInClient({ emailOtpOffered }: SignInClientProps) {
   const locale = useLocale();
   const t = useTranslations("auth");
   const router = useRouter();
@@ -44,9 +48,17 @@ export function SignInClient() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: trimmed, country }),
       });
-      const data = (await res.json().catch(() => ({}))) as { error?: string };
+      const raw = await res.text();
+      let data: { error?: string } = {};
+      if (raw) {
+        try {
+          data = JSON.parse(raw) as { error?: string };
+        } catch {
+          /* non-JSON (e.g. edge HTML) */
+        }
+      }
       if (!res.ok) {
-        setError(data.error ?? t("otpFailed"));
+        setError(data.error?.trim() || t("otpFailed"));
         return;
       }
       setStep("code");
@@ -83,9 +95,15 @@ export function SignInClient() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-stone-100/80 via-white to-stone-50 px-4 py-14 sm:py-20">
-      <Logo href={`/${locale}`} locale={locale} size="lg" className="mb-10 drop-shadow-sm" />
-      <div className="w-full max-w-md tc-card p-8 shadow-tc-md sm:p-10">
+    <div className="flex min-h-[100dvh] min-h-screen flex-col items-center justify-center bg-gradient-to-b from-stone-100/80 via-white to-stone-50 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pb-[max(3rem,env(safe-area-inset-bottom))] pt-[max(3rem,env(safe-area-inset-top))] sm:pb-[max(5rem,env(safe-area-inset-bottom))] sm:pt-[max(5rem,env(safe-area-inset-top))]">
+      <Logo
+        href={`/${locale}`}
+        locale={locale}
+        size="xl"
+        prominent
+        className="mb-8 xs:mb-10"
+      />
+      <div className="tc-card w-full max-w-md min-w-0 p-6 shadow-tc-md xs:p-8 sm:p-10">
         <h1 className="mb-3 text-center text-2xl font-bold tracking-tight text-brand-green sm:text-[1.65rem]">
           {t("title")}
         </h1>
@@ -138,16 +156,24 @@ export function SignInClient() {
           </button>
         </div>
 
-        <div className="relative my-8">
-          <div className="absolute inset-0 flex items-center" aria-hidden>
-            <div className="w-full border-t border-stone-200" />
-          </div>
-          <div className="relative flex justify-center text-xs font-medium uppercase tracking-wide">
-            <span className="bg-white px-3 text-stone-400">{t("divider")}</span>
-          </div>
-        </div>
+        {!emailOtpOffered && (
+          <p className="mt-8 rounded-xl border border-stone-200/90 bg-stone-50/80 px-4 py-3 text-center text-sm leading-relaxed text-stone-600">
+            {t("emailOtpUnavailable")}
+          </p>
+        )}
 
-        {step === "pick" ? (
+        {emailOtpOffered && (
+          <>
+            <div className="relative my-8">
+              <div className="absolute inset-0 flex items-center" aria-hidden>
+                <div className="w-full border-t border-stone-200" />
+              </div>
+              <div className="relative flex justify-center text-xs font-medium uppercase tracking-wide">
+                <span className="bg-white px-3 text-stone-400">{t("divider")}</span>
+              </div>
+            </div>
+
+            {step === "pick" ? (
           <form onSubmit={sendCode} className="space-y-4">
             <div>
               <label htmlFor="signin-country" className="tc-label">
@@ -231,6 +257,8 @@ export function SignInClient() {
               {t("changeEmail")}
             </button>
           </form>
+            )}
+          </>
         )}
 
         <p className="mt-8 text-center text-sm text-stone-500">

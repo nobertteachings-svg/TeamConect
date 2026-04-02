@@ -52,6 +52,7 @@
     "codeInvalid": "Enter the 6-digit code from your email.",
     "verifyCode": "Sign in",
     "otpVerifying": "Verifying…",
+    "emailOtpUnavailable": "Email sign-in codes need outgoing mail on the server: Gmail (GMAIL_USER + GMAIL_APP_PASSWORD), custom SMTP, or Resend with a verified domain. Your site can stay on free Vercel hosting. Until that is configured, use Google or GitHub above.",
     "otpFailed": "Could not send the code. Try again.",
     "otpInvalid": "Invalid or expired code. Request a new code.",
     "changeEmail": "Use a different email",
