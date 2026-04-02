@@ -323,7 +323,7 @@
     "prev": "Previous",
     "next": "Next",
     "pageOf": "Page {page} of {pages}",
-    "hiddenFromPublic": "hidden",
+    "hiddenFromPublic": "hidden"
   },
   "applicationActions": {
     "pending": "pending",
