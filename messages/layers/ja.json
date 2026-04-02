@@ -1,0 +1,170 @@
+{
+  "common": {
+    "loading": "読み込み中…",
+    "anonymous": "匿名",
+    "members": "メンバー",
+    "virtual": "バーチャル",
+    "inPerson": "対面",
+    "add": "追加",
+    "save": "保存",
+    "update": "アップデート",
+    "select": "選択",
+    "by": "による",
+    "protected": "保護されています",
+    "failed": "何か問題が発生しました"
+  },
+  "footer": {
+    "blurb": "ビジネス、製品、デザイン、テクノロジーなど、アイデアを持つ人々とスキルを持つ人々が出会うスペースで、ピッチを共有したり、共同創設者を見つけたり、コミュニティ サークル、イベント、リソースに参加したりできます。",
+    "tagline": "隙間を埋めてください。どこにでも接続します。",
+    "platform": "プラットフォーム",
+    "connect": "接続する",
+    "copyright": "© {year} チームコネクト。無断転載を禁じます。"
+  },
+  "auth": {
+    "title": "サインイン",
+    "subtitle": "サインインしてアイデアを投稿し、共同創設者として申請し、コミュニティに参加してください。",
+    "google": "Google を続ける",
+    "github": "GitHub で続ける",
+    "backHome": "← ホームへ戻る"
+  },
+  "dashboard": {
+    "title": "ダッシュボード",
+    "viewSite": "サイトを見る →",
+    "welcome": "おかえりなさい、{name}！",
+    "welcomeThere": "おかえりなさい、そこ！",
+    "statsIdeas": "スタートアップのアイデア",
+    "statsApplications": "共同創設者申請書を送信",
+    "manageIdeas": "アイデアの管理 →",
+    "viewDashboard": "ダッシュボードを見る→",
+    "quickActions": "クイックアクション",
+    "manageProfileIdeas": "創設者のプロフィールとアイデアを管理する",
+    "createProfile": "創設者プロフィールを作成する",
+    "browseIdeas": "スタートアップのアイデアを閲覧する"
+  },
+  "dashboardNav": {
+    "overview": "概要",
+    "cofounders": "共同創設者",
+    "teams": "チームワークスペース",
+    "admin": "管理者"
+  },
+  "dashboardCofounders": {
+    "pageTitle": "共同創設者ダッシュボード",
+    "founderProfile": "創設者プロフィール",
+    "postNewIdea": "新しいアイデアを投稿する",
+    "myIdeas": "私のスタートアップのアイデア",
+    "noIdeas": "まだアイデアはありません。",
+    "recruiting": "募集中",
+    "applicants": "{count} 応募者",
+    "myApplications": "私の共同創設者アプリケーション",
+    "noApplications": "まだ申し込みはありません。",
+    "status": "状態"
+  },
+  "dashboardIdeaDetail": {
+    "back": "アイデアに戻る",
+    "protectedBadge": "保護中（ティーザー公開）",
+    "applicantsHeading": "申請者 ({count})",
+    "rolePrefix": "役割"
+  },
+  "founderProfile": {
+    "headline": "見出し",
+    "bio": "バイオ",
+    "seekingRole": "共同創業者に求める役割",
+    "ideaStage": "アイデア段階",
+    "commitment": "コミットメントレベル",
+    "skills": "スキルと強み (カンマ区切り)",
+    "skillsHint": "例えば市場調査、資金調達、UX、React、物流など、コーディングだけではありません。",
+    "industries": "業界 (カンマ区切り)",
+    "industriesPh": "フィンテック、健康、EdTech",
+    "country": "国",
+    "saving": "保存中…",
+    "createProfile": "プロフィールの作成",
+    "updateProfile": "アップデート",
+    "fullTime": "フルタイム",
+    "partTime": "パートタイム"
+  },
+  "startupStages": {
+    "IDEA": "アイデア",
+    "VALIDATING": "検証中",
+    "BUILDING": "建物",
+    "LAUNCHED": "発売開始",
+    "FUNDED": "資金提供済み"
+  },
+  "startupIdea": {
+    "title": "アイデアのタイトル *",
+    "visibility": "可視性",
+    "fullPublic": "完全公開",
+    "fullPublicDesc": "あなたの完全な説明と売り込みは誰もが見ることができます (以前と同じ)。",
+    "teaserOnly": "保護されています (ティーザーのみ)",
+    "teaserOnlyDesc": "短い公開ティーザーのみが表示されます。完全な説明と提案は、あなたとあなたのアイデアへの参加を申請した人々に表示されます。",
+    "publicTeaser": "公開ティーザー * (最小 20 文字)",
+    "publicTeaserHint": "問題領域と探しているものを共有します。秘密、正確な指標、またはコピーされたくないものは避けます。",
+    "teaserPlaceholder": "例えば市場 Y のために X を解決する — 一緒に構築する CTO/エンジニアを探している、または: 技術的な MVP を完了した — 販売およびパートナーとなるビジネスの共同創設者を探している。",
+    "description": "完全な説明 *",
+    "descriptionHintPublic": "アイデアページの全員に表示されます。",
+    "descriptionHintTeaser": "誰かが申請するまで公開されません。ここでは具体的に説明してください。これは真剣な候補者向けのプライベートブリーフです。",
+    "pitch": "ピッチ（オプション）",
+    "pitchHintPublic": "アイデア ページのオプションの追加詳細。",
+    "pitchHintTeaser": "こちらも誰かが申請するまで非表示になります。",
+    "rolesNeeded": "求めている役割",
+    "rolesHint": "ビジネスアイデアがあって技術パートナーが必要な場合でも、技術者でビジネス、販売、運営が必要な場合でも、必要なあらゆる種類の共同創業者をタグ付けします。",
+    "industries": "業界 (カンマ区切り)",
+    "industriesPh": "フィンテック、健康",
+    "country": "国",
+    "posting": "投稿中…",
+    "postIdea": "アイデアを投稿する",
+    "postError": "アイデアを投稿できませんでした"
+  },
+  "community": {
+    "title": "コミュニティ",
+    "subtitle": "スキルベースおよび国ベースのサークル、イベント、リソース",
+    "circles": "サークル",
+    "noCircles": "まだサークルはありません。待機リストに登録すると、発売時に通知が届きます。",
+    "upcomingEvents": "今後のイベント",
+    "noEvents": "今後のイベントはありません。",
+    "membersDot": "{count} メンバー · {type}"
+  },
+  "admin": {
+    "accessDenied": "アクセスが拒否されました。管理者のみ。",
+    "title": "管理者パネル",
+    "users": "ユーザー",
+    "ideas": "スタートアップのアイデア",
+    "waitlist": "順番待ちリスト",
+    "circles": "サークル",
+    "events": "イベント",
+    "resources": "リソース",
+    "name": "名前",
+    "description": "説明",
+    "skillBased": "スキルベース",
+    "countryBased": "国別",
+    "country": "国",
+    "skill": "スキル",
+    "addCircle": "追加",
+    "eventTitle": "タイトル",
+    "meetingUrl": "ミーティングURL",
+    "addEvent": "イベントを追加",
+    "url": "URL",
+    "category": "カテゴリ",
+    "typeArticle": "記事",
+    "typeGuide": "ガイド",
+    "typeVideo": "ビデオ",
+    "addResource": "リソースの追加"
+  },
+  "applicationActions": {
+    "pending": "保留中",
+    "accepted": "受け入れられました",
+    "rejected": "拒否されました"
+  },
+  "ideaDetail": {
+    "back": "← アイデアに戻る",
+    "protectedListing": "保護されたリスト",
+    "teaserOnlyTitle": "ティーザーのみ",
+    "teaserOnlyBody": "コピー＆ペーストのリスクを軽減するために、詳細はすべて非公開のままです。以下からお申し込みください — 真剣な申し込みを送信したら、詳細な説明と提案を読むことができます。",
+    "description": "説明",
+    "pitch": "ピッチ",
+    "publicTeaser": "公開ティーザー",
+    "teaserFallback": "創設者は高レベルのティーザーのみを公開しています。"
+  },
+  "cofoundersPage": {
+    "protectedBadge": "保護されています"
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "common": {
+    "loading": "Caricamento…",
+    "anonymous": "Anonimo",
+    "members": "membri",
+    "virtual": "Virtuale",
+    "inPerson": "Di persona",
+    "add": "Aggiungere",
+    "save": "Salva",
+    "update": "Aggiornamento",
+    "select": "Selezionare",
+    "by": "di",
+    "protected": "Protetto",
+    "failed": "Qualcosa è andato storto"
+  },
+  "footer": {
+    "blurb": "Uno spazio in cui incontrarsi persone con idee e persone con competenze (business, prodotto, design, tecnologia) per condividere proposte, trovare co-fondatori e unirsi a circoli, eventi e risorse della community.",
+    "tagline": "Colma il divario. Connettiti ovunque.",
+    "platform": "Piattaforma",
+    "connect": "Collegare",
+    "copyright": "© {year}TeamConnect. Tutti i diritti riservati."
+  },
+  "auth": {
+    "title": "Registrazione",
+    "subtitle": "Accedi per pubblicare idee, candidarti come co-fondatore e unirti alla community.",
+    "google": "Continua con Google",
+    "github": "Continua con GitHub",
+    "backHome": "← Ritorno a casa"
+  },
+  "dashboard": {
+    "title": "Pannello di controllo",
+    "viewSite": "Visualizza il sito →",
+    "welcome": "Bentornato,{name}!",
+    "welcomeThere": "Bentornato, ecco!",
+    "statsIdeas": "Idee di avvio",
+    "statsApplications": "Candidature di co-fondatore inviate",
+    "manageIdeas": "Gestire le idee →",
+    "viewDashboard": "Visualizza dashboard →",
+    "quickActions": "Azioni rapide",
+    "manageProfileIdeas": "Gestisci il profilo e le idee del fondatore",
+    "createProfile": "Crea il profilo del fondatore",
+    "browseIdeas": "Sfoglia le idee per startup"
+  },
+  "dashboardNav": {
+    "overview": "Panoramica",
+    "cofounders": "Cofondatori",
+    "teams": "Spazi di lavoro del team",
+    "admin": "Ammin"
+  },
+  "dashboardCofounders": {
+    "pageTitle": "Dashboard dei co-fondatori",
+    "founderProfile": "Profilo del fondatore",
+    "postNewIdea": "Pubblica una nuova idea",
+    "myIdeas": "Le mie idee per l'avvio",
+    "noIdeas": "Nessuna idea ancora.",
+    "recruiting": "reclutamento",
+    "applicants": "{count}richiedenti",
+    "myApplications": "Le mie candidature da co-fondatore",
+    "noApplications": "Nessuna candidatura ancora.",
+    "status": "Stato"
+  },
+  "dashboardIdeaDetail": {
+    "back": "Torniamo alle idee",
+    "protectedBadge": "Protetto (teaser pubblico)",
+    "applicantsHeading": "Candidati ({count})",
+    "rolePrefix": "Ruolo"
+  },
+  "founderProfile": {
+    "headline": "Titolo",
+    "bio": "Bio",
+    "seekingRole": "Ruolo che stai cercando in un co-fondatore",
+    "ideaStage": "Fase delle idee",
+    "commitment": "Livello di impegno",
+    "skills": "Abilità e punti di forza (separati da virgole)",
+    "skillsHint": "per esempio. ricerche di mercato, raccolta fondi, UX, React, logistica: non solo programmazione.",
+    "industries": "Settori (separati da virgole)",
+    "industriesPh": "Fintech, sanità, tecnologia educativa",
+    "country": "Paese",
+    "saving": "Risparmio…",
+    "createProfile": "Crea profilo",
+    "updateProfile": "Aggiornamento",
+    "fullTime": "A tempo pieno",
+    "partTime": "Part time"
+  },
+  "startupStages": {
+    "IDEA": "Idea",
+    "VALIDATING": "Convalida",
+    "BUILDING": "Edificio",
+    "LAUNCHED": "Lanciato",
+    "FUNDED": "Finanziato"
+  },
+  "startupIdea": {
+    "title": "Titolo dell'idea *",
+    "visibility": "Visibilità",
+    "fullPublic": "Pubblico completo",
+    "fullPublicDesc": "Tutti vedranno la tua descrizione completa e la tua presentazione (come prima).",
+    "teaserOnly": "Protetto (solo teaser)",
+    "teaserOnlyDesc": "Viene mostrato solo un breve teaser pubblico. La descrizione completa e la presentazione sono visibili a te e alle persone che fanno domanda per aderire alla tua idea.",
+    "publicTeaser": "Teaser pubblico * (min 20 caratteri)",
+    "publicTeaserHint": "Condividi lo spazio del problema e ciò che stai cercando: evita segreti, metriche esatte o qualsiasi cosa che non vuoi venga copiata.",
+    "teaserPlaceholder": "per esempio. Risolvere X per il mercato Y: ricerca di un CTO/ingegnere con cui costruire, oppure: MVP tecnico completato: ricerca di un cofondatore aziendale con cui vendere e collaborare.",
+    "description": "Descrizione completa *",
+    "descriptionHintPublic": "Visibile a tutti nella pagina delle idee.",
+    "descriptionHintTeaser": "Nascosto al pubblico finché qualcuno non ne fa richiesta. Sii specifico qui: questo è il tuo brief privato per i candidati seri.",
+    "pitch": "Piazzola (facoltativo)",
+    "pitchHintPublic": "Dettagli aggiuntivi facoltativi per la pagina delle idee.",
+    "pitchHintTeaser": "Anche nascosto finché qualcuno non si candida.",
+    "rolesNeeded": "Ruoli che stai cercando",
+    "rolesHint": "Che tu abbia un'idea imprenditoriale e abbia bisogno di un partner tecnico, o che tu sia un tecnico e abbia bisogno di affari, vendite o operazioni, tagga ogni tipo di co-fondatore che desideri.",
+    "industries": "Settori (separati da virgole)",
+    "industriesPh": "Fintech, salute",
+    "country": "Paese",
+    "posting": "Posting…",
+    "postIdea": "Pubblica un'idea",
+    "postError": "Impossibile pubblicare l'idea"
+  },
+  "community": {
+    "title": "Comunità",
+    "subtitle": "Circoli, eventi e risorse basati sulle competenze e su base nazionale",
+    "circles": "Cerchi",
+    "noCircles": "Ancora nessuna cerchia. Iscriviti alla lista d'attesa per ricevere una notifica al momento del lancio.",
+    "upcomingEvents": "Prossimi eventi",
+    "noEvents": "Nessun evento in programma.",
+    "membersDot": "{count}membri ·{type}"
+  },
+  "admin": {
+    "accessDenied": "Accesso negato. Solo amministratore.",
+    "title": "Pannello di amministrazione",
+    "users": "Utenti",
+    "ideas": "Idee di avvio",
+    "waitlist": "Lista d'attesa",
+    "circles": "Cerchi",
+    "events": "Eventi",
+    "resources": "Risorse",
+    "name": "Nome",
+    "description": "Descrizione",
+    "skillBased": "Basato sulle competenze",
+    "countryBased": "Basato sul paese",
+    "country": "Paese",
+    "skill": "Abilità",
+    "addCircle": "Aggiungere",
+    "eventTitle": "Titolo",
+    "meetingUrl": "URL della riunione",
+    "addEvent": "Aggiungi evento",
+    "url": "URL",
+    "category": "Categoria",
+    "typeArticle": "Articolo",
+    "typeGuide": "Guida",
+    "typeVideo": "Video",
+    "addResource": "Aggiungi risorsa"
+  },
+  "applicationActions": {
+    "pending": "in attesa di",
+    "accepted": "accettato",
+    "rejected": "respinto"
+  },
+  "ideaDetail": {
+    "back": "← Torniamo alle idee",
+    "protectedListing": "Elenco protetto",
+    "teaserOnlyTitle": "Solo teaser",
+    "teaserOnlyBody": "I dettagli completi rimangono privati ​​per ridurre il rischio di copia-incolla. Fai domanda di seguito: una volta inviata una domanda seria, puoi leggere la descrizione completa e la presentazione.",
+    "description": "Descrizione",
+    "pitch": "Pece",
+    "publicTeaser": "Teaser pubblico",
+    "teaserFallback": "Il fondatore condivide pubblicamente solo un teaser di alto livello."
+  },
+  "cofoundersPage": {
+    "protectedBadge": "Protetto"
+  }
+}

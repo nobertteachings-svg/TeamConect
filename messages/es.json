@@ -1,0 +1,81 @@
+{
+  "seo": {
+    "title": "TeamConnect — Cofundadores y comunidad",
+    "description": "Encuentra cofundadores para tu startup — tengas una idea de negocio o construyas el producto. Publica ideas, únete a equipos, círculos y eventos. Interfaz en inglés, francés, árabe, español, alemán, italiano, portugués, ruso, chino, japonés y ucraniano."
+  },
+  "common": {
+    "cofounders": "Cofundadores",
+    "community": "Comunidad",
+    "signIn": "Iniciar sesión",
+    "signUp": "Registrarse",
+    "getStarted": "Empezar",
+    "learnMore": "Más información",
+    "dashboard": "Panel"
+  },
+  "landing": {
+    "tagline": "Donde las ideas encuentran a los cofundadores adecuados",
+    "headline": "Encuentra a tu cofundador. Construye lo que importa.",
+    "subheadline": "Publica una idea de negocio o de producto, encuentra socios técnicos o de negocio y únete a una comunidad de makers — interfaz en 11 idiomas para conectar cofundadores en todo el mundo.",
+    "pillarSectionTitle": "Dos formas de participar",
+    "cta": "Unirse a la lista de espera",
+    "exploreCta": "Explorar ideas",
+    "exploreLead": "Explora ideas desde la fase concepto hasta el lanzamiento — filtra por rol y región, postula en minutos.",
+    "whyTitle": "Por qué los equipos eligen TeamConnect",
+    "whySubtitle": "Confianza y claridad primero — no otro scroll infinito de pitches vagos.",
+    "whyProtectTitle": "Pitches protegidos",
+    "whyProtectDesc": "Los fundadores pueden mostrar un teaser público y reservar el brief completo para candidatos serios.",
+    "whyApplicationTitle": "Solicitudes serias",
+    "whyApplicationDesc": "Los candidatos comparten disponibilidad, encaje de rol y un mensaje real — no spam de una línea.",
+    "whyLanguagesTitle": "Hecho para el mundo",
+    "whyLanguagesDesc": "Once idiomas, remoto primero, filtros alineados con cómo trabajas — de San Francisco a São Paulo a Shanghai.",
+    "pillars": {
+      "cofounders": {
+        "title": "Cofundadores",
+        "desc": "Comparte tu idea (aunque no seas técnico), lista a quién necesitas y conecta con socios"
+      },
+      "community": {
+        "title": "Comunidad",
+        "desc": "Círculos, eventos y recursos — aprende y crece junto a otros"
+      }
+    }
+  },
+  "cofoundersPage": {
+    "heroTitle": "Encuentra a tu próximo cofundador",
+    "heroLead": "Fundadores publican en cualquier etapa — buscan ingenieros, cofundadores de negocio, diseño, operaciones y más. Postula con intención.",
+    "filterLabel": "Refinar",
+    "clearFilters": "Borrar filtros",
+    "emptyTitle": "Ninguna idea coincide",
+    "emptyLead": "Prueba otro filtro o sé el primero en publicar una idea desde tu panel.",
+    "loadMore": "Cargar más ideas",
+    "apply": {
+      "signIn": "Inicia sesión para postular",
+      "cta": "Postular como cofundador",
+      "loading": "Cargando…",
+      "messageLabel": "Por qué encajas",
+      "messageHint": "Al menos 50 caracteres. Menciona tu trayectoria (negocio, tech, diseño, etc.), habilidades y compromiso.",
+      "commitmentLabel": "Disponibilidad semanal habitual",
+      "commitmentPlaceholder": "Seleccionar…",
+      "h5_10": "5–10 h / semana",
+      "h10_20": "10–20 h / semana",
+      "h20_40": "20–40 h / semana",
+      "h40": "40+ h / tiempo completo",
+      "roleLabel": "Rol que puedes aportar",
+      "submit": "Enviar solicitud",
+      "submitting": "Enviando…",
+      "cancel": "Cancelar",
+      "applied": "Solicitud enviada",
+      "appliedDetail": "El fundador verá tu mensaje. Actualiza si necesitas ver detalles protegidos.",
+      "owner": "Publicaste esta idea",
+      "validation": "Escribe al menos 50 caracteres explicando por qué encajas.",
+      "commitmentRequired": "Elige tu disponibilidad semanal."
+    }
+  },
+  "waitlist": {
+    "title": "Unirse a la lista de espera",
+    "emailPlaceholder": "Tu correo electrónico",
+    "rolePlaceholder": "Soy…",
+    "countryPlaceholder": "País",
+    "submit": "Unirse",
+    "success": "¡Estás en la lista! Pronto nos pondremos en contacto."
+  }
+}

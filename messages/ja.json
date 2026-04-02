@@ -1,0 +1,81 @@
+{
+  "seo": {
+    "title": "TeamConnect — 共同創業者とコミュニティ",
+    "description": "スタートアップの共同創業者を探す — ビジネスアイデアを持つ方も、プロダクトを作る方も。アイデアを投稿し、チームに応募し、サークルやイベントに参加。英語、フランス語、アラビア語、スペイン語、ドイツ語、イタリア語、ポルトガル語、ロシア語、中国語、日本語、ウクライナ語のUI。"
+  },
+  "common": {
+    "cofounders": "共同創業者",
+    "community": "コミュニティ",
+    "signIn": "ログイン",
+    "signUp": "新規登録",
+    "getStarted": "始める",
+    "learnMore": "詳しく見る",
+    "dashboard": "ダッシュボード"
+  },
+  "landing": {
+    "tagline": "アイデアがふさわしい共同創業者と出会う場所",
+    "headline": "共同創業者を見つけよう。大切なものを形に。",
+    "subheadline": "ビジネスやプロダクトのアイデアを投稿し、技術・ビジネスパートナーを見つけ、メーカーコミュニティに参加 — 11言語UIで世界中の共同創業者とつながる。",
+    "pillarSectionTitle": "参加の二つの方法",
+    "cta": "ウェイトリストに登録",
+    "exploreCta": "アイデアを見る",
+    "exploreLead": "構想段階からローンチまで — 役割と地域で絞り込み、数分で応募。",
+    "whyTitle": "チームが TeamConnect を選ぶ理由",
+    "whySubtitle": "信頼と明確さを最優先 — 曖昧なピッチの無限スクロールではありません。",
+    "whyProtectTitle": "保護されたピッチ",
+    "whyProtectDesc": "公開ティーザーだけを示し、本編は本気の応募者だけが閲覧できます。",
+    "whyApplicationTitle": "真剣な応募",
+    "whyApplicationDesc": "応募者は稼働時間、役割の適合、具体的なメッセージを共有 — 一行スパムはありません。",
+    "whyLanguagesTitle": "世界のために",
+    "whyLanguagesDesc": "11の言語、リモートファースト、あなたの働き方に合うフィルター — サンフランシスコから上海まで。",
+    "pillars": {
+      "cofounders": {
+        "title": "共同創業者",
+        "desc": "アイデアを共有し（非エンジニアでも）、必要な人を列挙し、パートナーとマッチ"
+      },
+      "community": {
+        "title": "コミュニティ",
+        "desc": "サークル、イベント、リソース — 一緒に学び成長"
+      }
+    }
+  },
+  "cofoundersPage": {
+    "heroTitle": "次の共同創業者を見つける",
+    "heroLead": "あらゆる段階の創業者が投稿 — エンジニア、ビジネス共同創業者、デザイン、オペレーションなどを募集。意図を持って応募しましょう。",
+    "filterLabel": "絞り込み",
+    "clearFilters": "フィルターをクリア",
+    "emptyTitle": "該当するアイデアがありません",
+    "emptyLead": "別のフィルターを試すか、ダッシュボードから最初にアイデアを投稿してください。",
+    "loadMore": "さらに読み込む",
+    "apply": {
+      "signIn": "応募するにはログイン",
+      "cta": "共同創業者として応募",
+      "loading": "読み込み中…",
+      "messageLabel": "マッチする理由",
+      "messageHint": "50文字以上。経歴（ビジネス、技術、デザインなど）、スキル、コミット可能時間を書いてください。",
+      "commitmentLabel": "週あたりの稼働目安",
+      "commitmentPlaceholder": "選択…",
+      "h5_10": "週 5〜10 時間",
+      "h10_20": "週 10〜20 時間",
+      "h20_40": "週 20〜40 時間",
+      "h40": "週 40時間以上 / フルタイム",
+      "roleLabel": "提供できる役割",
+      "submit": "応募を送信",
+      "submitting": "送信中…",
+      "cancel": "キャンセル",
+      "applied": "応募を送信しました",
+      "appliedDetail": "創業者がメッセージを確認します。保護された詳細は更新してご覧ください。",
+      "owner": "あなたが投稿したアイデアです",
+      "validation": "適合理由を50文字以上で入力してください。",
+      "commitmentRequired": "週の稼働を選択してください。"
+    }
+  },
+  "waitlist": {
+    "title": "ウェイトリストに登録",
+    "emailPlaceholder": "メールアドレス",
+    "rolePlaceholder": "私は…",
+    "countryPlaceholder": "国",
+    "submit": "登録",
+    "success": "登録しました！まもなくご連絡します。"
+  }
+}

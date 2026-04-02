@@ -1,0 +1,358 @@
+// TeamConnect — Co-founder matching & community (PostgreSQL)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============ AUTH & USERS ============
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+/// Email OTP for passwordless sign-in; country is ISO 3166-1 alpha-2 chosen at code request.
+model EmailOtpChallenge {
+  id        String   @id @default(cuid())
+  email     String
+  codeHash  String
+  country   String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}
+
+enum UserRole {
+  FOUNDER
+  INVESTOR
+  MENTOR
+  ADMIN
+}
+
+enum AccountType {
+  CO_FOUNDER
+  INVESTOR
+  MENTOR
+}
+
+model User {
+  id              String    @id @default(cuid())
+  name            String?
+  email           String?   @unique
+  emailVerified   DateTime?
+  image           String?
+  preferredLang   String    @default("en")
+  timezone        String?   @default("UTC")
+  country         String?
+  roles           UserRole[] @default([FOUNDER])
+  accountTypes    AccountType[] @default([])
+  accountDisabled Boolean   @default(false)
+  lastLoginAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  accounts                Account[]
+  sessions                Session[]
+  founderProfile          FounderProfile?
+  investorProfile         InvestorProfile?
+  mentorProfile           MentorProfile?
+  waitlist                WaitlistEntry?
+  communityEventsAuthored Event[]
+  coFounderApplications   CoFounderApplication[]
+  auditLogs               AuditLog[]
+  teamMemberships         TeamMember[]
+  teamPostsAuthored       TeamPost[]
+  teamResourcesAuthored   TeamResource[]
+  teamMeetingsAuthored    TeamMeeting[]
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String
+  action     String
+  targetType String
+  targetId   String?
+  metadata   Json?
+  reason     String?  @db.Text
+  createdAt  DateTime @default(now())
+
+  actor User @relation(fields: [actorId], references: [id], onDelete: Cascade)
+
+  @@index([targetType, targetId])
+  @@index([createdAt])
+}
+
+// ============ CO-FOUNDERS ============
+
+enum StartupStage {
+  IDEA
+  VALIDATING
+  BUILDING
+  LAUNCHED
+  FUNDED
+}
+
+/// FULL_PUBLIC: description + pitch visible to everyone.
+/// TEASER_ONLY: only publicTeaser on listing/detail until viewer is founder or has applied.
+enum IdeaProtection {
+  FULL_PUBLIC
+  TEASER_ONLY
+}
+
+model FounderProfile {
+  id                String       @id @default(cuid())
+  userId            String       @unique
+  headline          String?
+  bio               String?      @db.Text
+  skills            String[]     @default([])
+  seekingRole       String?
+  ideaStage         StartupStage?
+  equityExpectation String?
+  commitmentLevel   String?
+  industries        String[]     @default([])
+  languages         String[]     @default([])
+  country           String?
+  verified          Boolean      @default(false)
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  user  User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ideas StartupIdea[]
+}
+
+model StartupIdea {
+  id          String       @id @default(cuid())
+  title       String
+  slug        String       @unique
+  description String       @db.Text
+  pitch       String?      @db.Text
+  /// Safe public summary when protectionMode is TEASER_ONLY (required in that case)
+  publicTeaser String?     @db.Text
+  protectionMode IdeaProtection @default(FULL_PUBLIC)
+  stage       StartupStage @default(IDEA)
+  status      String       @default("recruiting")
+  rolesNeeded String[]     @default([])
+  industries  String[]     @default([])
+  country     String?
+  isPublic    Boolean      @default(true)
+  featured    Boolean      @default(false)
+  deletedAt   DateTime?
+  founderId   String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  founder      FounderProfile           @relation(fields: [founderId], references: [id], onDelete: Cascade)
+  applications CoFounderApplication[]
+  team         StartupTeam?
+}
+
+model CoFounderApplication {
+  id        String   @id @default(cuid())
+  ideaId    String
+  userId    String
+  message   String?  @db.Text
+  roleOffer String?
+  status    String   @default("pending")
+  adminNote String?  @db.Text
+  createdAt DateTime @default(now())
+
+  idea StartupIdea @relation(fields: [ideaId], references: [id], onDelete: Cascade)
+  user User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([ideaId, userId])
+}
+
+/// One workspace per startup idea; created when the first co-founder application is accepted.
+model StartupTeam {
+  id        String   @id @default(cuid())
+  ideaId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  idea      StartupIdea    @relation(fields: [ideaId], references: [id], onDelete: Cascade)
+  members   TeamMember[]
+  posts     TeamPost[]
+  resources TeamResource[]
+  meetings  TeamMeeting[]
+}
+
+model TeamMember {
+  id        String   @id @default(cuid())
+  teamId    String
+  userId    String
+  /// FOUNDER = listing owner; MEMBER = accepted co-founder
+  role      String   @default("MEMBER")
+  createdAt DateTime @default(now())
+
+  team StartupTeam @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+  @@index([userId])
+}
+
+model TeamPost {
+  id        String   @id @default(cuid())
+  teamId    String
+  authorId  String
+  parentId  String?
+  body      String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  team    StartupTeam @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  author  User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parent  TeamPost?   @relation("TeamPostThread", fields: [parentId], references: [id], onDelete: Cascade)
+  replies TeamPost[]  @relation("TeamPostThread")
+
+  @@index([teamId, createdAt])
+  @@index([parentId])
+}
+
+model TeamResource {
+  id          String   @id @default(cuid())
+  teamId      String
+  authorId    String
+  title       String
+  url         String?
+  description String?  @db.Text
+  createdAt   DateTime @default(now())
+
+  team   StartupTeam @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  author User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([teamId])
+}
+
+model TeamMeeting {
+  id         String    @id @default(cuid())
+  teamId     String
+  authorId   String
+  title      String
+  startsAt   DateTime?
+  meetingUrl String?
+  notes      String?   @db.Text
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  team   StartupTeam @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  author User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([teamId])
+}
+
+model InvestorProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  fundName    String?
+  thesis      String?  @db.Text
+  checkSize   String?
+  sectors     String[] @default([])
+  stages      String[] @default([])
+  countries   String[] @default([])
+  verified    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model MentorProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  headline    String?
+  bio         String?  @db.Text
+  expertise   String[] @default([])
+  industries  String[] @default([])
+  countries   String[] @default([])
+  verified    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ============ COMMUNITY ============
+
+model SiteAnnouncement {
+  id        String   @id @default(cuid())
+  message   String   @db.Text
+  active    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String   @db.Text
+  type        String
+  startAt     DateTime
+  endAt       DateTime
+  timezone    String?
+  isVirtual   Boolean  @default(true)
+  meetingUrl  String?
+  language    String?
+  /// Member-submitted events use authorId; admin-created seed events may omit it.
+  authorId    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  author User? @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([authorId])
+  @@index([startAt])
+}
+
+// ============ WAITLIST ============
+
+model WaitlistEntry {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  userId    String?  @unique
+  role      String?
+  country   String?
+  language  String?
+  source    String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+}

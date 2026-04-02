@@ -1,0 +1,81 @@
+{
+  "seo": {
+    "title": "TeamConnect — Co-fundadores e comunidade",
+    "description": "Encontre co-fundadores para sua startup — com ideia de negócio ou construindo o produto. Publique ideias, candidate-se a equipes, círculos e eventos. Interface em inglês, francês, árabe, espanhol, alemão, italiano, português, russo, chinês, japonês e ucraniano."
+  },
+  "common": {
+    "cofounders": "Co-fundadores",
+    "community": "Comunidade",
+    "signIn": "Entrar",
+    "signUp": "Cadastrar",
+    "getStarted": "Começar",
+    "learnMore": "Saiba mais",
+    "dashboard": "Painel"
+  },
+  "landing": {
+    "tagline": "Onde ideias encontram os co-fundadores certos",
+    "headline": "Encontre seu co-fundador. Construa o que importa.",
+    "subheadline": "Publique uma ideia de negócio ou produto, encontre parceiros técnicos ou de negócio e junte-se a uma comunidade de makers — interface em 11 idiomas para conectar co-fundadores no mundo todo.",
+    "pillarSectionTitle": "Duas formas de participar",
+    "cta": "Entrar na lista de espera",
+    "exploreCta": "Explorar ideias",
+    "exploreLead": "Ideias da fase conceito ao lançamento — filtre por função e região, candidate-se em minutos.",
+    "whyTitle": "Por que equipes escolhem o TeamConnect",
+    "whySubtitle": "Confiança e clareza primeiro — não mais rolagem infinita de pitches vagos.",
+    "whyProtectTitle": "Pitches protegidos",
+    "whyProtectDesc": "Fundadores podem mostrar um teaser público e reservar o brief completo para candidatos sérios.",
+    "whyApplicationTitle": "Candidaturas sérias",
+    "whyApplicationDesc": "Candidatos compartilham disponibilidade, fit de papel e uma mensagem real — não spam de uma linha.",
+    "whyLanguagesTitle": "Feito para o mundo",
+    "whyLanguagesDesc": "Onze idiomas, remoto primeiro, filtros alinhados ao seu jeito de trabalhar — de São Francisco a Xangai.",
+    "pillars": {
+      "cofounders": {
+        "title": "Co-fundadores",
+        "desc": "Compartilhe sua ideia (mesmo sem ser técnico), diga quem precisa e encontre parceiros"
+      },
+      "community": {
+        "title": "Comunidade",
+        "desc": "Círculos, eventos e recursos — aprendam e cresçam juntos"
+      }
+    }
+  },
+  "cofoundersPage": {
+    "heroTitle": "Encontre seu próximo co-fundador",
+    "heroLead": "Fundadores publicam em qualquer estágio — buscam engenheiros, co-fundadores de negócio, design, operações e mais. Candidate-se com intenção.",
+    "filterLabel": "Refinar",
+    "clearFilters": "Limpar filtros",
+    "emptyTitle": "Nenhuma ideia corresponde",
+    "emptyLead": "Tente outro filtro ou seja o primeiro a publicar uma ideia no painel.",
+    "loadMore": "Carregar mais ideias",
+    "apply": {
+      "signIn": "Entre para se candidatar",
+      "cta": "Candidatar-se como co-fundador",
+      "loading": "Carregando…",
+      "messageLabel": "Por que você combina",
+      "messageHint": "Pelo menos 50 caracteres. Mencione sua trajetória (negócio, tech, design, etc.), habilidades e compromisso.",
+      "commitmentLabel": "Disponibilidade semanal típica",
+      "commitmentPlaceholder": "Selecionar…",
+      "h5_10": "5–10 h / semana",
+      "h10_20": "10–20 h / semana",
+      "h20_40": "20–40 h / semana",
+      "h40": "40+ h / integral",
+      "roleLabel": "Papel que você pode oferecer",
+      "submit": "Enviar candidatura",
+      "submitting": "Enviando…",
+      "cancel": "Cancelar",
+      "applied": "Candidatura enviada",
+      "appliedDetail": "O fundador verá sua mensagem. Atualize para ver detalhes protegidos.",
+      "owner": "Você publicou esta ideia",
+      "validation": "Escreva pelo menos 50 caracteres explicando por que você combina.",
+      "commitmentRequired": "Escolha sua disponibilidade semanal."
+    }
+  },
+  "waitlist": {
+    "title": "Entrar na lista de espera",
+    "emailPlaceholder": "Seu e-mail",
+    "rolePlaceholder": "Eu sou…",
+    "countryPlaceholder": "País",
+    "submit": "Entrar",
+    "success": "Você está na lista! Entraremos em contato em breve."
+  }
+}

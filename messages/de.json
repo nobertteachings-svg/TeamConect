@@ -1,0 +1,81 @@
+{
+  "seo": {
+    "title": "TeamConnect — Co-Founder & Community",
+    "description": "Finde Co-Founder für dein Startup — mit Geschäftsidee oder als Builder. Ideen posten, Teams beitreten, Kreise und Events. Oberfläche auf Englisch, Französisch, Arabisch, Spanisch, Deutsch, Italienisch, Portugiesisch, Russisch, Chinesisch, Japanisch und Ukrainisch."
+  },
+  "common": {
+    "cofounders": "Co-Founder",
+    "community": "Community",
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "getStarted": "Loslegen",
+    "learnMore": "Mehr erfahren",
+    "dashboard": "Dashboard"
+  },
+  "landing": {
+    "tagline": "Wo Ideen die richtigen Co-Founder finden",
+    "headline": "Finde deinen Co-Founder. Bau, was zählt.",
+    "subheadline": "Veröffentliche eine Business- oder Produktidee, finde technische oder Business-Partner und tritt einer Maker-Community bei — UI in 11 Sprachen für Co-Founder weltweit.",
+    "pillarSectionTitle": "Zwei Wege mitzumachen",
+    "cta": "Zur Warteliste",
+    "exploreCta": "Ideen durchsuchen",
+    "exploreLead": "Ideen von der Konzeptphase bis zum Launch — nach Rolle und Region filtern, in Minuten bewerben.",
+    "whyTitle": "Warum Teams TeamConnect wählen",
+    "whySubtitle": "Vertrauen und Klarheit zuerst — kein endloses Scrollen durch vage Pitches.",
+    "whyProtectTitle": "Geschützte Pitches",
+    "whyProtectDesc": "Gründer können einen öffentlichen Teaser zeigen und das volle Briefing nur ernsten Bewerbern.",
+    "whyApplicationTitle": "Seriöse Bewerbungen",
+    "whyApplicationDesc": "Bewerber teilen Verfügbarkeit, Rollenfit und eine echte Nachricht — kein Einzeiler-Spam.",
+    "whyLanguagesTitle": "Für die ganze Welt gebaut",
+    "whyLanguagesDesc": "Elf Sprachen, remote-first, Filter passend zu deiner Arbeitsweise — von San Francisco bis Shanghai.",
+    "pillars": {
+      "cofounders": {
+        "title": "Co-Founder",
+        "desc": "Teile deine Idee (auch ohne Tech-Hintergrund), sag, wen du suchst, und finde Partner"
+      },
+      "community": {
+        "title": "Community",
+        "desc": "Kreise, Events und Ressourcen — gemeinsam lernen und wachsen"
+      }
+    }
+  },
+  "cofoundersPage": {
+    "heroTitle": "Finde deinen nächsten Co-Founder",
+    "heroLead": "Gründer posten in jeder Phase — sie suchen Engineer:innen, Business-Co-Founder, Design, Ops und mehr. Bewirb dich bewusst.",
+    "filterLabel": "Verfeinern",
+    "clearFilters": "Filter löschen",
+    "emptyTitle": "Keine passenden Ideen",
+    "emptyLead": "Probiere andere Filter oder sei der Erste, der eine Idee im Dashboard postet.",
+    "loadMore": "Mehr Ideen laden",
+    "apply": {
+      "signIn": "Zum Bewerben anmelden",
+      "cta": "Als Co-Founder bewerben",
+      "loading": "Lädt…",
+      "messageLabel": "Warum du passt",
+      "messageHint": "Mindestens 50 Zeichen. Erwähne deinen Hintergrund (Business, Tech, Design usw.), Skills und Commitment.",
+      "commitmentLabel": "Typische Wochenverfügbarkeit",
+      "commitmentPlaceholder": "Wählen…",
+      "h5_10": "5–10 Std. / Woche",
+      "h10_20": "10–20 Std. / Woche",
+      "h20_40": "20–40 Std. / Woche",
+      "h40": "40+ Std. / Vollzeit",
+      "roleLabel": "Rolle, die du einbringen kannst",
+      "submit": "Bewerbung senden",
+      "submitting": "Wird gesendet…",
+      "cancel": "Abbrechen",
+      "applied": "Bewerbung gesendet",
+      "appliedDetail": "Der Gründer sieht deine Nachricht. Aktualisieren für geschützte Details.",
+      "owner": "Du hast diese Idee gepostet",
+      "validation": "Bitte mindestens 50 Zeichen, warum du passt.",
+      "commitmentRequired": "Bitte wöchentliche Verfügbarkeit wählen."
+    }
+  },
+  "waitlist": {
+    "title": "Zur Warteliste",
+    "emailPlaceholder": "E-Mail eingeben",
+    "rolePlaceholder": "Ich bin…",
+    "countryPlaceholder": "Land",
+    "submit": "Eintragen",
+    "success": "Du stehst auf der Liste! Wir melden uns bald."
+  }
+}

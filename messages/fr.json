@@ -1,0 +1,81 @@
+{
+  "seo": {
+    "title": "TeamConnect — Co-fondateurs & communauté",
+    "description": "Trouvez des co-fondateurs pour votre startup — idée business ou produit. Publiez des idées, postulez, cercles et événements. Interface en anglais, français, arabe, espagnol, allemand, italien, portugais, russe, chinois, japonais et ukrainien."
+  },
+  "common": {
+    "cofounders": "Co-fondateurs",
+    "community": "Communauté",
+    "signIn": "Connexion",
+    "signUp": "Inscription",
+    "getStarted": "Commencer",
+    "learnMore": "En savoir plus",
+    "dashboard": "Tableau de bord"
+  },
+  "landing": {
+    "tagline": "Là où les idées rencontrent les bons co-fondateurs",
+    "headline": "Trouvez votre co-fondateur. Construisez l’essentiel.",
+    "subheadline": "Publiez une idée business ou produit, trouvez des partenaires tech ou business, et rejoignez une communauté de makers — interface en 11 langues pour connecter des co-fondateurs partout.",
+    "pillarSectionTitle": "Deux façons de vous impliquer",
+    "cta": "Rejoindre la liste d'attente",
+    "exploreCta": "Parcourir les idées",
+    "exploreLead": "Parcourez des idées de la phase concept au lancement — filtrez par rôle et région, postulez en quelques minutes.",
+    "whyTitle": "Pourquoi les équipes choisissent TeamConnect",
+    "whySubtitle": "Confiance et clarté d’abord — pas un fil infini de pitches flous.",
+    "whyProtectTitle": "Pitches protégés",
+    "whyProtectDesc": "Les fondateurs peuvent montrer un teaser public et réserver le brief complet aux candidats sérieux.",
+    "whyApplicationTitle": "Candidatures sérieuses",
+    "whyApplicationDesc": "Les candidats indiquent disponibilité, rôle et un vrai message — pas du spam en une ligne.",
+    "whyLanguagesTitle": "Pensé pour le monde",
+    "whyLanguagesDesc": "Onze langues, remote-first, des filtres alignés sur votre façon de travailler — partout sur la planète.",
+    "pillars": {
+      "cofounders": {
+        "title": "Co-fondateurs",
+        "desc": "Partagez votre idée (même sans profil technique), listez vos besoins et rencontrez des partenaires"
+      },
+      "community": {
+        "title": "Communauté",
+        "desc": "Cercles, événements et ressources — apprendre et grandir ensemble"
+      }
+    }
+  },
+  "cofoundersPage": {
+    "heroTitle": "Trouvez votre prochain co-fondateur",
+    "heroLead": "Des fondateurs publient à tout stade — ingénieurs, co-fondateurs business, design, ops et plus. Postulez avec intention.",
+    "filterLabel": "Affiner",
+    "clearFilters": "Réinitialiser les filtres",
+    "emptyTitle": "Aucune idée ne correspond",
+    "emptyLead": "Essayez un autre filtre, ou publiez la première idée depuis votre tableau de bord.",
+    "loadMore": "Charger plus d’idées",
+    "apply": {
+      "signIn": "Connectez-vous pour postuler",
+      "cta": "Postuler comme co-fondateur",
+      "loading": "Chargement…",
+      "messageLabel": "Pourquoi vous correspondez",
+      "messageHint": "Au moins 50 caractères. Parlez de votre parcours (business, tech, design, etc.), compétences et engagement.",
+      "commitmentLabel": "Disponibilité hebdomadaire typique",
+      "commitmentPlaceholder": "Choisir…",
+      "h5_10": "5–10 h / semaine",
+      "h10_20": "10–20 h / semaine",
+      "h20_40": "20–40 h / semaine",
+      "h40": "40+ h / temps plein",
+      "roleLabel": "Rôle que vous pouvez occuper",
+      "submit": "Envoyer la candidature",
+      "submitting": "Envoi…",
+      "cancel": "Annuler",
+      "applied": "Candidature envoyée",
+      "appliedDetail": "Le fondateur verra votre message. Actualisez pour voir les détails protégés.",
+      "owner": "Vous avez publié cette idée",
+      "validation": "Écrivez au moins 50 caractères expliquant votre adéquation.",
+      "commitmentRequired": "Indiquez votre disponibilité hebdomadaire."
+    }
+  },
+  "waitlist": {
+    "title": "Rejoindre la liste d'attente",
+    "emailPlaceholder": "Entrez votre email",
+    "rolePlaceholder": "Je suis...",
+    "countryPlaceholder": "Pays",
+    "submit": "Rejoindre",
+    "success": "Vous êtes sur la liste ! Nous vous contacterons bientôt."
+  }
+}

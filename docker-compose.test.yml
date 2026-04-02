@@ -1,0 +1,21 @@
+# Local PostgreSQL for integration tests (optional).
+# Usage:
+#   docker compose -f docker-compose.test.yml up -d
+#   export TEST_DATABASE_URL="postgresql://postgres:postgres@127.0.0.1:5433/teamconnect_test?schema=public"
+#   npx prisma migrate deploy
+#   npm run test:integration
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: teamconnect_test
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d teamconnect_test"]
+      interval: 3s
+      timeout: 5s
+      retries: 10

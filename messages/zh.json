@@ -1,0 +1,81 @@
+{
+  "seo": {
+    "title": "TeamConnect — 联合创始人与社区",
+    "description": "为你的初创寻找联合创始人——无论你有商业创意还是负责打造产品。发布想法、申请加入团队、参与圈子与活动。界面支持英语、法语、阿拉伯语、西班牙语、德语、意大利语、葡萄牙语、俄语、中文、日语和乌克兰语。"
+  },
+  "common": {
+    "cofounders": "联合创始人",
+    "community": "社区",
+    "signIn": "登录",
+    "signUp": "注册",
+    "getStarted": "开始使用",
+    "learnMore": "了解更多",
+    "dashboard": "控制台"
+  },
+  "landing": {
+    "tagline": "让创意找到合适的联合创始人",
+    "headline": "找到你的联合创始人。做有意义的事。",
+    "subheadline": "发布商业或产品创意，寻找技术或商业伙伴，加入创客社区——11 种语言界面，帮助全球联合创始人对接。",
+    "pillarSectionTitle": "两种参与方式",
+    "cta": "加入候补名单",
+    "exploreCta": "浏览创意",
+    "exploreLead": "从概念期到已上线——按角色与地区筛选，几分钟内即可申请。",
+    "whyTitle": "团队选择 TeamConnect 的原因",
+    "whySubtitle": "信任与清晰优先——不再是模糊路演的无限滑动。",
+    "whyProtectTitle": "受保护的路演",
+    "whyProtectDesc": "创始人可展示公开预告，完整简报仅对认真申请者开放。",
+    "whyApplicationTitle": "严肃申请",
+    "whyApplicationDesc": "申请者提供可用时间、角色匹配和真实说明——不是一句话垃圾信息。",
+    "whyLanguagesTitle": "面向全球",
+    "whyLanguagesDesc": "十一种语言、远程优先、筛选贴合你的工作方式——从旧金山到上海。",
+    "pillars": {
+      "cofounders": {
+        "title": "联合创始人",
+        "desc": "分享你的创意（即使非技术背景），列出所需伙伴类型，匹配合作者"
+      },
+      "community": {
+        "title": "社区",
+        "desc": "圈子、活动与资源——一起学习成长"
+      }
+    }
+  },
+  "cofoundersPage": {
+    "heroTitle": "寻找下一位联合创始人",
+    "heroLead": "各阶段创始人都会发布——寻找工程师、商业联合创始人、设计、运营等。带着诚意申请。",
+    "filterLabel": "筛选",
+    "clearFilters": "清除筛选",
+    "emptyTitle": "暂无匹配的创意",
+    "emptyLead": "尝试其他筛选，或从控制台率先发布创意。",
+    "loadMore": "加载更多创意",
+    "apply": {
+      "signIn": "登录后申请",
+      "cta": "以联合创始人身份申请",
+      "loading": "加载中…",
+      "messageLabel": "你的匹配理由",
+      "messageHint": "至少 50 字。说明你的背景（商业、技术、设计等）、技能与可投入时间。",
+      "commitmentLabel": "通常每周可投入时间",
+      "commitmentPlaceholder": "请选择…",
+      "h5_10": "每周 5–10 小时",
+      "h10_20": "每周 10–20 小时",
+      "h20_40": "每周 20–40 小时",
+      "h40": "每周 40+ 小时 / 全职",
+      "roleLabel": "你能担任的角色",
+      "submit": "提交申请",
+      "submitting": "发送中…",
+      "cancel": "取消",
+      "applied": "申请已发送",
+      "appliedDetail": "创始人会看到你的留言。刷新可查看受保护详情。",
+      "owner": "这是你发布的创意",
+      "validation": "请至少写 50 字说明你的匹配度。",
+      "commitmentRequired": "请选择每周可投入时间。"
+    }
+  },
+  "waitlist": {
+    "title": "加入候补名单",
+    "emailPlaceholder": "输入邮箱",
+    "rolePlaceholder": "我是…",
+    "countryPlaceholder": "国家/地区",
+    "submit": "加入",
+    "success": "已在名单中！我们会尽快联系你。"
+  }
+}

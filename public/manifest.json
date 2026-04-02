@@ -1,0 +1,18 @@
+{
+  "name": "TeamConnect",
+  "short_name": "TeamConnect",
+  "description": "Meet co-founders and builders — startup ideas, applications, and community",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#004A8D",
+  "theme_color": "#004A8D",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "1536x1024",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "common": {
+    "loading": "加载中…",
+    "anonymous": "匿名的",
+    "members": "会员",
+    "virtual": "虚拟的",
+    "inPerson": "面对面",
+    "add": "添加",
+    "save": "节省",
+    "update": "更新",
+    "select": "选择",
+    "by": "经过",
+    "protected": "受保护",
+    "failed": "出了点问题"
+  },
+  "footer": {
+    "blurb": "这是一个供有想法的人和有技能的人（商业、产品、设计、技术）会面的空间，可以分享想法、寻找联合创始人以及加入社区圈、活动和资源。",
+    "tagline": "填补空白。连接无处不在。",
+    "platform": "平台",
+    "connect": "连接",
+    "copyright": "© 0TeamConnect。版权所有。"
+  },
+  "auth": {
+    "title": "登入",
+    "subtitle": "登录以发布想法、申请成为联合创始人并加入社区。",
+    "google": "继续使用谷歌",
+    "github": "使用 GitHub 继续",
+    "backHome": "← 返回首页"
+  },
+  "dashboard": {
+    "title": "仪表板",
+    "viewSite": "查看网站 →",
+    "welcome": "欢迎回来，0！",
+    "welcomeThere": "欢迎回来，那里！",
+    "statsIdeas": "创业想法",
+    "statsApplications": "联合创始人申请已发送",
+    "manageIdeas": "管理想法 →",
+    "viewDashboard": "查看仪表板 →",
+    "quickActions": "快速行动",
+    "manageProfileIdeas": "管理创始人简介和想法",
+    "createProfile": "创建创始人简介",
+    "browseIdeas": "浏览创业想法"
+  },
+  "dashboardNav": {
+    "overview": "概述",
+    "cofounders": "联合创始人",
+    "teams": "团队工作区",
+    "admin": "行政"
+  },
+  "dashboardCofounders": {
+    "pageTitle": "联合创始人仪表板",
+    "founderProfile": "创始人简介",
+    "postNewIdea": "发布新想法",
+    "myIdeas": "我的创业想法",
+    "noIdeas": "还没有想法。",
+    "recruiting": "招聘",
+    "applicants": "0申请人",
+    "myApplications": "我的联合创始人申请",
+    "noApplications": "还没有申请。",
+    "status": "地位"
+  },
+  "dashboardIdeaDetail": {
+    "back": "回到想法",
+    "protectedBadge": "受保护（预告片公开）",
+    "applicantsHeading": "申请人 (0)",
+    "rolePrefix": "角色"
+  },
+  "founderProfile": {
+    "headline": "标题",
+    "bio": "简介",
+    "seekingRole": "您正在寻找的联合创始人角色",
+    "ideaStage": "创意阶段",
+    "commitment": "承诺级别",
+    "skills": "技能和优势（以逗号分隔）",
+    "skillsHint": "例如市场研究、筹款、用户体验、React、物流——不仅仅是编码。",
+    "industries": "行业（逗号分隔）",
+    "industriesPh": "金融科技、健康、教育科技",
+    "country": "国家",
+    "saving": "保存…",
+    "createProfile": "创建个人资料",
+    "updateProfile": "更新",
+    "fullTime": "全日制",
+    "partTime": "兼职"
+  },
+  "startupStages": {
+    "IDEA": "主意",
+    "VALIDATING": "正在验证",
+    "BUILDING": "建筑",
+    "LAUNCHED": "推出",
+    "FUNDED": "资助"
+  },
+  "startupIdea": {
+    "title": "想法标题 *",
+    "visibility": "能见度",
+    "fullPublic": "全面公开",
+    "fullPublicDesc": "每个人都会看到您的完整描述和推介（与以前相同）。",
+    "teaserOnly": "受保护（仅限预告片）",
+    "teaserOnlyDesc": "仅显示一个简短的公开预告片。您和申请加入您的想法的人都可以看到完整的描述和推介。",
+    "publicTeaser": "公开预告 *（最少 20 个字符）",
+    "publicTeaserHint": "分享问题空间和您正在寻找的内容 - 避免秘密、精确指标或任何您不想复制的内容。",
+    "teaserPlaceholder": "例如为市场 Y 解决 X 问题 — 寻找 CTO/工程师一起构建，或者：完成技术 MVP — 寻找企业联合创始人进行销售和合作。",
+    "description": "完整描述 *",
+    "descriptionHintPublic": "想法页面上的每个人都可以看到。",
+    "descriptionHintTeaser": "在有人申请之前对公众隐藏。请在此具体说明——这是您为认真的候选人提供的私人简报。",
+    "pitch": "间距（可选）",
+    "pitchHintPublic": "创意页面的可选额外细节。",
+    "pitchHintTeaser": "也隐藏起来，直到有人申请。",
+    "rolesNeeded": "您正在寻找的角色",
+    "rolesHint": "无论您有商业想法并需要技术合作伙伴，还是您是技术人员并需要业务、销售或运营 - 标记您想要的每种类型的联合创始人。",
+    "industries": "行业（逗号分隔）",
+    "industriesPh": "金融科技、健康",
+    "country": "国家",
+    "posting": "发布…",
+    "postIdea": "发表想法",
+    "postError": "无法发布想法"
+  },
+  "community": {
+    "title": "社区",
+    "subtitle": "基于技能和国家的圈子、活动和资源",
+    "circles": "界",
+    "noCircles": "还没有圈子。加入候补名单，以便在我们启动时收到通知。",
+    "upcomingEvents": "即将举行的活动",
+    "noEvents": "没有即将举行的活动。",
+    "membersDot": "0 成员 · 1"
+  },
+  "admin": {
+    "accessDenied": "拒绝访问。仅限管理员。",
+    "title": "管理面板",
+    "users": "用户",
+    "ideas": "创业想法",
+    "waitlist": "候补名单",
+    "circles": "界",
+    "events": "活动",
+    "resources": "资源",
+    "name": "姓名",
+    "description": "描述",
+    "skillBased": "以技能为基础",
+    "countryBased": "以国家为基础",
+    "country": "国家",
+    "skill": "技能",
+    "addCircle": "添加",
+    "eventTitle": "标题",
+    "meetingUrl": "会议网址",
+    "addEvent": "添加事件",
+    "url": "网址",
+    "category": "类别",
+    "typeArticle": "文章",
+    "typeGuide": "指导",
+    "typeVideo": "视频",
+    "addResource": "添加资源"
+  },
+  "applicationActions": {
+    "pending": "待办的",
+    "accepted": "公认",
+    "rejected": "被拒绝"
+  },
+  "ideaDetail": {
+    "back": "← 返回想法",
+    "protectedListing": "受保护的列表",
+    "teaserOnlyTitle": "仅预告片",
+    "teaserOnlyBody": "完整详细信息保密，以降低复制粘贴风险。在下面申请——一旦您提交了认真的申请，您就可以阅读完整的描述和推介。",
+    "description": "描述",
+    "pitch": "沥青",
+    "publicTeaser": "公开预告片",
+    "teaserFallback": "创始人仅公开分享一个高级预告片。"
+  },
+  "cofoundersPage": {
+    "protectedBadge": "受保护"
+  }
+}

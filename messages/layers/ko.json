@@ -1,0 +1,170 @@
+{
+  "common": {
+    "loading": "로드 중…",
+    "anonymous": "익명의",
+    "members": "회원",
+    "virtual": "가상",
+    "inPerson": "직접",
+    "add": "추가하다",
+    "save": "구하다",
+    "update": "업데이트",
+    "select": "선택하다",
+    "by": "~에 의해",
+    "protected": "보호됨",
+    "failed": "문제가 발생했습니다."
+  },
+  "footer": {
+    "blurb": "아이디어가 있는 사람들과 기술(비즈니스, 제품, 디자인, 기술)을 갖춘 사람들이 만나 프레젠테이션을 공유하고 공동 창립자를 찾고 커뮤니티 서클, 이벤트 및 리소스에 참여할 수 있는 공간입니다.",
+    "tagline": "공백을 메우세요. 어디서나 연결하세요.",
+    "platform": "플랫폼",
+    "connect": "연결하다",
+    "copyright": "© {year}팀커넥트. 모든 권리 보유."
+  },
+  "auth": {
+    "title": "로그인",
+    "subtitle": "아이디어를 게시하고, 공동 창립자로 지원하고, 커뮤니티에 가입하려면 로그인하세요.",
+    "google": "Google로 계속하기",
+    "github": "GitHub으로 계속하기",
+    "backHome": "← 홈으로 돌아가기"
+  },
+  "dashboard": {
+    "title": "계기반",
+    "viewSite": "사이트 보기 →",
+    "welcome": "돌아온 것을 환영합니다.{name}!",
+    "welcomeThere": "돌아온 것을 환영합니다!",
+    "statsIdeas": "창업 아이디어",
+    "statsApplications": "공동 창업자 신청서가 전송되었습니다.",
+    "manageIdeas": "아이디어 관리 →",
+    "viewDashboard": "대시보드 보기 →",
+    "quickActions": "빠른 작업",
+    "manageProfileIdeas": "창업자 프로필 및 아이디어 관리",
+    "createProfile": "창립자 프로필 만들기",
+    "browseIdeas": "스타트업 아이디어 찾아보기"
+  },
+  "dashboardNav": {
+    "overview": "개요",
+    "cofounders": "공동 창립자",
+    "teams": "팀 워크스페이스",
+    "admin": "관리자"
+  },
+  "dashboardCofounders": {
+    "pageTitle": "공동 창립자 대시보드",
+    "founderProfile": "창립자 프로필",
+    "postNewIdea": "새로운 아이디어 게시",
+    "myIdeas": "나의 스타트업 아이디어",
+    "noIdeas": "아직 아이디어가 없습니다.",
+    "recruiting": "모병",
+    "applicants": "{count}지원자",
+    "myApplications": "내 공동 창업자 애플리케이션",
+    "noApplications": "아직 신청이 없습니다.",
+    "status": "상태"
+  },
+  "dashboardIdeaDetail": {
+    "back": "아이디어로 돌아가기",
+    "protectedBadge": "보호됨(티저 공개)",
+    "applicantsHeading": "지원자 ({count})",
+    "rolePrefix": "역할"
+  },
+  "founderProfile": {
+    "headline": "표제",
+    "bio": "바이오",
+    "seekingRole": "Role you’re looking for in a co-founder",
+    "ideaStage": "아이디어 단계",
+    "commitment": "헌신 수준",
+    "skills": "기술 및 강점(쉼표로 구분)",
+    "skillsHint": "예를 들어 시장 조사, 모금, UX, React, 물류 - 코딩뿐만이 아닙니다.",
+    "industries": "산업(쉼표로 구분)",
+    "industriesPh": "핀테크, 건강, 교육기술",
+    "country": "국가",
+    "saving": "절약…",
+    "createProfile": "프로필 만들기",
+    "updateProfile": "업데이트",
+    "fullTime": "풀타임",
+    "partTime": "파트타임"
+  },
+  "startupStages": {
+    "IDEA": "아이디어",
+    "VALIDATING": "검증 중",
+    "BUILDING": "건물",
+    "LAUNCHED": "출시됨",
+    "FUNDED": "자금 지원"
+  },
+  "startupIdea": {
+    "title": "아이디어 제목 *",
+    "visibility": "시계",
+    "fullPublic": "전체 공개",
+    "fullPublicDesc": "모든 사람이 귀하의 전체 설명과 홍보 내용을 볼 수 있습니다(이전과 동일).",
+    "teaserOnly": "보호됨(티저만)",
+    "teaserOnlyDesc": "짧은 공개 티저만 표시됩니다. 전체 설명과 홍보 내용은 귀하와 귀하의 아이디어에 참여를 신청한 사람들에게 표시됩니다.",
+    "publicTeaser": "공개 티저 * (최소 20자)",
+    "publicTeaserHint": "문제 공간과 찾고 있는 내용을 공유하세요. 비밀, 정확한 측정항목 또는 복사하고 싶지 않은 내용은 피하세요.",
+    "teaserPlaceholder": "예를 들어 시장 Y를 위한 X 해결 — 함께 구축할 CTO/엔지니어를 찾거나 기술 MVP 완료 — 판매 및 파트너 관계를 맺을 비즈니스 공동 창업자를 찾습니다.",
+    "description": "전체 설명 *",
+    "descriptionHintPublic": "아이디어 페이지의 모든 사람에게 표시됩니다.",
+    "descriptionHintTeaser": "누군가 신청할 때까지 공개되지 않습니다. 여기에서 구체적으로 작성하십시오. 이것은 진지한 후보자를 위한 개인 브리핑입니다.",
+    "pitch": "피치(선택사항)",
+    "pitchHintPublic": "아이디어 페이지에 대한 선택적 추가 세부정보입니다.",
+    "pitchHintTeaser": "누군가가 신청할 때까지 숨겨집니다.",
+    "rolesNeeded": "당신이 찾고 있는 역할",
+    "rolesHint": "사업 아이디어가 있고 기술 파트너가 필요한지, 기술 분야에 비즈니스, 영업, 운영이 필요한지 등 원하는 모든 종류의 공동 창업자를 태그하세요.",
+    "industries": "산업(쉼표로 구분)",
+    "industriesPh": "핀테크, 건강",
+    "country": "국가",
+    "posting": "전기…",
+    "postIdea": "아이디어 게시",
+    "postError": "아이디어를 게시할 수 없습니다."
+  },
+  "community": {
+    "title": "지역 사회",
+    "subtitle": "기술 기반 및 국가 기반 서클, 이벤트 및 리소스",
+    "circles": "서클",
+    "noCircles": "아직 서클이 없습니다. 출시 시 알림을 받으려면 대기자 명단에 등록하세요.",
+    "upcomingEvents": "다가오는 이벤트",
+    "noEvents": "다가오는 이벤트가 없습니다.",
+    "membersDot": "{count}회원 ·{type}"
+  },
+  "admin": {
+    "accessDenied": "접근 불가. 관리자 전용입니다.",
+    "title": "관리자 패널",
+    "users": "사용자",
+    "ideas": "창업 아이디어",
+    "waitlist": "대기자 명단",
+    "circles": "서클",
+    "events": "이벤트",
+    "resources": "자원",
+    "name": "이름",
+    "description": "설명",
+    "skillBased": "스킬 기반",
+    "countryBased": "국가 기반",
+    "country": "국가",
+    "skill": "기능",
+    "addCircle": "추가하다",
+    "eventTitle": "제목",
+    "meetingUrl": "회의 URL",
+    "addEvent": "이벤트 추가",
+    "url": "URL",
+    "category": "범주",
+    "typeArticle": "기사",
+    "typeGuide": "가이드",
+    "typeVideo": "동영상",
+    "addResource": "리소스 추가"
+  },
+  "applicationActions": {
+    "pending": "보류 중",
+    "accepted": "수락됨",
+    "rejected": "거부됨"
+  },
+  "ideaDetail": {
+    "back": "← 아이디어로 돌아가기",
+    "protectedListing": "보호 목록",
+    "teaserOnlyTitle": "티저만",
+    "teaserOnlyBody": "복사-붙여넣기 위험을 줄이기 위해 전체 세부정보는 비공개로 유지됩니다. 아래에서 신청하세요. 신청서를 제출하시면 전체 설명과 홍보 내용을 읽어보실 수 있습니다.",
+    "description": "설명",
+    "pitch": "정점",
+    "publicTeaser": "공개 티저",
+    "teaserFallback": "창립자는 공개적으로 높은 수준의 티저만 공유하고 있습니다."
+  },
+  "cofoundersPage": {
+    "protectedBadge": "보호됨"
+  }
+}
