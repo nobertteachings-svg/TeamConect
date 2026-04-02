@@ -5,8 +5,8 @@
 export function isSmtpMailConfigured(): boolean {
   if (process.env.SMTP_URL?.trim()) return true;
   const gmailUser = process.env.GMAIL_USER?.trim();
-  const gmailPass = process.env.GMAIL_APP_PASSWORD?.trim();
-  if (gmailUser && gmailPass) return true;
+  const gmailPass = process.env.GMAIL_APP_PASSWORD?.trim()?.replace(/\s+/g, "") ?? "";
+  if (gmailUser && gmailPass.length > 0) return true;
   const host = process.env.SMTP_HOST?.trim();
   const user = process.env.SMTP_USER?.trim();
   const pass = process.env.SMTP_PASS?.trim();

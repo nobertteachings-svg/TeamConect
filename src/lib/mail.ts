@@ -160,10 +160,13 @@ function createSmtpTransporter(): nodemailer.Transporter {
     return nodemailer.createTransport(url);
   }
   const gmailUser = process.env.GMAIL_USER?.trim();
-  const gmailPass = process.env.GMAIL_APP_PASSWORD?.trim();
-  if (gmailUser && gmailPass) {
+  const rawGmailPass = process.env.GMAIL_APP_PASSWORD?.trim();
+  if (gmailUser && rawGmailPass) {
+    const gmailPass = rawGmailPass.replace(/\s+/g, "");
     return nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
       auth: { user: gmailUser, pass: gmailPass },
     });
   }
@@ -356,6 +359,12 @@ async function sendEmail(input: SendEmailInput): Promise<void> {
   if (isSmtpMailConfigured()) {
     await sendViaSmtp(input);
     return;
+  }
+  if (process.env.EMAIL_SMTP_ONLY === "1" || process.env.EMAIL_SMTP_ONLY === "true") {
+    throw new EmailSendError(
+      "EMAIL_SMTP_ONLY set but SMTP is not configured",
+      "Email is not configured: set GMAIL_USER + GMAIL_APP_PASSWORD (or other SMTP_* variables)."
+    );
   }
   await sendViaResend(input);
 }

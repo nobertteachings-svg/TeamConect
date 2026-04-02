@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { isEmailOtpOffered } from "@/lib/email-otp-availability";
 import { prisma } from "@/lib/prisma";
 import { isValidCountryCode } from "@/lib/countries-full";
@@ -22,7 +23,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          "Email sign-in codes are not enabled on this deployment. Use Google or GitHub, or add RESEND_API_KEY and a verified sender domain.",
+          "Email sign-in codes are not enabled on this deployment. Use Google or GitHub, or configure Gmail (GMAIL_USER + GMAIL_APP_PASSWORD) or Resend with a verified domain.",
       },
       { status: 503 }
     );
@@ -84,9 +85,19 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   } catch (e) {
     console.error("[email-otp/request]", e);
-    return NextResponse.json(
-      { error: "Something went wrong. Try again later." },
-      { status: 503 }
-    );
+    let error = "Something went wrong. Try again later.";
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      if (e.code === "P2021" || e.code === "P2010") {
+        error =
+          "Sign-in email storage is not ready (database migration may be missing). Contact the site admin.";
+      } else {
+        error = "Could not save your sign-in request. Please try again in a moment.";
+      }
+    } else if (e instanceof Prisma.PrismaClientInitializationError) {
+      error = "Database connection failed. Check DATABASE_URL on the server.";
+    } else if (e instanceof Prisma.PrismaClientRustPanicError) {
+      error = "Database error. Please try again in a moment.";
+    }
+    return NextResponse.json({ error }, { status: 503 });
   }
 }
