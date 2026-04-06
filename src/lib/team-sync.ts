@@ -63,4 +63,46 @@ export async function syncTeamOnApplicationStatusChange(
       });
     }
   }
+
+  await refreshIdeaRecruitingStatus(tx, ideaId);
+}
+
+/**
+ * Sets status to team_complete when MEMBER count >= coFounderSlotsWanted.
+ * When there is room again, moves team_complete → recruiting only (preserves other custom statuses).
+ */
+/** Recompute recruiting vs team_complete from MEMBER count and coFounderSlotsWanted. */
+export async function refreshIdeaRecruitingStatus(
+  tx: Prisma.TransactionClient,
+  ideaId: string
+): Promise<void> {
+  const idea = await tx.startupIdea.findUnique({
+    where: { id: ideaId },
+    select: { coFounderSlotsWanted: true, status: true },
+  });
+  if (!idea) return;
+
+  const team = await tx.startupTeam.findUnique({
+    where: { ideaId },
+    select: { id: true },
+  });
+  let memberCount = 0;
+  if (team) {
+    memberCount = await tx.teamMember.count({
+      where: { teamId: team.id, role: "MEMBER" },
+    });
+  }
+
+  const full = memberCount >= idea.coFounderSlotsWanted;
+  if (full) {
+    await tx.startupIdea.update({
+      where: { id: ideaId },
+      data: { status: "team_complete" },
+    });
+  } else if (idea.status === "team_complete") {
+    await tx.startupIdea.update({
+      where: { id: ideaId },
+      data: { status: "recruiting" },
+    });
+  }
 }

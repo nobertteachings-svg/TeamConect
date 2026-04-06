@@ -18,6 +18,7 @@ export function StartupIdeaForm({ founderId }: { founderId: string }) {
     publicTeaser: "",
     protectionMode: "FULL_PUBLIC" as "FULL_PUBLIC" | "TEASER_ONLY",
     rolesNeeded: [] as string[],
+    coFounderSlotsWanted: 1,
     industries: "",
     country: "",
   });
@@ -33,6 +34,7 @@ export function StartupIdeaForm({ founderId }: { founderId: string }) {
           ...form,
           founderId,
           rolesNeeded: form.rolesNeeded,
+          coFounderSlotsWanted: form.coFounderSlotsWanted,
           industries: form.industries.split(",").map((s) => s.trim()).filter(Boolean),
         }),
       });
@@ -48,6 +50,7 @@ export function StartupIdeaForm({ founderId }: { founderId: string }) {
         publicTeaser: "",
         protectionMode: "FULL_PUBLIC",
         rolesNeeded: [],
+        coFounderSlotsWanted: 1,
         industries: "",
         country: "",
       });
@@ -165,6 +168,24 @@ export function StartupIdeaForm({ founderId }: { founderId: string }) {
             </button>
           ))}
         </div>
+      </div>
+      <div>
+        <label className="tc-label">{t("coFounderSlotsLabel")}</label>
+        <p className="tc-hint">{t("coFounderSlotsHint")}</p>
+        <input
+          type="number"
+          min={1}
+          max={50}
+          value={form.coFounderSlotsWanted}
+          onChange={(e) =>
+            setForm({
+              ...form,
+              coFounderSlotsWanted: Math.min(50, Math.max(1, Number.parseInt(e.target.value, 10) || 1)),
+            })
+          }
+          required
+          className="tc-input mt-1.5 max-w-[8rem]"
+        />
       </div>
       <div>
         <label className="tc-label">{t("industries")}</label>

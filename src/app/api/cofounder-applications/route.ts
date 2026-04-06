@@ -6,6 +6,7 @@ import { authOptions } from "@/lib/auth-config";
 import { sendNewCoFounderApplicationEmail } from "@/lib/mail";
 import { checkApiRateLimit } from "@/lib/rate-limit";
 import { cofounderApplicationBodySchema } from "@/lib/schemas/public-api";
+import { getCoFounderSlotSnapshot } from "@/lib/team-slots";
 
 const COMMITMENT_LABEL: Record<"5-10" | "10-20" | "20-40" | "40+", string> = {
   "5-10": "5–10 hours per week",
@@ -36,6 +37,18 @@ export async function POST(request: Request) {
     if (!idea) return NextResponse.json({ error: "Idea not found" }, { status: 404 });
     if (idea.founder.user.id === session.user.id) {
       return NextResponse.json({ error: "You cannot apply to your own idea" }, { status: 400 });
+    }
+
+    const slots = await getCoFounderSlotSnapshot(prisma, data.ideaId);
+    if (
+      !slots ||
+      idea.status !== "recruiting" ||
+      slots.remaining < 1
+    ) {
+      return NextResponse.json(
+        { error: "This idea is not accepting new applications." },
+        { status: 400 }
+      );
     }
 
     const existing = await prisma.coFounderApplication.findUnique({

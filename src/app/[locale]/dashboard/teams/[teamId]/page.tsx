@@ -74,6 +74,7 @@ export default async function TeamWorkspacePage({
         title: r.title,
         url: r.url,
         description: r.description,
+        meetingId: r.meetingId,
         createdAt: r.createdAt.toISOString(),
         author: r.author,
       }))}

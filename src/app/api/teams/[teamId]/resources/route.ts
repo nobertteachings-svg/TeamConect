@@ -4,16 +4,17 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth-config";
 import { checkApiRateLimit } from "@/lib/rate-limit";
-import { assertTeamMember } from "@/lib/team-access";
+import { assertTeamMember, assertTeamMeeting } from "@/lib/team-access";
 
 const resourceSchema = z.object({
   title: z.string().min(1).max(200),
   url: z.string().max(2000).optional(),
   description: z.string().max(4000).optional(),
+  meetingId: z.string().max(80).optional().nullable(),
 });
 
 export async function GET(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ teamId: string }> }
 ) {
   const session = await getServerSession(authOptions);
@@ -27,8 +28,14 @@ export async function GET(
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
+  const { searchParams } = new URL(request.url);
+  const meetingId = searchParams.get("meetingId")?.trim() || undefined;
+
   const resources = await prisma.teamResource.findMany({
-    where: { teamId },
+    where: {
+      teamId,
+      ...(meetingId ? { meetingId } : {}),
+    },
     include: { author: { select: { id: true, name: true } } },
     orderBy: { createdAt: "desc" },
     take: 100,
@@ -40,6 +47,7 @@ export async function GET(
       title: r.title,
       url: r.url,
       description: r.description,
+      meetingId: r.meetingId,
       createdAt: r.createdAt.toISOString(),
       author: r.author,
     })),
@@ -86,10 +94,21 @@ export async function POST(
       return NextResponse.json({ error: "Invalid URL" }, { status: 400 });
     }
   }
+  let meetingId: string | null = null;
+  const rawMid = parsed.data.meetingId?.trim();
+  if (rawMid) {
+    const m = await assertTeamMeeting(teamId, rawMid);
+    if (!m) {
+      return NextResponse.json({ error: "Meeting not found" }, { status: 400 });
+    }
+    meetingId = rawMid;
+  }
+
   const row = await prisma.teamResource.create({
     data: {
       teamId,
       authorId: session.user.id,
+      meetingId,
       title: parsed.data.title.trim(),
       url,
       description: parsed.data.description?.trim() || null,

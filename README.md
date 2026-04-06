@@ -9,7 +9,7 @@ Find your co-founder. Build what matters.
 - **Co-Founders**: Founder profiles, startup ideas board, apply to join teams, filters by country/stage/role; **team workspaces** (discussion, shared links, meetings) open when a founder **accepts** an applicant
 - **Community**: Tech events calendar (members can post hackathons, conferences, meetups, etc.; admins can curate)
 - **i18n**: English, French, Arabic (RTL), Spanish, German, Italian, Portuguese, Russian, Chinese (Simplified), Japanese, Ukrainian — browser locale detection + language switcher
-- **Auth**: NextAuth with Google, GitHub, and email OTP; transactional email via Resend (sign-in codes, waitlist, application alerts)
+- **Auth**: NextAuth with Google, GitHub, and email OTP; transactional email via **Gmail SMTP** (`GMAIL_USER` + `GMAIL_APP_PASSWORD`) or Resend (sign-in codes, waitlist, application alerts)
 
 ## Setup
 
@@ -17,7 +17,8 @@ Find your co-founder. Build what matters.
    - `DATABASE_URL` (PostgreSQL, e.g. Supabase/Neon)
    - `NEXTAUTH_URL`, `NEXTAUTH_SECRET`
    - OAuth: `GOOGLE_*`, `GITHUB_*` (create apps in each provider; GitHub callback URL is `{NEXTAUTH_URL}/api/auth/callback/github`)
-   - Optional: `RESEND_API_KEY`, `EMAIL_FROM` for outbound email (without them, OTP still works in dev via server logs)
+   - **Production email OTP:** set `EMAIL_TRANSPORT=smtp`, `EMAIL_SMTP_ONLY=1`, `GMAIL_USER`, `GMAIL_APP_PASSWORD` (Google [App Password](https://support.google.com/accounts/answer/185833)), and `EMAIL_FROM` (e.g. `TeamConnect <you@gmail.com>`). On Vercel, add these under Project → Settings → Environment Variables and redeploy.
+   - Optional Resend: `RESEND_API_KEY`, `EMAIL_FROM` (without any mail provider, dev logs OTP to the server console only)
 
 2. Install and apply the database schema:
    ```bash
@@ -84,7 +85,7 @@ Optional badge (replace `OWNER` / `REPO`):
 
 - **Database:** Pooled `DATABASE_URL` for serverless; `npx prisma migrate deploy` on deploy; optional **`GET /api/health`** for probes.
 - **Auth:** Strong `NEXTAUTH_SECRET`; `NEXTAUTH_URL` must match the public site URL.
-- **Email:** `RESEND_API_KEY` and a verified sending domain for OTP and transactional mail.
+- **Email:** For Gmail-only OTP, `GMAIL_USER`, `GMAIL_APP_PASSWORD`, `EMAIL_TRANSPORT=smtp`, `EMAIL_SMTP_ONLY=1`, `EMAIL_FROM`. Or use `RESEND_API_KEY` with a verified domain.
 - **Redis:** `UPSTASH_REDIS_*` when running more than one app instance (or `REQUIRE_UPSTASH_IN_PRODUCTION=1`).
 - **Observability:** Sentry / PostHog when keys are set.
 

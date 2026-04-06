@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          "Email sign-in codes are not enabled on this deployment. Use Google or GitHub, or configure Gmail (GMAIL_USER + GMAIL_APP_PASSWORD) or Resend with a verified domain.",
+          "Email sign-in codes are not configured on this server. Add GMAIL_USER and GMAIL_APP_PASSWORD (Gmail App Password) in your host’s environment, set EMAIL_TRANSPORT=smtp, and redeploy. Or use Google/GitHub sign-in.",
       },
       { status: 503 }
     );

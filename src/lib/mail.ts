@@ -1,6 +1,10 @@
 /**
  * Transactional email: SMTP (Gmail / Nodemailer) when configured, otherwise Resend (https://resend.com).
  *
+ * **Gmail (recommended for OTP):** set `GMAIL_USER` + `GMAIL_APP_PASSWORD` (Google Account → Security → 2-Step Verification → App passwords).
+ * Use `EMAIL_TRANSPORT=smtp` and `EMAIL_SMTP_ONLY=1` on the host to never use Resend.
+ * `nodemailer` uses `service: "gmail"` for those vars (reliable TLS/host defaults vs manual smtp.gmail.com).
+ *
  * Auto transport: if `GMAIL_USER` + `GMAIL_APP_PASSWORD`, `SMTP_URL`, or `SMTP_HOST`+user+pass are set, SMTP is used;
  * else Resend. Override with `EMAIL_TRANSPORT=smtp` or `EMAIL_TRANSPORT=resend`.
  *
@@ -155,20 +159,25 @@ function resolveSmtpFromAddress(): string {
 }
 
 function createSmtpTransporter(): nodemailer.Transporter {
-  const url = process.env.SMTP_URL?.trim();
-  if (url) {
-    return nodemailer.createTransport(url);
-  }
+  // Prefer explicit Gmail app-password auth over SMTP_URL so a stale or test SMTP_URL in .env
+  // cannot override GMAIL_USER / GMAIL_APP_PASSWORD (a common cause of 535 BadCredentials).
   const gmailUser = process.env.GMAIL_USER?.trim();
   const rawGmailPass = process.env.GMAIL_APP_PASSWORD?.trim();
   if (gmailUser && rawGmailPass) {
     const gmailPass = rawGmailPass.replace(/\s+/g, "");
+    // `service: "gmail"` picks host/port/TLS correctly; works better on many hosts than raw 465.
     return nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
+      service: "gmail",
       auth: { user: gmailUser, pass: gmailPass },
+      pool: false,
+      connectionTimeout: 25_000,
+      greetingTimeout: 15_000,
+      socketTimeout: 25_000,
     });
+  }
+  const url = process.env.SMTP_URL?.trim();
+  if (url) {
+    return nodemailer.createTransport(url);
   }
   const host = process.env.SMTP_HOST?.trim();
   const port = Number.parseInt(process.env.SMTP_PORT ?? "587", 10);

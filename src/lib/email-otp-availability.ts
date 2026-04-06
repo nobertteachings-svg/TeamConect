@@ -6,6 +6,8 @@ import { isSmtpMailConfigured } from "./mail-config";
  * Production: offered if SMTP is configured (Gmail app password, etc.) or Resend is set up
  * with a non-test `from` address. Resend's onboarding@resend.dev only delivers to your own inbox.
  *
+ * If `EMAIL_TRANSPORT=smtp` or `EMAIL_SMTP_ONLY=1`, only SMTP counts (Gmail or generic SMTP) — Resend is ignored for gating.
+ *
  * Override: EMAIL_OTP_ENABLED=true | false | 1 | 0 | on | off
  */
 export function isEmailOtpOffered(): boolean {
@@ -15,6 +17,15 @@ export function isEmailOtpOffered(): boolean {
 
   if (process.env.NODE_ENV !== "production") {
     return true;
+  }
+
+  const smtpForced =
+    process.env.EMAIL_TRANSPORT?.trim().toLowerCase() === "smtp" ||
+    process.env.EMAIL_SMTP_ONLY === "1" ||
+    process.env.EMAIL_SMTP_ONLY === "true";
+
+  if (smtpForced) {
+    return isSmtpMailConfigured();
   }
 
   if (isSmtpMailConfigured()) {

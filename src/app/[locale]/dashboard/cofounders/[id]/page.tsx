@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { CoFounderApplicationActions } from "@/components/founder/cofounder-application-actions";
+import { getCoFounderSlotSnapshot } from "@/lib/team-slots";
 
 export default async function IdeaApplicantsPage({
   params,
@@ -31,6 +32,8 @@ export default async function IdeaApplicantsPage({
 
   if (!idea) notFound();
 
+  const slotSnapshot = await getCoFounderSlotSnapshot(prisma, idea.id);
+
   const tTeams = await getTranslations({ locale, namespace: "teamWorkspace" });
 
   return (
@@ -50,6 +53,29 @@ export default async function IdeaApplicantsPage({
         <p className="whitespace-pre-wrap">{idea.description}</p>
         {idea.pitch && <p className="whitespace-pre-wrap text-sm">{idea.pitch}</p>}
       </div>
+
+      {slotSnapshot && (
+        <div
+          className={`mb-6 rounded-2xl border px-5 py-4 ${
+            slotSnapshot.remaining > 0
+              ? "border-stone-200 bg-stone-50/80"
+              : "border-brand-green/30 bg-brand-green/[0.06]"
+          }`}
+        >
+          <p className="font-semibold text-brand-green">{t("dashboardIdeaDetail.coFounderSlots")}</p>
+          <p className="mt-1 text-sm text-stone-700">
+            {t("dashboardIdeaDetail.slotsFilled", {
+              filled: slotSnapshot.filled,
+              total: slotSnapshot.slotsWanted,
+            })}
+          </p>
+          <p className="mt-1 text-sm text-stone-600">
+            {slotSnapshot.remaining > 0
+              ? t("dashboardIdeaDetail.slotsRemaining", { count: slotSnapshot.remaining })
+              : t("dashboardIdeaDetail.slotsRemainingZero")}
+          </p>
+        </div>
+      )}
 
       {idea.team && (
         <div className="mb-6 rounded-2xl border border-brand-teal/25 bg-gradient-to-br from-brand-teal/[0.07] to-white px-5 py-4">
@@ -81,7 +107,11 @@ export default async function IdeaApplicantsPage({
                   </p>
                 )}
               </div>
-              <CoFounderApplicationActions appId={app.id} status={app.status} />
+              <CoFounderApplicationActions
+                appId={app.id}
+                status={app.status}
+                acceptBlocked={Boolean(slotSnapshot && slotSnapshot.remaining < 1 && app.status !== "accepted")}
+              />
             </div>
           </div>
         ))}

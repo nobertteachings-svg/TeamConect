@@ -56,6 +56,19 @@ function CalendarSparkIcon({ className }: { className?: string }) {
   );
 }
 
+function WorkspaceHubIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+      <path
+        d="M4.5 6.75h15v10.5a1.5 1.5 0 01-1.5 1.5h-12a1.5 1.5 0 01-1.5-1.5V6.75zM4.5 6.75L6 4.5h12l1.5 2.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M9 12h6M9 15h3.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 const PILLAR_ICONS = {
   cofounders: UsersThreeIcon,
   community: CalendarSparkIcon,
@@ -76,6 +89,7 @@ export default async function HomePage() {
   const differentiators = [
     { Icon: ShieldIcon, title: t("whyProtectTitle"), desc: t("whyProtectDesc") },
     { Icon: ChatCheckIcon, title: t("whyApplicationTitle"), desc: t("whyApplicationDesc") },
+    { Icon: WorkspaceHubIcon, title: t("whyWorkspaceTitle"), desc: t("whyWorkspaceDesc") },
     { Icon: GlobeIcon, title: t("whyLanguagesTitle"), desc: t("whyLanguagesDesc") },
   ] as const;
 
@@ -83,6 +97,7 @@ export default async function HomePage() {
     t("heroStatLanguages"),
     t("heroStatProtected"),
     t("heroStatApply"),
+    t("heroStatWorkspace"),
   ] as const;
 
   return (
@@ -131,7 +146,7 @@ export default async function HomePage() {
 
                 <LandingLiveStats initial={landingStats} locale={locale} />
 
-                <ul className="mx-auto mt-8 flex max-w-lg flex-wrap justify-center gap-2 sm:gap-3 lg:mx-0 lg:justify-start">
+                <ul className="mx-auto mt-8 flex max-w-2xl flex-wrap justify-center gap-2 sm:gap-3 lg:mx-0 lg:justify-start">
                   {heroStats.map((label) => (
                     <li
                       key={label}
@@ -185,9 +200,12 @@ export default async function HomePage() {
                     <p className="mt-2 text-sm leading-relaxed text-sky-200/85">{t("heroPreviewTeaser")}</p>
                     <div className="mt-5 flex flex-wrap gap-2">
                       <span className="rounded-lg bg-white/10 px-2.5 py-1 text-xs font-medium text-sky-100">
-                        {t("whyProtectTitle")}
+                        {t("heroPreviewChipWorkspace")}
                       </span>
                       <span className="rounded-lg bg-brand-teal/25 px-2.5 py-1 text-xs font-medium text-sky-100">
+                        {t("heroPreviewChipVideo")}
+                      </span>
+                      <span className="rounded-lg bg-white/10 px-2.5 py-1 text-xs font-medium text-sky-100">
                         {t("heroPreviewRemote")}
                       </span>
                     </div>
@@ -224,13 +242,11 @@ export default async function HomePage() {
               <h2 className="text-2xl sm:text-3xl font-bold text-brand-green mb-3 tracking-tight">{t("whyTitle")}</h2>
               <p className="text-stone-600 leading-relaxed">{t("whySubtitle")}</p>
             </div>
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6 lg:gap-8">
-              {differentiators.map(({ Icon, title, desc }, i) => (
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+              {differentiators.map(({ Icon, title, desc }) => (
                 <div
                   key={title}
-                  className={`group relative overflow-hidden rounded-2xl border border-stone-200 bg-gradient-to-b from-white to-stone-50/80 p-6 sm:p-8 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-brand-teal/30 hover:shadow-lg ${
-                    i === 0 ? "md:row-span-1" : ""
-                  }`}
+                  className="group relative overflow-hidden rounded-2xl border border-stone-200 bg-gradient-to-b from-white to-stone-50/80 p-6 sm:p-8 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-brand-teal/30 hover:shadow-lg"
                 >
                   <div
                     className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-brand-teal/[0.07] blur-2xl transition group-hover:bg-brand-teal/15"

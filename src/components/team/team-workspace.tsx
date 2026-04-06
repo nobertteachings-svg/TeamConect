@@ -3,8 +3,9 @@
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { formatStoredCountry } from "@/lib/countries-full";
+import { MeetingRoomPanel } from "@/components/team/meeting-room-panel";
 
 type Member = {
   userId: string;
@@ -238,6 +239,7 @@ type Resource = {
   title: string;
   url: string | null;
   description: string | null;
+  meetingId: string | null;
   createdAt: string;
   author: { id: string; name: string | null };
 };
@@ -251,6 +253,19 @@ type Meeting = {
   createdAt: string;
   author: { id: string; name: string | null };
 };
+
+function meetingsByDayKey(meetings: Meeting[]): Map<string, Meeting[]> {
+  const map = new Map<string, Meeting[]>();
+  for (const m of meetings) {
+    if (!m.startsAt) continue;
+    const d = new Date(m.startsAt);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    const arr = map.get(key);
+    if (arr) arr.push(m);
+    else map.set(key, [m]);
+  }
+  return map;
+}
 
 export function TeamWorkspace({
   teamId,
@@ -274,7 +289,13 @@ export function TeamWorkspace({
   const locale = useLocale();
   const t = useTranslations("teamWorkspace");
   const router = useRouter();
-  const [tab, setTab] = useState<"discussion" | "resources" | "meetings">("discussion");
+  const [tab, setTab] = useState<"discussion" | "resources" | "meetings" | "calendar">("discussion");
+  const [roomMeeting, setRoomMeeting] = useState<Meeting | null>(null);
+  const [calMonth, setCalMonth] = useState(() => {
+    const n = new Date();
+    return new Date(n.getFullYear(), n.getMonth(), 1);
+  });
+  const [resMeetingId, setResMeetingId] = useState("");
   const [busy, setBusy] = useState(false);
   const [postBody, setPostBody] = useState("");
   const [resTitle, setResTitle] = useState("");
@@ -405,6 +426,7 @@ export function TeamWorkspace({
           title: resTitle.trim(),
           url: resUrl.trim() || undefined,
           description: resDesc.trim() || undefined,
+          meetingId: resMeetingId.trim() || undefined,
         }),
       });
       if (!res.ok) {
@@ -415,6 +437,7 @@ export function TeamWorkspace({
       setResTitle("");
       setResUrl("");
       setResDesc("");
+      setResMeetingId("");
       await refresh();
     } finally {
       setBusy(false);
@@ -458,6 +481,18 @@ export function TeamWorkspace({
 
   const childrenByParent = useMemo(() => buildChildrenMap(initialPosts), [initialPosts]);
   const rootPosts = childrenByParent.get(null) ?? [];
+  const meetingsCalMap = useMemo(() => meetingsByDayKey(initialMeetings), [initialMeetings]);
+  const anyMeetingHasDate = useMemo(() => initialMeetings.some((m) => m.startsAt), [initialMeetings]);
+  const calMonthHasMeetings = useMemo(() => {
+    const y = calMonth.getFullYear();
+    const mo = calMonth.getMonth();
+    for (const m of initialMeetings) {
+      if (!m.startsAt) continue;
+      const d = new Date(m.startsAt);
+      if (d.getFullYear() === y && d.getMonth() === mo) return true;
+    }
+    return false;
+  }, [calMonth, initialMeetings]);
 
   const postCtx: PostBlockCtx = {
     teamId,
@@ -478,7 +513,7 @@ export function TeamWorkspace({
     t: t as (key: string) => string,
   };
 
-  const tabBtn = (id: typeof tab, label: string) => (
+  const tabBtn = (id: "discussion" | "resources" | "meetings" | "calendar", label: string) => (
     <button
       type="button"
       onClick={() => {
@@ -544,6 +579,7 @@ export function TeamWorkspace({
         {tabBtn("discussion", t("tabDiscussion"))}
         {tabBtn("resources", t("tabResources"))}
         {tabBtn("meetings", t("tabMeetings"))}
+        {tabBtn("calendar", t("tabCalendar"))}
       </div>
 
       {err && (
@@ -609,6 +645,22 @@ export function TeamWorkspace({
               />
             </div>
             <div className="sm:col-span-2">
+              <label className="tc-label">{t("resourceLinkMeeting")}</label>
+              <select
+                className="tc-select mt-1 w-full"
+                value={resMeetingId}
+                onChange={(e) => setResMeetingId(e.target.value)}
+                disabled={busy}
+              >
+                <option value="">{t("resourceTeamWide")}</option>
+                {initialMeetings.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="sm:col-span-2">
               <button type="submit" disabled={busy || !resTitle.trim()} className="tc-btn-primary px-6 py-2.5 disabled:opacity-50">
                 {t("addResource")}
               </button>
@@ -617,7 +669,12 @@ export function TeamWorkspace({
           <ul className="space-y-3">
             {initialResources.map((r) => (
               <li key={r.id} className="tc-card p-4">
-                <p className="font-semibold text-brand-green">{r.title}</p>
+                <p className="font-semibold text-brand-green">
+                  {r.title}
+                  {r.meetingId && (
+                    <span className="ml-2 text-xs font-normal text-stone-500">({t("linkedToMeeting")})</span>
+                  )}
+                </p>
                 {r.url && (
                   <a href={r.url} target="_blank" rel="noopener noreferrer" className="mt-1 inline-block text-sm text-brand-teal hover:underline">
                     {r.url}
@@ -694,16 +751,25 @@ export function TeamWorkspace({
                     })}
                   </p>
                 )}
-                {m.meetingUrl && (
-                  <a
-                    href={m.meetingUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-2 inline-block text-sm font-medium text-brand-teal hover:underline"
+                <div className="mt-2 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setRoomMeeting(m)}
+                    className="rounded-lg bg-brand-green px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-green-hover"
                   >
-                    {t("joinMeeting")}
-                  </a>
-                )}
+                    {t("openMeetingRoom")}
+                  </button>
+                  {m.meetingUrl && (
+                    <a
+                      href={m.meetingUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-sm font-medium text-brand-teal hover:bg-stone-50"
+                    >
+                      {t("joinMeeting")}
+                    </a>
+                  )}
+                </div>
                 {m.notes && <p className="mt-2 text-sm text-stone-600 whitespace-pre-wrap">{m.notes}</p>}
                 <p className="mt-2 text-xs text-stone-400">
                   {m.author.name ?? "—"} · {new Date(m.createdAt).toLocaleDateString()}
@@ -712,6 +778,93 @@ export function TeamWorkspace({
             ))}
           </ul>
         </div>
+      )}
+
+      {tab === "calendar" && (
+        <div className="tc-card p-4 sm:p-6">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+            <button
+              type="button"
+              onClick={() => setCalMonth(new Date(calMonth.getFullYear(), calMonth.getMonth() - 1, 1))}
+              className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-semibold text-stone-700 hover:bg-stone-50"
+            >
+              {t("calPrevMonth")}
+            </button>
+            <h3 className="text-center text-lg font-bold text-brand-green">
+              {calMonth.toLocaleDateString(locale, { month: "long", year: "numeric" })}
+            </h3>
+            <button
+              type="button"
+              onClick={() => setCalMonth(new Date(calMonth.getFullYear(), calMonth.getMonth() + 1, 1))}
+              className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-semibold text-stone-700 hover:bg-stone-50"
+            >
+              {t("calNextMonth")}
+            </button>
+          </div>
+          <div className="grid grid-cols-7 gap-1 text-center text-[11px] font-semibold uppercase tracking-wide text-stone-500 sm:text-xs">
+            {Array.from({ length: 7 }, (_, i) => {
+              const d = new Date(2023, 0, 1 + i);
+              return (
+                <div key={i} className="py-2">
+                  {d.toLocaleDateString(locale, { weekday: "short" })}
+                </div>
+              );
+            })}
+          </div>
+          <div className="grid grid-cols-7 gap-1">
+            {(() => {
+              const y = calMonth.getFullYear();
+              const mo = calMonth.getMonth();
+              const firstDow = new Date(y, mo, 1).getDay();
+              const dim = new Date(y, mo + 1, 0).getDate();
+              const cells: ReactNode[] = [];
+              for (let i = 0; i < firstDow; i++) {
+                cells.push(<div key={`pad-${i}`} className="min-h-[5rem] rounded-lg bg-stone-50/30 sm:min-h-[6rem]" />);
+              }
+              for (let day = 1; day <= dim; day++) {
+                const key = `${y}-${String(mo + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+                const list = meetingsCalMap.get(key) ?? [];
+                cells.push(
+                  <div
+                    key={day}
+                    className="min-h-[5rem] rounded-lg border border-stone-100 bg-stone-50/50 p-1 text-left sm:min-h-[6rem]"
+                  >
+                    <div className="text-xs font-semibold text-stone-700 sm:text-sm">{day}</div>
+                    <div className="mt-1 space-y-0.5">
+                      {list.map((m) => (
+                        <button
+                          key={m.id}
+                          type="button"
+                          onClick={() => setRoomMeeting(m)}
+                          className="block w-full truncate rounded px-0.5 text-left text-[10px] font-medium text-brand-teal hover:underline sm:text-xs"
+                          title={m.title}
+                        >
+                          {m.title}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+              return cells;
+            })()}
+          </div>
+          {!anyMeetingHasDate && initialMeetings.length > 0 && (
+            <p className="mt-4 text-center text-sm text-stone-500">{t("calHintAddDates")}</p>
+          )}
+          {anyMeetingHasDate && !calMonthHasMeetings && (
+            <p className="mt-4 text-center text-sm text-stone-500">{t("calEmptyMonth")}</p>
+          )}
+        </div>
+      )}
+
+      {roomMeeting && (
+        <MeetingRoomPanel
+          teamId={teamId}
+          meeting={roomMeeting}
+          currentUserId={currentUserId}
+          onClose={() => setRoomMeeting(null)}
+        />
       )}
     </div>
   );

@@ -101,6 +101,7 @@ model User {
   teamPostsAuthored       TeamPost[]
   teamResourcesAuthored   TeamResource[]
   teamMeetingsAuthored    TeamMeeting[]
+  teamMeetingMessages     TeamMeetingMessage[]
 }
 
 model AuditLog {
@@ -167,7 +168,10 @@ model StartupIdea {
   publicTeaser String?     @db.Text
   protectionMode IdeaProtection @default(FULL_PUBLIC)
   stage       StartupStage @default(IDEA)
+  /// "recruiting" = open for applications; "team_complete" = co-founder slots filled (excluded from public idea listings).
   status      String       @default("recruiting")
+  /// Target number of co-founders (MEMBER seats). Accepting applicants adds MEMBERs until this count; then status becomes team_complete.
+  coFounderSlotsWanted Int @default(1)
   rolesNeeded String[]     @default([])
   industries  String[]     @default([])
   country     String?
@@ -250,15 +254,19 @@ model TeamResource {
   id          String   @id @default(cuid())
   teamId      String
   authorId    String
+  /// When set, resource is shown in that meeting’s room (still visible in team Resources list).
+  meetingId   String?
   title       String
   url         String?
   description String?  @db.Text
   createdAt   DateTime @default(now())
 
-  team   StartupTeam @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  author User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  team    StartupTeam  @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  author  User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  meeting TeamMeeting? @relation(fields: [meetingId], references: [id], onDelete: SetNull)
 
   @@index([teamId])
+  @@index([meetingId])
 }
 
 model TeamMeeting {
@@ -272,10 +280,26 @@ model TeamMeeting {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 
-  team   StartupTeam @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  author User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  team      StartupTeam           @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  author    User                  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  resources TeamResource[]
+  messages  TeamMeetingMessage[]
 
   @@index([teamId])
+}
+
+/// Live-style chat for a single team meeting (polled from the client).
+model TeamMeetingMessage {
+  id        String   @id @default(cuid())
+  meetingId String
+  authorId  String
+  body      String   @db.Text
+  createdAt DateTime @default(now())
+
+  meeting TeamMeeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  author  User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([meetingId, createdAt])
 }
 
 model InvestorProfile {

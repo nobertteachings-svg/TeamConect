@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/require-admin";
 import { writeAuditLog } from "@/lib/audit-log";
 import { generateSlug } from "@/lib/utils";
+import { refreshIdeaRecruitingStatus } from "@/lib/team-sync";
 
 export async function PATCH(
   request: Request,
@@ -21,6 +22,7 @@ export async function PATCH(
     softDelete?: boolean;
     restore?: boolean;
     reason?: string;
+    coFounderSlotsWanted?: number;
   };
 
   const existing = await prisma.startupIdea.findUnique({
@@ -37,11 +39,20 @@ export async function PATCH(
     slug?: string;
     featured?: boolean;
     deletedAt?: Date | null;
+    coFounderSlotsWanted?: number;
   } = {};
 
   if (typeof body.isPublic === "boolean") data.isPublic = body.isPublic;
   if (typeof body.status === "string" && body.status.trim()) data.status = body.status.trim();
   if (typeof body.featured === "boolean") data.featured = body.featured;
+  if (
+    typeof body.coFounderSlotsWanted === "number" &&
+    Number.isInteger(body.coFounderSlotsWanted) &&
+    body.coFounderSlotsWanted >= 1 &&
+    body.coFounderSlotsWanted <= 50
+  ) {
+    data.coFounderSlotsWanted = body.coFounderSlotsWanted;
+  }
 
   if (body.restore === true) {
     data.deletedAt = null;
@@ -68,18 +79,38 @@ export async function PATCH(
     return NextResponse.json({ error: "No valid fields" }, { status: 400 });
   }
 
-  const updated = await prisma.startupIdea.update({
-    where: { id },
-    data,
-    select: {
-      id: true,
-      title: true,
-      slug: true,
-      isPublic: true,
-      status: true,
-      featured: true,
-      deletedAt: true,
-    },
+  const shouldRefreshSlots = data.coFounderSlotsWanted !== undefined;
+
+  const updated = await prisma.$transaction(async (tx) => {
+    const row = await tx.startupIdea.update({
+      where: { id },
+      data,
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        isPublic: true,
+        status: true,
+        featured: true,
+        deletedAt: true,
+      },
+    });
+    if (shouldRefreshSlots) {
+      await refreshIdeaRecruitingStatus(tx, id);
+      return tx.startupIdea.findUniqueOrThrow({
+        where: { id },
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          isPublic: true,
+          status: true,
+          featured: true,
+          deletedAt: true,
+        },
+      });
+    }
+    return row;
   });
 
   const meta: Record<string, Prisma.InputJsonValue> = {};

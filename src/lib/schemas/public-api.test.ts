@@ -90,4 +90,32 @@ describe("startupIdeaPostBodySchema", () => {
     });
     expect(r.success).toBe(true);
   });
+
+  it("defaults coFounderSlotsWanted to 1", () => {
+    const r = startupIdeaPostBodySchema.safeParse({
+      ...base,
+      protectionMode: "FULL_PUBLIC",
+    });
+    expect(r.success).toBe(true);
+    if (r.success) expect(r.data.coFounderSlotsWanted).toBe(1);
+  });
+
+  it("accepts coFounderSlotsWanted in range", () => {
+    const r = startupIdeaPostBodySchema.safeParse({
+      ...base,
+      protectionMode: "FULL_PUBLIC",
+      coFounderSlotsWanted: 5,
+    });
+    expect(r.success).toBe(true);
+    if (r.success) expect(r.data.coFounderSlotsWanted).toBe(5);
+  });
+
+  it("rejects coFounderSlotsWanted out of range", () => {
+    const r = startupIdeaPostBodySchema.safeParse({
+      ...base,
+      protectionMode: "FULL_PUBLIC",
+      coFounderSlotsWanted: 0,
+    });
+    expect(r.success).toBe(false);
+  });
 });

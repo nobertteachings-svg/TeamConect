@@ -16,12 +16,15 @@ export function ApplyCoFounderButton({
   slug,
   hasApplied,
   isOwner,
+  canApply = true,
 }: {
   ideaId: string;
   locale: string;
   slug?: string;
   hasApplied?: boolean;
   isOwner?: boolean;
+  /** False when the team has all co-founder spots filled or the listing is closed. */
+  canApply?: boolean;
 }) {
   const t = useTranslations("cofoundersPage.apply");
   const tCommon = useTranslations("common");
@@ -43,6 +46,14 @@ export function ApplyCoFounderButton({
         <Link href={`/${locale}/dashboard/cofounders`} className="mt-2 inline-block text-brand-teal font-medium hover:underline">
           {tCommon("dashboard")}
         </Link>
+      </div>
+    );
+  }
+
+  if (!hasApplied && !canApply) {
+    return (
+      <div className="rounded-2xl border border-stone-200 bg-stone-50 px-5 py-4 text-sm text-stone-700">
+        <p className="font-medium text-brand-green">{t("teamComplete")}</p>
       </div>
     );
   }

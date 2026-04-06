@@ -9,6 +9,7 @@ import { ApplyCoFounderButton } from "@/components/cofounder/apply-cofounder-but
 import { authOptions } from "@/lib/auth-config";
 import { canViewFullIdeaDetails } from "@/lib/idea-protection";
 import { formatStoredCountry } from "@/lib/countries";
+import { getCoFounderSlotSnapshot } from "@/lib/team-slots";
 
 export default async function StartupIdeaDetailPage({
   params,
@@ -42,6 +43,11 @@ export default async function StartupIdeaDetailPage({
         },
       })
     : null;
+
+  const slotSnapshot = await getCoFounderSlotSnapshot(prisma, idea.id);
+  const canApply =
+    idea.status === "recruiting" &&
+    Boolean(slotSnapshot && slotSnapshot.remaining > 0);
 
   const canSeeFull = canViewFullIdeaDetails({
     protectionMode: idea.protectionMode,
@@ -79,6 +85,11 @@ export default async function StartupIdeaDetailPage({
             {isTeaserOnly && (
               <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-50 text-amber-900 border border-amber-200/80">
                 {t("ideaDetail.protectedListing")}
+              </span>
+            )}
+            {idea.status === "team_complete" && (
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-stone-100 text-stone-700 border border-stone-200">
+                {t("ideaDetail.teamCompleteBadge")}
               </span>
             )}
           </div>
@@ -142,6 +153,7 @@ export default async function StartupIdeaDetailPage({
               slug={slug}
               hasApplied={!!application}
               isOwner={isOwner}
+              canApply={canApply}
             />
           </div>
         </div>

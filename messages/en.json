@@ -93,6 +93,7 @@
     "tabDiscussion": "Discussion",
     "tabResources": "Resources",
     "tabMeetings": "Meetings",
+    "tabCalendar": "Calendar",
     "postLabel": "Message the team",
     "postPlaceholder": "Share an update, question, or decision…",
     "postSubmit": "Post message",
@@ -109,6 +110,10 @@
     "meetingNotes": "Agenda or notes",
     "addMeeting": "Add meeting",
     "joinMeeting": "Join meeting →",
+    "openMeetingRoom": "Meeting room",
+    "resourceLinkMeeting": "Attach to meeting (optional)",
+    "resourceTeamWide": "— Team-wide only —",
+    "linkedToMeeting": "Meeting",
     "roleFounder": "Founder",
     "roleMember": "Co-founder",
     "errorGeneric": "Something went wrong. Try again.",
@@ -125,7 +130,31 @@
     "threadTooDeep": "This thread is too deep to add another reply.",
     "bannerTitle": "Team workspace",
     "bannerBody": "Chat, share links, and plan meetings with your co-founders.",
-    "openWorkspace": "Open workspace"
+    "openWorkspace": "Open workspace",
+    "calPrevMonth": "Previous",
+    "calNextMonth": "Next",
+    "calEmptyMonth": "No meetings scheduled this month.",
+    "calHintAddDates": "Set a date and time when adding a meeting so it appears on the calendar.",
+    "calMeetingsThisDay": "{count, plural, one {# meeting} other {# meetings}}",
+    "meetingRoom": {
+      "close": "Close",
+      "downloadIcs": "Download .ics",
+      "addGoogleCal": "Add to Google Calendar",
+      "tabInAppVideo": "Video in browser (Jitsi)",
+      "openZoomLink": "Open Zoom / Meet link",
+      "jitsiHint": "Uses Jitsi Meet in your browser (camera/mic). For company Zoom, use the link tab if your host shared one.",
+      "jitsiFrameTitle": "Team video",
+      "liveChat": "Meeting chat",
+      "chatEmpty": "No messages yet — say hello before the call.",
+      "chatPlaceholder": "Message the meeting…",
+      "send": "Send",
+      "you": "You",
+      "meetingResources": "Resources for this meeting",
+      "noResources": "No links yet.",
+      "resTitlePh": "Link title",
+      "addResourceMeeting": "Add link to this meeting",
+      "errorGeneric": "Something went wrong. Try again."
+    }
   },
   "dashboardCofounders": {
     "pageTitle": "Co-Founders Dashboard",
@@ -143,7 +172,11 @@
     "back": "Back to ideas",
     "protectedBadge": "Protected (teaser public)",
     "applicantsHeading": "Applicants ({count})",
-    "rolePrefix": "Role"
+    "rolePrefix": "Role",
+    "coFounderSlots": "Co-founder team size",
+    "slotsFilled": "{filled} of {total} co-founder spots filled",
+    "slotsRemaining": "{count, plural, one {# spot still open} other {# spots still open}}",
+    "slotsRemainingZero": "Team is full — this idea no longer appears in the public listings for new applicants."
   },
   "founderProfile": {
     "headline": "Headline",
@@ -189,6 +222,8 @@
     "pitchHintTeaser": "Also hidden until someone applies.",
     "rolesNeeded": "Roles you’re looking for",
     "rolesHint": "Whether you have a business idea and need a technical partner, or you’re technical and need business, sales, or operations — tag every kind of co-founder you want.",
+    "coFounderSlotsLabel": "How many co-founders do you want? *",
+    "coFounderSlotsHint": "When this many people are accepted into your team, the idea stops accepting new applications and disappears from the public ideas list. You can still use your team workspace.",
     "industries": "Industries (comma-separated)",
     "industriesPh": "Fintech, Health",
     "country": "Country",
@@ -329,7 +364,9 @@
   "applicationActions": {
     "pending": "pending",
     "accepted": "accepted",
-    "rejected": "rejected"
+    "rejected": "rejected",
+    "teamFull": "No free co-founder spots. Reject an accepted applicant first to free a seat.",
+    "updateFailed": "Could not update status."
   },
   "ideaDetail": {
     "back": "← Back to ideas",
@@ -339,45 +376,52 @@
     "description": "Description",
     "pitch": "Pitch",
     "publicTeaser": "Public teaser",
-    "teaserFallback": "The founder is sharing only a high-level teaser publicly."
+    "teaserFallback": "The founder is sharing only a high-level teaser publicly.",
+    "teamComplete": "This team has filled all co-founder spots and is not accepting applications.",
+    "teamCompleteBadge": "Team complete"
   },
   "landing": {
     "tagline": "Where ideas meet the right co-founders",
     "headline": "Find your co-founder. Build what matters.",
-    "subheadline": "Post a business or product idea, find technical or business partners, and join a community of makers — UI in 13 languages so co-founders can connect worldwide.",
+    "subheadline": "Post an idea, set how many co-founders you need, and match with intent. When you accept someone, a private team workspace opens — threaded discussion, shared resources, scheduled meetings, a month calendar, browser video (Jitsi), and per-meeting chat. Plus a global community calendar for tech events. Available in 13 languages.",
     "pillarSectionTitle": "Two ways to plug in",
     "cta": "Join the Waitlist",
     "exploreCta": "Browse ideas",
-    "exploreLead": "Browse ideas from idea-stage to launched — filter by role and region, apply in minutes.",
+    "exploreLead": "Filter ideas by role and region, apply with a real message, then collaborate in a dedicated workspace with meetings, links, and calendar.",
     "secondaryCta": "Get early access",
     "heroStatLanguages": "13 languages",
     "heroStatProtected": "Protected pitches",
     "heroStatApply": "Thoughtful apply flow",
+    "heroStatWorkspace": "Meetings & workspace",
     "liveStatsHeading": "Live from the network",
     "liveStatActiveIdeas": "Active ideas",
     "liveStatFounders": "Founders joined",
     "liveStatTeams": "Teams formed",
     "liveStatCountries": "Countries represented",
     "liveStatsHint": "Counts refresh automatically while you browse.",
-    "heroPreviewLabel": "Live-style preview",
-    "heroPreviewTitle": "Payments stack for creative studios",
-    "heroPreviewTeaser": "Public teaser · full brief unlocks after you apply",
-    "heroPreviewMeta": "Seeking · Business & product · Remote",
+    "heroPreviewLabel": "Team workspace preview",
+    "heroPreviewTitle": "Creative payments stack for studios",
+    "heroPreviewTeaser": "Teaser on the listing · full brief after you apply · then: team chat, resource links, meeting room with video, calendar & .ics",
+    "heroPreviewMeta": "Discussion · Resources · Meetings · Calendar · Video",
+    "heroPreviewChipWorkspace": "Team workspace",
+    "heroPreviewChipVideo": "Video & calendar",
     "heroPreviewRemote": "Remote",
-    "heroPreviewApplicants": "12 applicants",
+    "heroPreviewApplicants": "3 co-founder spots",
     "waitlistSectionLead": "We’ll email you as events, features, and launches roll out — no spam.",
     "whyTitle": "Why teams choose TeamConnect",
-    "whySubtitle": "Trust and clarity first — not another endless scroll of vague pitches.",
+    "whySubtitle": "From first pitch to day-to-day building — trust on the listing, clarity when you collaborate.",
     "whyProtectTitle": "Protected pitches",
     "whyProtectDesc": "Founders can share a public teaser and keep the full brief for serious applicants only.",
     "whyApplicationTitle": "Serious applications",
     "whyApplicationDesc": "Applicants share availability, role fit, and a real message — not one-line spam.",
+    "whyWorkspaceTitle": "Workspace after you match",
+    "whyWorkspaceDesc": "Each team gets a private hub: threaded discussion, shared links (optionally tied to a meeting), meeting plans, a calendar view, in-browser video, meeting chat, and calendar export — so you are not stuck in endless DMs.",
     "whyLanguagesTitle": "Built for the world",
     "whyLanguagesDesc": "Thirteen languages, remote-first, with filters that match how you actually work — from San Francisco to São Paulo to Seoul.",
     "pillars": {
       "cofounders": {
         "title": "Co-Founders",
-        "desc": "Share your idea (even if you’re not technical), list who you need, and match with partners"
+        "desc": "List your idea and co-founder seats; match, then work together in a shared workspace with chat, resources, meetings, and calendar — not just a one-off intro."
       },
       "community": {
         "title": "Community",
@@ -415,7 +459,8 @@
       "owner": "You posted this idea",
       "validation": "Please write at least 50 characters explaining your fit.",
       "commitmentRequired": "Choose your weekly availability.",
-      "submitFailed": "Could not send application"
+      "submitFailed": "Could not send application",
+      "teamComplete": "This idea is not accepting new applications — the co-founder team is complete."
     }
   },
   "waitlist": {

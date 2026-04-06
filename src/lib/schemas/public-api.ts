@@ -26,6 +26,7 @@ export const startupIdeaPostBodySchema = z
     industries: z.array(z.string()),
     country: z.string().optional(),
     founderId: z.string(),
+    coFounderSlotsWanted: z.coerce.number().int().min(1).max(50).default(1),
   })
   .refine(
     (data) =>

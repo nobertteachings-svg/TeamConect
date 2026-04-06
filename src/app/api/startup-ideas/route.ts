@@ -63,6 +63,7 @@ export async function POST(request: Request) {
         industries: data.industries,
         country: ideaCountry,
         founderId: data.founderId,
+        coFounderSlotsWanted: data.coFounderSlotsWanted,
       },
     });
 
