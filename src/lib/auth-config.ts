@@ -37,10 +37,12 @@ export const authOptions: NextAuthOptions = {
       credentials: {
         email: { label: "Email", type: "email" },
         code: { label: "Code", type: "text" },
+        name: { label: "Name", type: "text" },
       },
       async authorize(credentials) {
         const email = credentials?.email?.trim().toLowerCase();
         const rawCode = credentials?.code?.trim().replace(/\s/g, "") ?? "";
+        const nameIn = credentials?.name?.trim().slice(0, 80) ?? "";
         if (!email || !/^\d{6}$/.test(rawCode)) return null;
 
         const challenge = await prisma.emailOtpChallenge.findFirst({
@@ -61,16 +63,18 @@ export const authOptions: NextAuthOptions = {
             data: {
               country,
               emailVerified: new Date(),
+              ...(nameIn.length >= 2 ? { name: nameIn } : {}),
             },
           });
         } else {
-          const local = email.split("@")[0]?.slice(0, 80) ?? "Founder";
+          const fallback = email.split("@")[0]?.slice(0, 80) ?? "Founder";
+          const displayName = nameIn.length >= 2 ? nameIn : fallback;
           userRow = await prisma.user.create({
             data: {
               email,
               emailVerified: new Date(),
               country,
-              name: local,
+              name: displayName,
             },
           });
         }

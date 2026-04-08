@@ -22,7 +22,14 @@ export default async function DashboardLayout({
 
   const user = await prisma.user.findUnique({
     where: { id: session.id },
-    select: { id: true, email: true, roles: true, accountDisabled: true, country: true },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      roles: true,
+      accountDisabled: true,
+      country: true,
+    },
   });
 
   if (!user) redirect(`/${locale}/sign-in`);
@@ -47,9 +54,18 @@ export default async function DashboardLayout({
         <div className="mb-8 flex flex-col gap-4 rounded-2xl border border-stone-200/80 bg-white/90 px-5 py-4 shadow-tc backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between">
           <h1 className="text-xl font-bold tracking-tight text-brand-green sm:text-2xl">{t("dashboard.title")}</h1>
           <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-            <span className="max-w-[220px] truncate rounded-lg bg-stone-50 px-3 py-1.5 text-xs font-medium text-stone-600 sm:max-w-xs sm:text-sm">
-              {user.email}
-            </span>
+            <div className="max-w-[min(100%,280px)] rounded-lg bg-stone-50 px-3 py-2 text-right sm:text-left">
+              {user.name?.trim() ? (
+                <>
+                  <p className="truncate text-sm font-semibold text-stone-800">{user.name.trim()}</p>
+                  {user.email ? (
+                    <p className="mt-0.5 truncate text-xs font-medium text-stone-500">{user.email}</p>
+                  ) : null}
+                </>
+              ) : (
+                <p className="truncate text-sm font-medium text-stone-600">{user.email}</p>
+              )}
+            </div>
             <Link
               href={`/${locale}`}
               className="text-sm font-semibold text-brand-teal transition hover:text-brand-green"

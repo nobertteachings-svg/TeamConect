@@ -5,6 +5,7 @@ import { getTranslations } from "next-intl/server";
 import { Logo } from "@/components/brand/logo";
 import { authOptions } from "@/lib/auth-config";
 import { prisma } from "@/lib/prisma";
+import { PendingCountryFromSignInSync } from "@/components/auth/pending-country-from-sign-in-sync";
 import { CompleteCountryForm } from "./complete-country-form";
 
 export default async function CompleteCountryPage({
@@ -48,6 +49,7 @@ export default async function CompleteCountryPage({
         </h1>
         <p className="mb-8 text-center text-sm leading-relaxed text-stone-600">{t("completeCountryLead")}</p>
         <Suspense fallback={<p className="text-center text-stone-500">{tCommon("loading")}</p>}>
+          <PendingCountryFromSignInSync />
           <CompleteCountryForm locale={locale} defaultCallback={defaultCallback} />
         </Suspense>
       </div>

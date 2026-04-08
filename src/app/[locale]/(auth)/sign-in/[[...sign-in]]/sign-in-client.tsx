@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Logo } from "@/components/brand/logo";
+import { PENDING_OAUTH_COUNTRY_KEY } from "@/components/auth/pending-country-from-sign-in-sync";
 import { CountrySelect } from "@/components/forms/country-select";
 
 type SignInClientProps = {
@@ -20,9 +21,10 @@ export function SignInClient({ emailOtpOffered }: SignInClientProps) {
   const accountDisabled = searchParams.get("error") === "AccountDisabled";
   const rawCallback = searchParams.get("callbackUrl");
   const callbackUrl =
-    rawCallback && rawCallback.startsWith("/") ? rawCallback : `/${locale}`;
+    rawCallback && rawCallback.startsWith("/") ? rawCallback : `/${locale}/dashboard`;
 
   const [country, setCountry] = useState("");
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [step, setStep] = useState<"pick" | "code">("pick");
@@ -34,6 +36,11 @@ export function SignInClient({ emailOtpOffered }: SignInClientProps) {
     setError(null);
     if (!country) {
       setError(t("countryRequired"));
+      return;
+    }
+    const nameTrim = fullName.trim();
+    if (nameTrim.length < 2) {
+      setError(t("nameRequired"));
       return;
     }
     const trimmed = email.trim().toLowerCase();
@@ -81,6 +88,7 @@ export function SignInClient({ emailOtpOffered }: SignInClientProps) {
       const res = await signIn("email-otp", {
         email: trimmed,
         code: c,
+        name: fullName.trim().slice(0, 80),
         redirect: false,
       });
       if (res?.error) {
@@ -114,10 +122,39 @@ export function SignInClient({ emailOtpOffered }: SignInClientProps) {
           </p>
         )}
 
+        <p className="mb-4 text-center text-xs leading-relaxed text-stone-500">{t("oauthCountryHint")}</p>
+
+        <div className="mb-6 space-y-3">
+          <div>
+            <label htmlFor="signin-country-oauth" className="tc-label">
+              {t("countryLabel")}
+            </label>
+            <CountrySelect
+              id="signin-country-oauth"
+              value={country}
+              onChange={setCountry}
+              placeholder={t("countryPlaceholder")}
+              className="tc-select mt-1.5 w-full"
+            />
+          </div>
+        </div>
+
         <div className="space-y-3">
           <button
             type="button"
-            onClick={() => signIn("google", { callbackUrl })}
+            onClick={() => {
+              setError(null);
+              if (!country?.trim()) {
+                setError(t("countryRequired"));
+                return;
+              }
+              try {
+                sessionStorage.setItem(PENDING_OAUTH_COUNTRY_KEY, country.trim().toUpperCase());
+              } catch {
+                /* private mode */
+              }
+              void signIn("google", { callbackUrl });
+            }}
             className="flex w-full items-center justify-center gap-3 rounded-xl border border-stone-200 bg-white py-3.5 text-sm font-semibold text-stone-800 shadow-sm transition hover:border-stone-300 hover:bg-stone-50/90"
           >
             <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
@@ -142,7 +179,19 @@ export function SignInClient({ emailOtpOffered }: SignInClientProps) {
           </button>
           <button
             type="button"
-            onClick={() => signIn("github", { callbackUrl })}
+            onClick={() => {
+              setError(null);
+              if (!country?.trim()) {
+                setError(t("countryRequired"));
+                return;
+              }
+              try {
+                sessionStorage.setItem(PENDING_OAUTH_COUNTRY_KEY, country.trim().toUpperCase());
+              } catch {
+                /* private mode */
+              }
+              void signIn("github", { callbackUrl });
+            }}
             className="flex w-full items-center justify-center gap-3 rounded-xl border border-stone-200 bg-[#24292f] py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1a1e22]"
           >
             <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -155,6 +204,12 @@ export function SignInClient({ emailOtpOffered }: SignInClientProps) {
             {t("github")}
           </button>
         </div>
+
+        {error && (!emailOtpOffered || step === "pick") && (
+          <p className="mt-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-center text-sm text-red-800">
+            {error}
+          </p>
+        )}
 
         {!emailOtpOffered && (
           <p className="mt-8 rounded-xl border border-stone-200/90 bg-stone-50/80 px-4 py-3 text-center text-sm leading-relaxed text-stone-600">
@@ -176,17 +231,21 @@ export function SignInClient({ emailOtpOffered }: SignInClientProps) {
             {step === "pick" ? (
           <form onSubmit={sendCode} className="space-y-4">
             <div>
-              <label htmlFor="signin-country" className="tc-label">
-                {t("countryLabel")}
+              <label htmlFor="signin-name" className="tc-label">
+                {t("nameLabel")}
               </label>
-              <CountrySelect
-                id="signin-country"
-                value={country}
-                onChange={setCountry}
-                placeholder={t("countryPlaceholder")}
-                className="tc-select mt-1.5 w-full"
-                required
+              <input
+                id="signin-name"
+                type="text"
+                autoComplete="name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                placeholder={t("namePlaceholder")}
+                className="tc-input mt-1.5 w-full"
                 disabled={busy}
+                required
+                minLength={2}
+                maxLength={80}
               />
             </div>
             <div>
@@ -205,11 +264,6 @@ export function SignInClient({ emailOtpOffered }: SignInClientProps) {
                 required
               />
             </div>
-            {error && (
-              <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
-                {error}
-              </p>
-            )}
             <button type="submit" disabled={busy} className="tc-btn-primary w-full py-3.5 disabled:opacity-50">
               {busy ? t("sendingCode") : t("sendCode")}
             </button>
