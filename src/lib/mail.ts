@@ -3,7 +3,7 @@
  *
  * **Gmail (recommended for OTP):** set `GMAIL_USER` + `GMAIL_APP_PASSWORD` (Google Account → Security → 2-Step Verification → App passwords).
  * Use `EMAIL_TRANSPORT=smtp` and `EMAIL_SMTP_ONLY=1` on the host to never use Resend.
- * `nodemailer` uses `service: "gmail"` for those vars (reliable TLS/host defaults vs manual smtp.gmail.com).
+ * Nodemailer connects to `smtp.gmail.com:465` (TLS) when `GMAIL_*` are set.
  *
  * Auto transport: if `GMAIL_USER` + `GMAIL_APP_PASSWORD`, `SMTP_URL`, or `SMTP_HOST`+user+pass are set, SMTP is used;
  * else Resend. Override with `EMAIL_TRANSPORT=smtp` or `EMAIL_TRANSPORT=resend`.
@@ -16,6 +16,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import nodemailer from "nodemailer";
+import type SMTPTransport from "nodemailer/lib/smtp-transport";
 import { isSmtpMailConfigured } from "./mail-config";
 
 const SITE_NAME = "TeamConect";
@@ -165,15 +166,17 @@ function createSmtpTransporter(): nodemailer.Transporter {
   const rawGmailPass = process.env.GMAIL_APP_PASSWORD?.trim();
   if (gmailUser && rawGmailPass) {
     const gmailPass = rawGmailPass.replace(/\s+/g, "");
-    // `service: "gmail"` picks host/port/TLS correctly; works better on many hosts than raw 465.
-    return nodemailer.createTransport({
-      service: "gmail",
+    // Explicit SMTP options typed as `SMTPTransport.Options` (@types/nodemailer overloads reject plain objects).
+    const gmailOpts: SMTPTransport.Options = {
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
       auth: { user: gmailUser, pass: gmailPass },
-      pool: false,
       connectionTimeout: 25_000,
       greetingTimeout: 15_000,
       socketTimeout: 25_000,
-    });
+    };
+    return nodemailer.createTransport(gmailOpts);
   }
   const url = process.env.SMTP_URL?.trim();
   if (url) {
@@ -190,12 +193,13 @@ function createSmtpTransporter(): nodemailer.Transporter {
     process.env.SMTP_SECURE === "1" ||
     process.env.SMTP_SECURE === "true" ||
     port === 465;
-  return nodemailer.createTransport({
+  const smtpOpts: SMTPTransport.Options = {
     host,
     port,
     secure,
     auth: { user, pass },
-  });
+  };
+  return nodemailer.createTransport(smtpOpts);
 }
 
 async function sendViaSmtp(input: SendEmailInput): Promise<void> {
