@@ -18,6 +18,7 @@
     "test:e2e": "playwright test",
     "db:generate": "prisma generate",
     "db:migrate:deploy": "prisma migrate deploy",
+    "db:deploy": "bash scripts/deploy-database.sh",
     "db:push": "prisma db push",
     "db:seed": "npx tsx prisma/seed.ts",
     "db:studio": "prisma studio",
