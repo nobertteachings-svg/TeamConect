@@ -64,6 +64,12 @@ export default async function StartupIdeaDetailPage({
 
   const isOwner = Boolean(viewerId && viewerId === founderUserId);
 
+  const descriptionDisplay = stripRedundantTitleFromBody(idea.description, idea.title);
+  const descriptionParagraphs = splitIdeaParagraphs(descriptionDisplay);
+  const pitchParagraphs = idea.pitch
+    ? splitIdeaParagraphs(stripRedundantTitleFromBody(idea.pitch, idea.title))
+    : [];
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
