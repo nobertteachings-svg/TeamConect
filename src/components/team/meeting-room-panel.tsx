@@ -30,7 +30,7 @@ type Res = {
 function jitsiRoomName(teamId: string, meetingId: string): string {
   const a = teamId.replace(/[^a-zA-Z0-9]/g, "").slice(0, 14) || "team";
   const b = meetingId.replace(/[^a-zA-Z0-9]/g, "").slice(0, 14) || "meet";
-  return `TeamConnect-${a}-${b}`;
+  return `TeamConect-${a}-${b}`;
 }
 
 function googleCalendarUrl(title: string, start: Date, end: Date, details?: string): string {

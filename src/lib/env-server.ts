@@ -23,7 +23,7 @@ export function validateProductionServerEnv(): void {
 
   if (missing.length > 0) {
     const msg = `Production misconfiguration: ${missing.join(", ")}`;
-    console.error(`[teamconnect/env] ${msg}`);
+    console.error(`[teamconect/env] ${msg}`);
     throw new Error(msg);
   }
 
@@ -38,13 +38,13 @@ export function validateProductionServerEnv(): void {
   if (requireRedis && !redisConfigured) {
     const msg =
       "Production misconfiguration: set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN when REQUIRE_UPSTASH_IN_PRODUCTION=1";
-    console.error(`[teamconnect/env] ${msg}`);
+    console.error(`[teamconect/env] ${msg}`);
     throw new Error(msg);
   }
 
   if (!process.env.NEXTAUTH_URL?.trim()) {
     console.warn(
-      "[teamconnect/env] NEXTAUTH_URL is unset — set it to your canonical site URL in production."
+      "[teamconect/env] NEXTAUTH_URL is unset — set it to your canonical site URL in production."
     );
   }
 
@@ -57,13 +57,13 @@ export function validateProductionServerEnv(): void {
 
   if (!hasSmtp && !process.env.RESEND_API_KEY?.trim()) {
     console.warn(
-      "[teamconnect/env] No mail provider: set GMAIL_USER + GMAIL_APP_PASSWORD (or SMTP_* / SMTP_URL), or RESEND_API_KEY — otherwise email OTP and transactional mail will not send."
+      "[teamconect/env] No mail provider: set GMAIL_USER + GMAIL_APP_PASSWORD (or SMTP_* / SMTP_URL), or RESEND_API_KEY — otherwise email OTP and transactional mail will not send."
     );
   }
 
   if (!redisConfigured) {
     console.warn(
-      "[teamconnect/env] Upstash Redis unset — API rate limits use in-memory counters per server instance only; enable UPSTASH_* for consistent limits, or set REQUIRE_UPSTASH_IN_PRODUCTION=1 to enforce Redis."
+      "[teamconect/env] Upstash Redis unset — API rate limits use in-memory counters per server instance only; enable UPSTASH_* for consistent limits, or set REQUIRE_UPSTASH_IN_PRODUCTION=1 to enforce Redis."
     );
   }
 }

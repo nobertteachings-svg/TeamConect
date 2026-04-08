@@ -18,7 +18,7 @@ const apiRedis =
   new Ratelimit({
     redis,
     limiter: Ratelimit.slidingWindow(API_MAX, "1 m"),
-    prefix: "teamconnect:rl:api",
+    prefix: "teamconect:rl:api",
   });
 
 const authRedis =
@@ -26,7 +26,7 @@ const authRedis =
   new Ratelimit({
     redis,
     limiter: Ratelimit.slidingWindow(AUTH_MAX, "1 h"),
-    prefix: "teamconnect:rl:auth",
+    prefix: "teamconect:rl:auth",
   });
 
 const waitlistRedis =
@@ -34,7 +34,7 @@ const waitlistRedis =
   new Ratelimit({
     redis,
     limiter: Ratelimit.slidingWindow(WAITLIST_MAX, "1 h"),
-    prefix: "teamconnect:rl:waitlist",
+    prefix: "teamconect:rl:waitlist",
   });
 
 export async function limitApi(identifier: string): Promise<{

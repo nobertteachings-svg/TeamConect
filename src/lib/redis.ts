@@ -48,7 +48,7 @@ export function cacheKey(
   const parts = Object.entries(params)
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([k, v]) => `${k}:${v}`);
-  return `teamconnect:${prefix}:${parts.join(":")}`;
+  return `teamconect:${prefix}:${parts.join(":")}`;
 }
 
 export function getCacheTtl(prefix: keyof typeof CACHE_TTL): number {

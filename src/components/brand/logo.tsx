@@ -45,7 +45,7 @@ export function Logo({
     <>
       <Image
         src="/logo.png"
-        alt="TeamConnect"
+        alt="TeamConect"
         width={1536}
         height={1024}
         className={imgClass}
@@ -65,7 +65,7 @@ export function Logo({
 
   if (href) {
     return (
-      <Link href={href} className={wrapperClass} aria-label="TeamConnect - Home">
+      <Link href={href} className={wrapperClass} aria-label="TeamConect - Home">
         {content}
       </Link>
     );

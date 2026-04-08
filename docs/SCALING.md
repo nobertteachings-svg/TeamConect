@@ -1,6 +1,6 @@
 # Scaling & Traffic Readiness
 
-TeamConnect is configured for global traffic with the following infrastructure.
+TeamConect is configured for global traffic with the following infrastructure.
 
 ## Implemented
 
@@ -20,7 +20,7 @@ TeamConnect is configured for global traffic with the following infrastructure.
 
 ### 3. Cache-Control & CDN
 - **File:** `next.config.mjs`
-- `/teamconnect-mark.svg` and `/_next/static/*` cached immutable (1 year)
+- `/teamconect-mark.svg` and `/_next/static/*` cached immutable (1 year)
 - Image formats: AVIF, WebP
 - Compatible with Cloudflare and other CDNs
 

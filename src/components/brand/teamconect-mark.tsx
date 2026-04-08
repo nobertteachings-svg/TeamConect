@@ -1,10 +1,10 @@
 /**
  * Fallback mark — interlocking arcs on navy tile (logo palette: blue + orange).
  */
-export function TeamConnectMark({
+export function TeamConectMark({
   size = 40,
   className = "",
-  title = "TeamConnect",
+  title = "TeamConect",
 }: {
   size?: number;
   className?: string;

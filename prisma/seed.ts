@@ -16,7 +16,7 @@ async function main() {
       endAt: new Date(nextMonth.getTime() + 2 * 60 * 60 * 1000),
       timezone: "Africa/Nairobi",
       isVirtual: true,
-      meetingUrl: "https://meet.example.com/teamconnect",
+      meetingUrl: "https://meet.example.com/teamconect",
     },
     update: {},
   });

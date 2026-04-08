@@ -1,6 +1,6 @@
 {
   "seo": {
-    "title": "TeamConnect — Co-Founder & Community",
+    "title": "TeamConect — Co-Founder & Community",
     "description": "Find co-founders for your startup. Post ideas, apply to teams, and discover tech events. Interface in English, French, Arabic, Spanish, German, Italian, Portuguese, Russian, Chinese, Japanese, Ukrainian, Korean, and Greek."
   },
   "common": {
@@ -29,7 +29,8 @@
     "tagline": "Fill the gap. Connect everywhere.",
     "platform": "Platform",
     "connect": "Connect",
-    "copyright": "© {year} TeamConnect. All rights reserved."
+    "emailUs": "General inquiries",
+    "copyright": "© {year} TeamConect. All rights reserved."
   },
   "auth": {
     "title": "Sign In",
@@ -407,8 +408,14 @@
     "heroPreviewChipVideo": "Video & calendar",
     "heroPreviewRemote": "Remote",
     "heroPreviewApplicants": "3 co-founder spots",
+    "heroMainScreenshotAlt": "TeamConect — browse ideas, protected listings, and co-founder matching",
+    "heroInsetScreenshotAlt": "TeamConect — team workspace with meetings, calendar, and collaboration",
+    "showcaseTitle": "From first glance to your team hub",
+    "showcaseLead": "Explore ideas with clarity, then move into a private workspace on teamconect.com when you match.",
+    "showcaseIdeasCaption": "Ideas & applications",
+    "showcaseWorkspaceCaption": "Workspace, meetings & calendar",
     "waitlistSectionLead": "We’ll email you as events, features, and launches roll out — no spam.",
-    "whyTitle": "Why teams choose TeamConnect",
+    "whyTitle": "Why teams choose TeamConect",
     "whySubtitle": "From first pitch to day-to-day building — trust on the listing, clarity when you collaborate.",
     "whyProtectTitle": "Protected pitches",
     "whyProtectDesc": "Founders can share a public teaser and keep the full brief for serious applicants only.",

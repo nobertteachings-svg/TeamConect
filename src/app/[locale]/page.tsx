@@ -1,4 +1,5 @@
 import { getTranslations, getLocale } from "next-intl/server";
+import Image from "next/image";
 import Link from "next/link";
 import { LandingLiveStats } from "@/components/landing/landing-live-stats";
 import { WaitlistForm } from "@/components/landing/waitlist-form";
@@ -180,37 +181,58 @@ export default async function HomePage() {
                 <p className="mx-auto mt-4 max-w-md text-sm text-sky-200/80 lg:mx-0">{t("exploreLead")}</p>
               </div>
 
-              {/* Product preview card */}
-              <div className="relative mx-auto w-full max-w-md lg:max-w-none">
+              {/* Product screenshots */}
+              <div className="relative mx-auto w-full max-w-md pb-8 sm:pb-10 lg:max-w-none lg:pt-2 lg:pb-12">
                 <div
                   className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-brand-teal/30 to-brand-gold/20 opacity-60 blur-2xl motion-reduce:opacity-40"
                   aria-hidden
                 />
-                <div className="relative overflow-hidden rounded-2xl border border-white/15 bg-white/[0.07] p-1 shadow-2xl shadow-black/30 backdrop-blur-xl">
-                  <div className="rounded-[0.9rem] bg-[#0a2744]/90 p-5 sm:p-6">
-                    <div className="mb-4 flex items-center justify-between gap-2">
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-sky-300/90">
-                        {t("heroPreviewLabel")}
-                      </span>
-                      <span className="rounded-md bg-brand-gold/20 px-2 py-0.5 text-[10px] font-semibold text-amber-100">
-                        {t("heroPreviewApplicants")}
-                      </span>
-                    </div>
-                    <p className="text-lg font-semibold leading-snug text-white sm:text-xl">{t("heroPreviewTitle")}</p>
-                    <p className="mt-2 text-sm leading-relaxed text-sky-200/85">{t("heroPreviewTeaser")}</p>
-                    <div className="mt-5 flex flex-wrap gap-2">
-                      <span className="rounded-lg bg-white/10 px-2.5 py-1 text-xs font-medium text-sky-100">
-                        {t("heroPreviewChipWorkspace")}
-                      </span>
-                      <span className="rounded-lg bg-brand-teal/25 px-2.5 py-1 text-xs font-medium text-sky-100">
-                        {t("heroPreviewChipVideo")}
-                      </span>
-                      <span className="rounded-lg bg-white/10 px-2.5 py-1 text-xs font-medium text-sky-100">
-                        {t("heroPreviewRemote")}
-                      </span>
-                    </div>
-                    <p className="mt-4 border-t border-white/10 pt-4 text-xs text-sky-300/80">{t("heroPreviewMeta")}</p>
+                <div className="relative">
+                  <div className="mb-3 flex items-center justify-between gap-2 px-0.5 sm:px-1">
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-sky-300/90">
+                      {t("heroPreviewLabel")}
+                    </span>
+                    <span className="rounded-md bg-brand-gold/20 px-2 py-0.5 text-[10px] font-semibold text-amber-100">
+                      {t("heroPreviewApplicants")}
+                    </span>
                   </div>
+                  <div className="relative rounded-2xl border border-white/20 bg-slate-950/40 p-2 shadow-2xl shadow-black/35 ring-1 ring-white/10 backdrop-blur-sm sm:p-2.5">
+                    <div className="relative aspect-[3/2] overflow-hidden rounded-xl bg-[#061a2e]">
+                      <Image
+                        src="/landing.png"
+                        alt={t("heroMainScreenshotAlt")}
+                        width={1536}
+                        height={1024}
+                        className="h-full w-full object-cover object-top"
+                        sizes="(max-width: 1024px) min(100vw - 2rem, 28rem), 50vw"
+                        priority
+                      />
+                    </div>
+                    <div className="absolute -bottom-3 -right-1 w-[44%] max-w-[220px] origin-bottom-right rotate-[2deg] rounded-xl border border-white/25 bg-[#0a2744]/95 p-1 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.65)] ring-2 ring-black/20 motion-reduce:rotate-0 sm:-bottom-5 sm:-right-3 sm:max-w-[260px] sm:p-1.5 lg:max-w-[280px]">
+                      <div className="relative aspect-[3/2] overflow-hidden rounded-lg ring-1 ring-white/10">
+                        <Image
+                          src="/landing2.png"
+                          alt={t("heroInsetScreenshotAlt")}
+                          width={1536}
+                          height={1024}
+                          className="h-full w-full object-cover object-top"
+                          sizes="(max-width: 1024px) 40vw, 280px"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-6 flex flex-wrap gap-2 sm:mt-7">
+                    <span className="rounded-lg border border-white/10 bg-white/10 px-2.5 py-1 text-xs font-medium text-sky-100">
+                      {t("heroPreviewChipWorkspace")}
+                    </span>
+                    <span className="rounded-lg border border-brand-teal/30 bg-brand-teal/20 px-2.5 py-1 text-xs font-medium text-sky-100">
+                      {t("heroPreviewChipVideo")}
+                    </span>
+                    <span className="rounded-lg border border-white/10 bg-white/10 px-2.5 py-1 text-xs font-medium text-sky-100">
+                      {t("heroPreviewRemote")}
+                    </span>
+                  </div>
+                  <p className="mt-3 text-xs leading-relaxed text-sky-300/85">{t("heroPreviewMeta")}</p>
                 </div>
               </div>
             </div>
@@ -231,6 +253,48 @@ export default async function HomePage() {
             </div>
             <div className="mt-10 rounded-2xl border border-stone-200/90 bg-white p-6 shadow-xl shadow-stone-200/50 sm:p-8">
               <WaitlistForm variant="landing" />
+            </div>
+          </div>
+        </section>
+
+        {/* Product gallery */}
+        <section className="border-b border-stone-200/80 bg-gradient-to-b from-white via-stone-50/90 to-white px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+          <div className="container mx-auto max-w-6xl">
+            <div className="mx-auto mb-10 max-w-2xl text-center sm:mb-14">
+              <h2 className="text-2xl font-bold tracking-tight text-brand-green sm:text-3xl">{t("showcaseTitle")}</h2>
+              <p className="mt-3 text-stone-600 leading-relaxed">{t("showcaseLead")}</p>
+            </div>
+            <div className="grid gap-6 md:grid-cols-2 md:gap-8">
+              <figure className="group overflow-hidden rounded-2xl border border-stone-200/90 bg-white shadow-lg shadow-stone-200/40 ring-1 ring-stone-100 transition duration-300 hover:border-brand-teal/25 hover:shadow-xl hover:shadow-brand-teal/5">
+                <div className="relative aspect-[3/2] bg-stone-100">
+                  <Image
+                    src="/landing.png"
+                    alt={t("heroMainScreenshotAlt")}
+                    width={1536}
+                    height={1024}
+                    className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.02]"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </div>
+                <figcaption className="border-t border-stone-100 px-4 py-3 text-center text-sm font-semibold text-brand-green sm:px-5 sm:py-3.5">
+                  {t("showcaseIdeasCaption")}
+                </figcaption>
+              </figure>
+              <figure className="group overflow-hidden rounded-2xl border border-stone-200/90 bg-white shadow-lg shadow-stone-200/40 ring-1 ring-stone-100 transition duration-300 hover:border-brand-teal/25 hover:shadow-xl hover:shadow-brand-teal/5">
+                <div className="relative aspect-[3/2] bg-stone-100">
+                  <Image
+                    src="/landing2.png"
+                    alt={t("heroInsetScreenshotAlt")}
+                    width={1536}
+                    height={1024}
+                    className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.02]"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </div>
+                <figcaption className="border-t border-stone-100 px-4 py-3 text-center text-sm font-semibold text-brand-green sm:px-5 sm:py-3.5">
+                  {t("showcaseWorkspaceCaption")}
+                </figcaption>
+              </figure>
             </div>
           </div>
         </section>

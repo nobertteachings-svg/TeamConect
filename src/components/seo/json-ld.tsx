@@ -1,12 +1,13 @@
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://teamconnect.com";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://teamconect.com";
 
 export function OrganizationJsonLd() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "TeamConnect",
+    name: "TeamConect",
     url: BASE_URL,
     logo: `${BASE_URL}/logo.png`,
+    email: "info@teamconect.com",
     description:
       "Co-founder matching for startups. Founders with ideas and builders of all kinds meet, post ideas, and discover tech community events.",
     sameAs: [],
@@ -24,7 +25,7 @@ export function WebSiteJsonLd() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "TeamConnect",
+    name: "TeamConect",
     url: BASE_URL,
     description:
       "Find a co-founder for your idea or your skills, share startup ideas, and discover tech events like hackathons and conferences.",

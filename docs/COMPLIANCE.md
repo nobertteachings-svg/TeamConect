@@ -4,7 +4,7 @@
 
 ## Typical personal data processed
 
-| Category | Examples in TeamConnect |
+| Category | Examples in TeamConect |
 |----------|-------------------------|
 | Identity & account | Name, email, profile image (OAuth), user id |
 | Location | Country (ISO2), optional profile fields |

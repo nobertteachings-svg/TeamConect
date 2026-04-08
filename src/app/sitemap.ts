@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://teamconnect.com";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://teamconect.com";
 const PATHS = ["", "cofounders", "community"];
 
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -47,8 +47,8 @@ let config = withNextIntl(nextConfig);
 try {
   const { withSentryConfig } = await import("@sentry/nextjs");
   config = withSentryConfig(config, {
-    org: process.env.SENTRY_ORG || "teamconnect",
-    project: process.env.SENTRY_PROJECT || "teamconnect",
+    org: process.env.SENTRY_ORG || "teamconect",
+    project: process.env.SENTRY_PROJECT || "teamconect",
     silent: !process.env.CI,
     authToken: process.env.SENTRY_AUTH_TOKEN,
   });

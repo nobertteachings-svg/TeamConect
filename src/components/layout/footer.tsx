@@ -49,6 +49,12 @@ export function Footer() {
                   {tCommon("getStarted")}
                 </Link>
               </li>
+              <li>
+                <a href="mailto:info@teamconect.com" className="transition hover:text-brand-green">
+                  info@teamconect.com
+                </a>
+                <span className="mt-0.5 block text-xs text-stone-500">{t("emailUs")}</span>
+              </li>
             </ul>
           </div>
         </div>

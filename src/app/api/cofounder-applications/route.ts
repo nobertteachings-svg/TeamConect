@@ -74,7 +74,7 @@ export async function POST(request: Request) {
     });
     const founderEmail = idea.founder.user.email?.trim();
     if (founderEmail) {
-      const base = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://teamconnect.com").replace(/\/$/, "");
+      const base = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://teamconect.com").replace(/\/$/, "");
       const applicantLabel = applicant?.name?.trim() || applicant?.email?.trim() || "A candidate";
       void sendNewCoFounderApplicationEmail({
         to: founderEmail,

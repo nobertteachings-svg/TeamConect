@@ -1,4 +1,4 @@
-# TeamConnect
+# TeamConect
 
 **Co-founder matching & community**
 
@@ -17,7 +17,7 @@ Find your co-founder. Build what matters.
    - `DATABASE_URL` (PostgreSQL, e.g. Supabase/Neon)
    - `NEXTAUTH_URL`, `NEXTAUTH_SECRET`
    - OAuth: `GOOGLE_*`, `GITHUB_*` (create apps in each provider; GitHub callback URL is `{NEXTAUTH_URL}/api/auth/callback/github`)
-   - **Production email OTP:** set `EMAIL_TRANSPORT=smtp`, `EMAIL_SMTP_ONLY=1`, `GMAIL_USER`, `GMAIL_APP_PASSWORD` (Google [App Password](https://support.google.com/accounts/answer/185833)), and `EMAIL_FROM` (e.g. `TeamConnect <you@gmail.com>`). On Vercel, add these under Project → Settings → Environment Variables and redeploy.
+   - **Production email OTP:** set `EMAIL_TRANSPORT=smtp`, `EMAIL_SMTP_ONLY=1`, `GMAIL_USER`, `GMAIL_APP_PASSWORD` (Google [App Password](https://support.google.com/accounts/answer/185833)), and `EMAIL_FROM` (e.g. `TeamConect <you@gmail.com>`). On Vercel, add these under Project → Settings → Environment Variables and redeploy.
    - Optional Resend: `RESEND_API_KEY`, `EMAIL_FROM` (without any mail provider, dev logs OTP to the server console only)
 
 2. Install and apply the database schema:

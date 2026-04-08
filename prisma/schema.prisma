@@ -1,4 +1,4 @@
-// TeamConnect — Co-founder matching & community (PostgreSQL)
+// TeamConect — Co-founder matching & community (PostgreSQL)
 
 generator client {
   provider = "prisma-client-js"

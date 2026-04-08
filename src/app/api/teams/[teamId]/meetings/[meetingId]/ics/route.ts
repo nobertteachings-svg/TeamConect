@@ -33,12 +33,12 @@ export async function GET(
 
   const start = meeting.startsAt ?? meeting.createdAt;
   const end = new Date(start.getTime() + 60 * 60 * 1000);
-  const uid = `${meeting.id}@teamconnect`;
+  const uid = `${meeting.id}@teamconect`;
 
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//TeamConnect//Meeting//EN",
+    "PRODID:-//TeamConect//Meeting//EN",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",

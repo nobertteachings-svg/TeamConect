@@ -1,6 +1,6 @@
 # Operations, backup, and disaster recovery
 
-This document is a **starting point** for running TeamConnect in production. Adjust RTO/RPO, vendors, and procedures to your org.
+This document is a **starting point** for running TeamConect in production. Adjust RTO/RPO, vendors, and procedures to your org.
 
 ## Backups (PostgreSQL)
 

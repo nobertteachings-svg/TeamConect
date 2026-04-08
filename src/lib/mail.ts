@@ -10,7 +10,7 @@
  *
  * Without any provider: in development, messages are logged to the server console only; in production, sends throw EmailSendError.
  *
- * Logo: prefers `logo.png` at project root or `public/logo.png`, else `public/teamconnect-mark.svg`
+ * Logo: prefers `logo.png` at project root or `public/logo.png`, else `public/teamconect-mark.svg`
  * as an inline CID attachment (displays in the header and is included as an email attachment part).
  */
 import { existsSync, readFileSync } from "node:fs";
@@ -18,8 +18,8 @@ import { join } from "node:path";
 import nodemailer from "nodemailer";
 import { isSmtpMailConfigured } from "./mail-config";
 
-const SITE_NAME = "TeamConnect";
-const LOGO_CID = "teamconnect-logo";
+const SITE_NAME = "TeamConect";
+const LOGO_CID = "teamconect-logo";
 const BRAND_PRIMARY = "#004a8d";
 const BRAND_ACCENT = "#1e73be";
 const STONE_600 = "#57534e";
@@ -27,7 +27,7 @@ const STONE_200 = "#e7e5e4";
 const STONE_50 = "#fafaf9";
 
 function siteBaseUrl(): string {
-  return (process.env.NEXT_PUBLIC_SITE_URL ?? "https://teamconnect.com").replace(/\/$/, "");
+  return (process.env.NEXT_PUBLIC_SITE_URL ?? "https://teamconect.com").replace(/\/$/, "");
 }
 
 export type LogoAttachment = {
@@ -50,11 +50,11 @@ export function getEmailLogoAttachments(): {
   logoBlock: string;
 } {
   const candidates: { path: string; filename: string; contentType: string }[] = [
-    { path: join(process.cwd(), "logo.png"), filename: "teamconnect-logo.png", contentType: "image/png" },
-    { path: join(process.cwd(), "public", "logo.png"), filename: "teamconnect-logo.png", contentType: "image/png" },
+    { path: join(process.cwd(), "logo.png"), filename: "teamconect-logo.png", contentType: "image/png" },
+    { path: join(process.cwd(), "public", "logo.png"), filename: "teamconect-logo.png", contentType: "image/png" },
     {
-      path: join(process.cwd(), "public", "teamconnect-mark.svg"),
-      filename: "teamconnect-mark.svg",
+      path: join(process.cwd(), "public", "teamconect-mark.svg"),
+      filename: "teamconect-mark.svg",
       contentType: "image/svg+xml",
     },
   ];
