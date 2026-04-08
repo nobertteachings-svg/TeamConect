@@ -97,6 +97,23 @@ export async function POST(request: Request) {
       error = "Database connection failed. Check DATABASE_URL on the server.";
     } else if (e instanceof Prisma.PrismaClientRustPanicError) {
       error = "Database error. Please try again in a moment.";
+    } else if (e instanceof Prisma.PrismaClientUnknownRequestError) {
+      error =
+        "Database error while saving your sign-in request. Check DATABASE_URL, pooler settings (?pgbouncer=true for Supabase pooler), and run prisma migrate deploy on production.";
+    } else if (e instanceof Prisma.PrismaClientValidationError) {
+      error = "Invalid sign-in data. Please try again.";
+    } else if (e instanceof Error) {
+      const m = e.message;
+      if (/P1001|P1017|Can't reach database server/i.test(m)) {
+        error =
+          "Cannot reach the database. Verify DATABASE_URL on Vercel and that the database allows connections (resume Supabase if paused).";
+      } else if (/does not exist|EmailOtpChallenge/i.test(m) && /table|relation/i.test(m)) {
+        error =
+          "Sign-in storage is missing. Run: DATABASE_URL=… npx prisma migrate deploy against your production database.";
+      } else if (/timeout|ETIMEDOUT|ECONNREFUSED|ENOTFOUND/i.test(m)) {
+        error =
+          "Database connection failed or timed out. Check DATABASE_URL and use your host’s pooled connection string on Vercel if recommended.";
+      }
     }
     return NextResponse.json({ error }, { status: 503 });
   }
