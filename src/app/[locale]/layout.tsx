@@ -31,6 +31,10 @@ export async function generateMetadata({
   return {
     title: { default: title, template: "%s | TeamConect" },
     description,
+    icons: {
+      icon: [{ url: "/logo.png", type: "image/png" }],
+      apple: [{ url: "/apple-touch-icon.png", type: "image/png" }],
+    },
     keywords: [
       "co-founder matching",
       "find a co-founder",

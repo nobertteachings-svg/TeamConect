@@ -1,4 +1,5 @@
 import { getTranslations, getLocale } from "next-intl/server";
+import Image from "next/image";
 import Link from "next/link";
 import { LandingLiveStats } from "@/components/landing/landing-live-stats";
 import { WaitlistForm } from "@/components/landing/waitlist-form";
@@ -233,6 +234,48 @@ export default async function HomePage() {
             </div>
             <div className="mt-10 rounded-2xl border border-stone-200/90 bg-white p-6 shadow-xl shadow-stone-200/50 sm:p-8">
               <WaitlistForm variant="landing" />
+            </div>
+          </div>
+        </section>
+
+        {/* Product gallery — screenshots below waitlist */}
+        <section className="border-b border-stone-200/80 bg-gradient-to-b from-white via-stone-50/90 to-white px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+          <div className="container mx-auto max-w-6xl">
+            <div className="mx-auto mb-10 max-w-2xl text-center sm:mb-14">
+              <h2 className="text-2xl font-bold tracking-tight text-brand-green sm:text-3xl">{t("showcaseTitle")}</h2>
+              <p className="mt-3 text-stone-600 leading-relaxed">{t("showcaseLead")}</p>
+            </div>
+            <div className="grid gap-6 md:grid-cols-2 md:gap-8">
+              <figure className="group overflow-hidden rounded-2xl border border-stone-200/90 bg-white shadow-lg shadow-stone-200/40 ring-1 ring-stone-100 transition duration-300 hover:border-brand-teal/25 hover:shadow-xl hover:shadow-brand-teal/5">
+                <div className="relative aspect-[3/2] bg-stone-100">
+                  <Image
+                    src="/landing.png"
+                    alt={t("heroMainScreenshotAlt")}
+                    width={1536}
+                    height={1024}
+                    className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.02]"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </div>
+                <figcaption className="border-t border-stone-100 px-4 py-3 text-center text-sm font-semibold text-brand-green sm:px-5 sm:py-3.5">
+                  {t("showcaseIdeasCaption")}
+                </figcaption>
+              </figure>
+              <figure className="group overflow-hidden rounded-2xl border border-stone-200/90 bg-white shadow-lg shadow-stone-200/40 ring-1 ring-stone-100 transition duration-300 hover:border-brand-teal/25 hover:shadow-xl hover:shadow-brand-teal/5">
+                <div className="relative aspect-[3/2] bg-stone-100">
+                  <Image
+                    src="/landing2.png"
+                    alt={t("heroInsetScreenshotAlt")}
+                    width={1536}
+                    height={1024}
+                    className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.02]"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </div>
+                <figcaption className="border-t border-stone-100 px-4 py-3 text-center text-sm font-semibold text-brand-green sm:px-5 sm:py-3.5">
+                  {t("showcaseWorkspaceCaption")}
+                </figcaption>
+              </figure>
             </div>
           </div>
         </section>
