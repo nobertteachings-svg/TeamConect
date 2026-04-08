@@ -398,6 +398,16 @@
     "updateFailed": "Could not update status."
   },
   "ideaDetail": {
+    "pageAboutTitle": "About this idea",
+    "pageLookingTitle": "What we're looking for",
+    "pageDetailsTitle": "Details",
+    "badgeVisibilityPublic": "Full public",
+    "badgeVisibilityTeaser": "Teaser only",
+    "heroMetaStage": "Stage",
+    "lookingForRolesCaption": "Roles",
+    "lookingForSlotsCaption": "Co-founders wanted",
+    "slotsSummaryLabel": "Team size",
+    "aboutLockedCallout": "Full description and extra detail are hidden on protected ideas until you apply. Submit an application below to read the founder’s full brief.",
     "back": "← Back to ideas",
     "protectedListing": "Protected listing",
     "teaserOnlyTitle": "Teaser only",

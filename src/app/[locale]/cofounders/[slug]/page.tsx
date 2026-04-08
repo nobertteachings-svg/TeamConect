@@ -62,7 +62,7 @@ export default async function StartupIdeaDetailPage({
       <Header />
       <main className="flex-1">
         <div className="border-b border-stone-200/80 bg-gradient-to-br from-stone-50 to-white">
-          <div className="container mx-auto max-w-3xl px-3 py-6 xs:px-4 sm:px-6 sm:py-8">
+          <div className="container mx-auto max-w-5xl px-3 py-6 xs:px-4 sm:px-6 sm:py-8">
             <Link
               href={`/${locale}/cofounders`}
               className="text-sm font-medium text-brand-teal transition hover:text-brand-green"
@@ -72,7 +72,7 @@ export default async function StartupIdeaDetailPage({
           </div>
         </div>
 
-        <div className="container mx-auto max-w-3xl px-3 py-6 xs:px-4 sm:px-6 sm:py-8">
+        <div className="container mx-auto max-w-5xl px-3 py-6 xs:px-4 sm:px-6 sm:py-8">
           <IdeaDetailFormView
             locale={locale}
             title={idea.title}
@@ -94,11 +94,10 @@ export default async function StartupIdeaDetailPage({
             founderName={idea.founder.user?.name ?? null}
             founderCountryCode={idea.founder.user?.country ?? null}
             anonymousLabel={tCommon("anonymous")}
-            showProtectedListingBadge={isTeaserOnly}
             showTeamCompleteBadge={idea.status === "team_complete"}
           />
 
-          <div className="mx-auto mt-10 max-w-xl border-t border-stone-200 pt-8">
+          <div className="mx-auto mt-12 max-w-5xl border-t border-stone-200 pt-10">
             <ApplyCoFounderButton
               ideaId={idea.id}
               locale={locale}
