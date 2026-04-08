@@ -105,7 +105,7 @@ export function Header() {
           >
             {navLinks}
             <select
-              className="mt-1 max-w-[10rem] rounded-xl border border-stone-200 bg-white p-2.5 text-sm shadow-sm"
+              className="mt-1 w-full max-w-full rounded-xl border border-stone-200 bg-white p-2.5 text-sm shadow-sm sm:max-w-[12rem]"
               value={locale}
               onChange={(e) => {
                 window.location.href = `/${e.target.value}`;

@@ -79,7 +79,7 @@ export function ApplyCoFounderButton({
     return (
       <Link
         href={`/${locale}/sign-in?callbackUrl=${encodeURIComponent(callbackPath)}`}
-        className="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-brand-green text-white font-semibold hover:bg-brand-green-hover shadow-md shadow-brand-green/15 transition"
+        className="inline-flex w-full items-center justify-center rounded-xl bg-brand-green px-8 py-3.5 text-center text-sm font-semibold text-white shadow-md shadow-brand-green/15 transition hover:bg-brand-green-hover sm:w-auto sm:text-base"
       >
         {t("signIn")}
       </Link>
@@ -88,7 +88,7 @@ export function ApplyCoFounderButton({
 
   if (showForm) {
     return (
-      <div className="rounded-2xl border border-stone-200 bg-white p-5 sm:p-6 shadow-sm space-y-5">
+      <div className="space-y-5 rounded-2xl border border-stone-200 bg-white p-4 shadow-sm sm:p-6">
         <div>
           <label className="block text-sm font-semibold text-stone-800">{t("commitmentLabel")}</label>
           <select
@@ -149,7 +149,7 @@ export function ApplyCoFounderButton({
           <p className="text-sm text-red-700 bg-red-50 border border-red-100 rounded-lg px-3 py-2">{clientError}</p>
         )}
 
-        <div className="flex flex-wrap gap-3 pt-1">
+        <div className="flex flex-col gap-3 pt-1 xs:flex-row xs:flex-wrap">
           <button
             type="button"
             onClick={async () => {
@@ -209,7 +209,7 @@ export function ApplyCoFounderButton({
     <button
       type="button"
       onClick={() => setShowForm(true)}
-      className="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-brand-green text-white font-semibold hover:bg-brand-green-hover shadow-md shadow-brand-green/15 transition"
+      className="inline-flex w-full items-center justify-center rounded-xl bg-brand-green px-8 py-3.5 text-sm font-semibold text-white shadow-md shadow-brand-green/15 transition hover:bg-brand-green-hover sm:w-auto sm:text-base"
     >
       {t("cta")}
     </button>

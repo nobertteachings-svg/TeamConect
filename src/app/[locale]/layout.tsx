@@ -102,7 +102,7 @@ export default async function LocaleLayout({
     >
       <Providers>
         <div
-          className="min-h-screen bg-gradient-to-b from-stone-50 via-white to-stone-100/70 text-stone-900 antialiased"
+          className="min-h-screen min-w-0 overflow-x-clip bg-gradient-to-b from-stone-50 via-white to-stone-100/70 text-stone-900 antialiased"
           lang={locale}
           dir={isRtl ? "rtl" : "ltr"}
         >

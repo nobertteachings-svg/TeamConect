@@ -103,7 +103,7 @@ export function SignInClient({ emailOtpOffered }: SignInClientProps) {
   }
 
   return (
-    <div className="flex min-h-[100dvh] min-h-screen flex-col items-center justify-center bg-gradient-to-b from-stone-100/80 via-white to-stone-50 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pb-[max(3rem,env(safe-area-inset-bottom))] pt-[max(3rem,env(safe-area-inset-top))] sm:pb-[max(5rem,env(safe-area-inset-bottom))] sm:pt-[max(5rem,env(safe-area-inset-top))]">
+    <div className="flex min-h-[100dvh] min-h-screen min-w-0 flex-col items-center justify-center overflow-x-clip bg-gradient-to-b from-stone-100/80 via-white to-stone-50 px-3 pl-[max(0.75rem,env(safe-area-inset-left))] pr-[max(0.75rem,env(safe-area-inset-right))] pb-[max(3rem,env(safe-area-inset-bottom))] pt-[max(3rem,env(safe-area-inset-top))] sm:px-4 sm:pb-[max(5rem,env(safe-area-inset-bottom))] sm:pt-[max(5rem,env(safe-area-inset-top))]">
       <Logo
         href={`/${locale}`}
         locale={locale}

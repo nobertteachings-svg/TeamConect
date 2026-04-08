@@ -13,12 +13,20 @@
   --brand-teal: #1e73be;
 }
 
+html {
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-width: 0;
+  overflow-x: clip;
 }
 
 ::selection {
@@ -41,7 +49,7 @@ body {
   }
 
   .tc-input {
-    @apply w-full rounded-xl border border-stone-200 bg-white px-3.5 py-2.5 text-sm text-stone-900 shadow-sm transition;
+    @apply min-w-0 w-full rounded-xl border border-stone-200 bg-white px-3.5 py-2.5 text-sm text-stone-900 shadow-sm transition;
     @apply placeholder:text-stone-400 hover:border-stone-300;
     @apply focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20 focus:outline-none;
   }

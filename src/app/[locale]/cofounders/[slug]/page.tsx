@@ -7,10 +7,10 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { ApplyCoFounderButton } from "@/components/cofounder/apply-cofounder-button";
 import { FormattedIdeaParagraph } from "@/components/cofounder/formatted-idea-paragraph";
+import { IdeaDetailSpec } from "@/components/cofounder/idea-detail-spec";
 import { authOptions } from "@/lib/auth-config";
 import { canViewFullIdeaDetails } from "@/lib/idea-protection";
 import { splitIdeaParagraphs, stripRedundantTitleFromBody } from "@/lib/idea-display";
-import { formatStoredCountry } from "@/lib/countries";
 import { getCoFounderSlotSnapshot } from "@/lib/team-slots";
 
 export default async function StartupIdeaDetailPage({
@@ -21,7 +21,6 @@ export default async function StartupIdeaDetailPage({
   const { locale, slug } = await params;
   const t = await getTranslations({ locale });
   const tCommon = await getTranslations({ locale, namespace: "common" });
-  const tStages = await getTranslations({ locale, namespace: "startupStages" });
   const session = await getServerSession(authOptions);
   const viewerId = session?.user?.id;
 
@@ -36,7 +35,6 @@ export default async function StartupIdeaDetailPage({
 
   if (!idea) notFound();
 
-  const founderCountry = formatStoredCountry(idea.founder.user?.country);
   const founderUserId = idea.founder.userId;
   const application = viewerId
     ? await prisma.coFounderApplication.findUnique({
@@ -71,11 +69,11 @@ export default async function StartupIdeaDetailPage({
     : [];
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen min-w-0 flex-col">
       <Header />
       <main className="flex-1">
         <div className="border-b border-stone-200/80 bg-gradient-to-br from-stone-50 to-white">
-          <div className="container mx-auto px-4 sm:px-6 py-8 max-w-3xl">
+          <div className="container mx-auto max-w-3xl px-3 py-6 xs:px-4 sm:px-6 sm:py-8">
             <Link
               href={`/${locale}/cofounders`}
               className="text-sm font-medium text-brand-teal hover:text-brand-green transition"
@@ -85,9 +83,9 @@ export default async function StartupIdeaDetailPage({
           </div>
         </div>
 
-        <div className="container mx-auto px-4 sm:px-6 py-8 max-w-3xl">
+        <div className="container mx-auto max-w-3xl px-3 py-6 xs:px-4 sm:px-6 sm:py-8">
           <div className="flex flex-wrap items-center gap-2 mb-2">
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-brand-green text-balance">
+            <h1 className="text-balance text-2xl font-bold tracking-tight text-brand-green xs:text-3xl sm:text-4xl">
               {idea.title}
             </h1>
             {isTeaserOnly && (
@@ -101,31 +99,21 @@ export default async function StartupIdeaDetailPage({
               </span>
             )}
           </div>
-          <p className="text-stone-600 mt-2">
-            {tCommon("by")}{" "}
-            <span className="font-medium text-stone-800">
-              {idea.founder.user?.name ?? tCommon("anonymous")}
-            </span>
-            {founderCountry ? (
-              <>
-                {" "}
-                · <span className="text-stone-500">{founderCountry}</span>
-              </>
-            ) : null}
-          </p>
-          <div className="mt-5 flex flex-wrap gap-2">
-            {idea.rolesNeeded.map((r) => (
-              <span
-                key={r}
-                className="rounded-full bg-brand-green/10 px-3 py-1 text-sm font-medium text-brand-green"
-              >
-                {r}
-              </span>
-            ))}
-            <span className="rounded-full bg-stone-100 px-3 py-1 text-sm text-stone-700">
-              {tStages(idea.stage as "IDEA" | "VALIDATING" | "BUILDING" | "LAUNCHED" | "FUNDED")}
-            </span>
-          </div>
+          <IdeaDetailSpec
+            locale={locale}
+            protectionMode={idea.protectionMode}
+            stage={idea.stage as "IDEA" | "VALIDATING" | "BUILDING" | "LAUNCHED" | "FUNDED"}
+            rolesNeeded={idea.rolesNeeded}
+            coFounderSlotsWanted={idea.coFounderSlotsWanted}
+            filledMemberSlots={slotSnapshot?.filled ?? 0}
+            remainingSlots={slotSnapshot?.remaining ?? 0}
+            isRecruiting={idea.status === "recruiting"}
+            industries={idea.industries}
+            ideaCountryCode={idea.country}
+            founderName={idea.founder.user?.name ?? null}
+            founderCountryCode={idea.founder.user?.country ?? null}
+            anonymousLabel={tCommon("anonymous")}
+          />
 
           {isTeaserOnly && !canSeeFull && (
             <div className="mt-8 rounded-2xl border border-amber-200/80 bg-gradient-to-br from-amber-50/90 to-white p-5 text-sm text-amber-950 shadow-sm">

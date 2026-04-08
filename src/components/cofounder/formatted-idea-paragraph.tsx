@@ -19,7 +19,7 @@ function linkify(text: string): ReactNode[] {
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="font-medium text-brand-teal underline decoration-brand-teal/40 underline-offset-2 hover:text-brand-green"
+        className="break-all font-medium text-brand-teal underline decoration-brand-teal/40 underline-offset-2 hover:text-brand-green"
       >
         {href}
       </a>
@@ -39,7 +39,7 @@ function linkify(text: string): ReactNode[] {
 export function FormattedIdeaParagraph({ text }: { text: string }) {
   const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
   return (
-    <p className="whitespace-pre-wrap leading-relaxed">
+    <p className="max-w-full break-words whitespace-pre-wrap leading-relaxed [overflow-wrap:anywhere]">
       {parts.map((seg, i) => {
         if (seg.startsWith("**") && seg.endsWith("**") && seg.length > 4) {
           return (

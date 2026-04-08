@@ -63,15 +63,15 @@ export function LandingLiveStats({ initial, locale }: Props) {
   ] as const;
 
   return (
-    <div className="mx-auto mt-10 max-w-3xl lg:mx-0" aria-live="polite">
+    <div className="mx-auto mt-10 max-w-3xl min-w-0 lg:mx-0" aria-live="polite">
       <p className="mb-3 text-center text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300/80 lg:text-start">
         {t("liveStatsHeading")}
       </p>
-      <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+      <dl className="grid min-w-0 grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-4">
         {items.map(({ value, label }) => (
           <div
             key={label}
-            className="rounded-xl border border-white/10 bg-white/[0.06] px-3 py-3 text-center backdrop-blur-sm sm:px-4 sm:py-4 lg:text-start"
+            className="min-w-0 rounded-xl border border-white/10 bg-white/[0.06] px-2.5 py-2.5 text-center backdrop-blur-sm sm:px-4 sm:py-4 lg:text-start"
           >
             <dt className="text-[11px] font-medium leading-snug text-sky-200/85 sm:text-xs">{label}</dt>
             <dd className="mt-1 text-2xl font-bold tabular-nums tracking-tight text-white sm:text-3xl">{nf.format(value)}</dd>

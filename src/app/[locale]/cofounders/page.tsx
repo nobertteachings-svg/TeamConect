@@ -48,19 +48,19 @@ export default async function CoFoundersPage({
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen min-w-0 flex-col">
       <Header />
       <main className="flex-1">
         <div className="border-b border-stone-200/80 bg-gradient-to-br from-white via-stone-50/90 to-brand-teal/[0.06]">
-          <div className="container mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
-            <h1 className="text-balance text-3xl font-bold tracking-tight text-brand-green sm:text-4xl">
+          <div className="container mx-auto max-w-6xl px-3 py-10 xs:px-4 sm:px-6 sm:py-16">
+            <h1 className="text-balance text-2xl font-bold tracking-tight text-brand-green sm:text-3xl md:text-4xl">
               {t("heroTitle")}
             </h1>
-            <p className="mt-3 text-lg text-stone-600 max-w-2xl leading-relaxed">{t("heroLead")}</p>
+            <p className="mt-3 max-w-2xl text-base leading-relaxed text-stone-600 sm:text-lg">{t("heroLead")}</p>
           </div>
         </div>
 
-        <div className="container mx-auto px-4 sm:px-6 py-8 max-w-6xl">
+        <div className="container mx-auto max-w-6xl px-3 py-6 xs:px-4 sm:px-6 sm:py-8">
           <div className="flex flex-wrap items-center gap-3 mb-3">
             <span className="text-sm font-semibold text-stone-700">{t("filterLabel")}</span>
             {hasFilters && (

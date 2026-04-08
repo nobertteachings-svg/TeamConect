@@ -46,15 +46,17 @@ export default async function DashboardLayout({
   const roles = user.roles.map((r) => r);
 
   return (
-    <div className="flex min-h-screen flex-col bg-gradient-to-br from-stone-100/80 via-stone-50 to-white lg:flex-row">
-      <aside className="border-b border-stone-200/80 bg-white/95 p-4 shadow-tc-nav lg:w-60 lg:shrink-0 lg:border-b-0 lg:border-r lg:border-stone-200/80 lg:p-6 lg:shadow-none">
-        <Logo href={`/${locale}`} locale={locale} size="sm" className="mb-8" />
+    <div className="flex min-h-screen min-w-0 flex-col bg-gradient-to-br from-stone-100/80 via-stone-50 to-white lg:flex-row">
+      <aside className="min-w-0 border-b border-stone-200/80 bg-white/95 p-3 shadow-tc-nav sm:p-4 lg:w-60 lg:shrink-0 lg:border-b-0 lg:border-r lg:border-stone-200/80 lg:p-6 lg:shadow-none">
+        <Logo href={`/${locale}`} locale={locale} size="sm" className="mb-3 lg:mb-8" />
         <DashboardNav userRoles={roles} />
       </aside>
-      <main className="min-h-screen flex-1 overflow-auto p-4 sm:p-6 lg:p-10">
-        <div className="mb-8 flex flex-col gap-4 rounded-2xl border border-stone-200/80 bg-white/90 px-5 py-4 shadow-tc backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between">
-          <h1 className="text-xl font-bold tracking-tight text-brand-green sm:text-2xl">{t("dashboard.title")}</h1>
-          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+      <main className="min-h-screen min-w-0 flex-1 overflow-x-auto overflow-y-auto p-3 sm:p-6 lg:p-10">
+        <div className="mb-6 flex min-w-0 flex-col gap-4 rounded-2xl border border-stone-200/80 bg-white/90 px-4 py-3 shadow-tc backdrop-blur-sm sm:mb-8 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
+          <h1 className="min-w-0 text-lg font-bold tracking-tight text-brand-green sm:text-xl md:text-2xl">
+            {t("dashboard.title")}
+          </h1>
+          <div className="flex min-w-0 flex-wrap items-center gap-3 sm:gap-4">
             <NotificationsBell />
             <div className="max-w-[min(100%,280px)] rounded-lg bg-stone-50 px-3 py-2 text-right sm:text-left">
               {user.name?.trim() ? (
@@ -76,7 +78,7 @@ export default async function DashboardLayout({
             </Link>
           </div>
         </div>
-        <div className="mx-auto max-w-6xl">{children}</div>
+        <div className="mx-auto max-w-6xl min-w-0">{children}</div>
       </main>
     </div>
   );

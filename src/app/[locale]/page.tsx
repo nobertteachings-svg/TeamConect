@@ -116,7 +116,7 @@ export default async function HomePage({
   ] as const;
 
   return (
-    <div className="flex flex-col min-h-screen bg-stone-50">
+    <div className="flex min-h-screen min-w-0 flex-col bg-stone-50">
       <OrganizationJsonLd />
       <WebSiteJsonLd />
       <Header />
@@ -139,13 +139,13 @@ export default async function HomePage({
             className="pointer-events-none absolute inset-0 opacity-[0.35] [background-image:linear-gradient(rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:48px_48px]"
             aria-hidden
           />
-          <div className="relative container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-14 pb-20 sm:pt-20 sm:pb-28 lg:pt-24 lg:pb-32">
+          <div className="relative container mx-auto max-w-6xl px-3 xs:px-4 sm:px-6 lg:px-8 pt-12 pb-16 sm:pt-20 sm:pb-28 lg:pt-24 lg:pb-32">
             <div className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:items-center lg:gap-12">
               <div className="text-center lg:text-start">
                 <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-brand-gold/95">
                   {t("tagline")}
                 </p>
-                <h1 className="text-balance text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">
+                <h1 className="text-balance text-3xl font-bold leading-[1.1] tracking-tight xs:text-4xl sm:text-5xl lg:text-6xl">
                   <span className="bg-gradient-to-br from-white via-white to-white/75 bg-clip-text text-transparent">
                     {headlinePrimary}
                   </span>

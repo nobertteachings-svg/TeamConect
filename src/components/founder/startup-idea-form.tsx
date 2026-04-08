@@ -68,7 +68,7 @@ export function StartupIdeaForm({ founderId }: { founderId: string }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-xl space-y-6">
+    <form onSubmit={handleSubmit} className="max-w-xl min-w-0 space-y-6">
       <div>
         <label className="tc-label">{t("title")}</label>
         <input

@@ -15,11 +15,13 @@ export default async function CommunityPage({ params }: { params: Promise<{ loca
   const user = await getCurrentUser();
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen min-w-0 flex-col">
       <Header />
-      <main className="container mx-auto max-w-6xl flex-1 px-4 py-10 sm:px-6 sm:py-12">
-        <div className="mb-10 max-w-2xl">
-          <h1 className="text-3xl font-bold tracking-tight text-brand-green sm:text-4xl">{t("community.title")}</h1>
+      <main className="container mx-auto max-w-6xl flex-1 px-3 py-8 xs:px-4 sm:px-6 sm:py-12">
+        <div className="mb-8 max-w-2xl sm:mb-10">
+          <h1 className="text-2xl font-bold tracking-tight text-brand-green sm:text-3xl md:text-4xl">
+            {t("community.title")}
+          </h1>
           <p className="mt-3 text-base leading-relaxed text-stone-600">{t("community.subtitle")}</p>
         </div>
 
