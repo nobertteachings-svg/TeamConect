@@ -1,12 +1,14 @@
 import { getTranslations, getLocale } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { LandingLiveStats } from "@/components/landing/landing-live-stats";
 import { WaitlistForm } from "@/components/landing/waitlist-form";
 import { getLandingStats } from "@/lib/landing-stats";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo/json-ld";
+import { getCurrentUser } from "@/lib/auth";
 
 const PILLARS = ["cofounders", "community"] as const;
 
@@ -76,10 +78,15 @@ const PILLAR_ICONS = {
 } as const;
 
 export default async function HomePage() {
+  const locale = await getLocale();
+  const session = await getCurrentUser();
+  if (session?.id) {
+    redirect(`/${locale}/dashboard`);
+  }
+
   const t = await getTranslations("landing");
   const tCommon = await getTranslations("common");
   const tWaitlist = await getTranslations("waitlist");
-  const locale = await getLocale();
   const landingStats = await getLandingStats();
 
   const headline = t("headline");
