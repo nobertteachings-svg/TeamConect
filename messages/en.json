@@ -385,6 +385,9 @@
     "protectedListing": "Protected listing",
     "teaserOnlyTitle": "Teaser only",
     "teaserOnlyBody": "Full details stay private to reduce copy-paste risk. Apply below — once you submit a serious application, you can read the full description and pitch.",
+    "descriptionLockedHint": "Full description is hidden for protected listings. Apply below — after you submit a serious application, the founder’s full brief appears here.",
+    "pitchLockedHint": "Pitch details are hidden until you apply and the founder’s full idea unlocks for you.",
+    "pitchEmpty": "No pitch added.",
     "description": "Full description",
     "pitch": "Pitch (optional detail)",
     "publicTeaser": "Public teaser",
@@ -466,6 +469,8 @@
   "cofoundersPage": {
     "heroTitle": "Find your next co-founder",
     "heroLead": "Founders post ideas at any stage — looking for engineers, business co-founders, design, ops, and more. Apply with intent.",
+    "listHint": "Only titles are shown here. Open an idea to see the full post — the same fields the founder filled in.",
+    "openIdeaAria": "Open full idea: {title}",
     "filterLabel": "Refine",
     "clearFilters": "Clear filters",
     "emptyTitle": "No ideas match yet",

@@ -6,11 +6,9 @@ import { getTranslations } from "next-intl/server";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { ApplyCoFounderButton } from "@/components/cofounder/apply-cofounder-button";
-import { FormattedIdeaParagraph } from "@/components/cofounder/formatted-idea-paragraph";
-import { IdeaDetailSpec } from "@/components/cofounder/idea-detail-spec";
+import { IdeaDetailFormView } from "@/components/cofounder/idea-detail-form-view";
 import { authOptions } from "@/lib/auth-config";
 import { canViewFullIdeaDetails } from "@/lib/idea-protection";
-import { splitIdeaParagraphs, stripRedundantTitleFromBody } from "@/lib/idea-display";
 import { getCoFounderSlotSnapshot } from "@/lib/team-slots";
 
 export default async function StartupIdeaDetailPage({
@@ -57,16 +55,7 @@ export default async function StartupIdeaDetailPage({
   });
 
   const isTeaserOnly = idea.protectionMode === "TEASER_ONLY";
-  const teaserText =
-    idea.publicTeaser?.trim() || t("ideaDetail.teaserFallback");
-
   const isOwner = Boolean(viewerId && viewerId === founderUserId);
-
-  const descriptionDisplay = stripRedundantTitleFromBody(idea.description, idea.title);
-  const descriptionParagraphs = splitIdeaParagraphs(descriptionDisplay);
-  const pitchParagraphs = idea.pitch
-    ? splitIdeaParagraphs(stripRedundantTitleFromBody(idea.pitch, idea.title))
-    : [];
 
   return (
     <div className="flex min-h-screen min-w-0 flex-col">
@@ -76,7 +65,7 @@ export default async function StartupIdeaDetailPage({
           <div className="container mx-auto max-w-3xl px-3 py-6 xs:px-4 sm:px-6 sm:py-8">
             <Link
               href={`/${locale}/cofounders`}
-              className="text-sm font-medium text-brand-teal hover:text-brand-green transition"
+              className="text-sm font-medium text-brand-teal transition hover:text-brand-green"
             >
               {t("ideaDetail.back")}
             </Link>
@@ -84,25 +73,16 @@ export default async function StartupIdeaDetailPage({
         </div>
 
         <div className="container mx-auto max-w-3xl px-3 py-6 xs:px-4 sm:px-6 sm:py-8">
-          <div className="flex flex-wrap items-center gap-2 mb-2">
-            <h1 className="text-balance text-2xl font-bold tracking-tight text-brand-green xs:text-3xl sm:text-4xl">
-              {idea.title}
-            </h1>
-            {isTeaserOnly && (
-              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-50 text-amber-900 border border-amber-200/80">
-                {t("ideaDetail.protectedListing")}
-              </span>
-            )}
-            {idea.status === "team_complete" && (
-              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-stone-100 text-stone-700 border border-stone-200">
-                {t("ideaDetail.teamCompleteBadge")}
-              </span>
-            )}
-          </div>
-          <IdeaDetailSpec
+          <IdeaDetailFormView
             locale={locale}
+            title={idea.title}
             protectionMode={idea.protectionMode}
-            stage={idea.stage as "IDEA" | "VALIDATING" | "BUILDING" | "LAUNCHED" | "FUNDED"}
+            publicTeaser={idea.publicTeaser}
+            description={idea.description}
+            pitch={idea.pitch}
+            canSeeFull={canSeeFull}
+            isTeaserOnly={isTeaserOnly}
+            teaserFallback={t("ideaDetail.teaserFallback")}
             rolesNeeded={idea.rolesNeeded}
             coFounderSlotsWanted={idea.coFounderSlotsWanted}
             filledMemberSlots={slotSnapshot?.filled ?? 0}
@@ -110,57 +90,15 @@ export default async function StartupIdeaDetailPage({
             isRecruiting={idea.status === "recruiting"}
             industries={idea.industries}
             ideaCountryCode={idea.country}
+            stage={idea.stage as "IDEA" | "VALIDATING" | "BUILDING" | "LAUNCHED" | "FUNDED"}
             founderName={idea.founder.user?.name ?? null}
             founderCountryCode={idea.founder.user?.country ?? null}
             anonymousLabel={tCommon("anonymous")}
+            showProtectedListingBadge={isTeaserOnly}
+            showTeamCompleteBadge={idea.status === "team_complete"}
           />
 
-          {isTeaserOnly && !canSeeFull && (
-            <div className="mt-8 rounded-2xl border border-amber-200/80 bg-gradient-to-br from-amber-50/90 to-white p-5 text-sm text-amber-950 shadow-sm">
-              <p className="font-semibold text-amber-950">{t("ideaDetail.teaserOnlyTitle")}</p>
-              <p className="mt-2 leading-relaxed text-amber-900/90">{t("ideaDetail.teaserOnlyBody")}</p>
-            </div>
-          )}
-
-          <div className="mx-auto mt-10 max-w-2xl space-y-8">
-            {canSeeFull ? (
-              <>
-                <section className="rounded-2xl border border-stone-200/90 bg-white p-6 shadow-sm sm:p-8">
-                  <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-stone-500">
-                    {t("ideaDetail.description")}
-                  </h2>
-                  <div className="mt-5 space-y-5 text-[15px] text-stone-700 sm:text-base">
-                    {descriptionParagraphs.map((para, i) => (
-                      <FormattedIdeaParagraph key={i} text={para} />
-                    ))}
-                  </div>
-                </section>
-                {idea.pitch && pitchParagraphs.length > 0 ? (
-                  <section className="rounded-2xl border border-stone-200/90 bg-gradient-to-b from-stone-50/80 to-white p-6 shadow-sm sm:p-8">
-                    <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-stone-500">
-                      {t("ideaDetail.pitch")}
-                    </h2>
-                    <div className="mt-5 space-y-5 text-[15px] text-stone-700 sm:text-base">
-                      {pitchParagraphs.map((para, i) => (
-                        <FormattedIdeaParagraph key={i} text={para} />
-                      ))}
-                    </div>
-                  </section>
-                ) : null}
-              </>
-            ) : (
-              <section className="rounded-2xl border border-stone-200/90 bg-white p-6 shadow-sm sm:p-8">
-                <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-stone-500">
-                  {t("ideaDetail.publicTeaser")}
-                </h2>
-                <div className="mt-5 text-[15px] text-stone-700 sm:text-base">
-                  <FormattedIdeaParagraph text={teaserText} />
-                </div>
-              </section>
-            )}
-          </div>
-
-          <div className="mt-10 pt-8 border-t border-stone-200">
+          <div className="mx-auto mt-10 max-w-xl border-t border-stone-200 pt-8">
             <ApplyCoFounderButton
               ideaId={idea.id}
               locale={locale}
