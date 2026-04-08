@@ -115,7 +115,8 @@ npx prisma migrate deploy
 - `npm test` — Unit tests (Vitest)
 - `npm run test:integration` — DB + route integration tests (`TEST_DATABASE_URL`)
 - `npm run test:e2e` — Playwright (see Tests above)
-- `npm run build` — Build for production
+- `npm run build` — Production build (`prisma generate` + `next build`; no DB required). Run `npx prisma migrate deploy` against production separately.
+- `npm run build:with-migrate` — Same as build but runs migrations first (needs `DATABASE_URL`).
 - `npm run db:push` — Push schema to DB
 - `npm run db:seed` — Seed sample data
 - `npm run db:studio` — Open Prisma Studio
