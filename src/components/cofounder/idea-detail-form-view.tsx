@@ -29,7 +29,7 @@ type Props = {
   showTeamCompleteBadge: boolean;
 };
 
-function ReadonlyField({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+function ReadonlyField({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
     <div
       className={`rounded-xl border border-stone-200 bg-stone-50/80 px-3.5 py-2.5 text-sm text-stone-800 shadow-sm ${className}`}
