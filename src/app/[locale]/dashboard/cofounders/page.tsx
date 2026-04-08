@@ -51,8 +51,11 @@ export default async function CoFoundersDashboardPage({ params }: { params: Prom
       {founderProfile && (
         <>
           <div className="tc-card p-5 sm:p-7">
-            <h3 className="mb-5 text-xs font-bold uppercase tracking-wider text-stone-500">{t("dashboardCofounders.postNewIdea")}</h3>
-            <StartupIdeaForm founderId={founderProfile.id} />
+            <h3 className="text-xs font-bold uppercase tracking-wider text-stone-500">{t("dashboardCofounders.postNewIdea")}</h3>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-stone-600">{t("dashboardCofounders.postNewIdeaLead")}</p>
+            <div className="mt-8">
+              <StartupIdeaForm founderId={founderProfile.id} />
+            </div>
           </div>
           <div>
             <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-stone-500">{t("dashboardCofounders.myIdeas")}</h3>
