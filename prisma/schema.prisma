@@ -102,6 +102,24 @@ model User {
   teamResourcesAuthored   TeamResource[]
   teamMeetingsAuthored    TeamMeeting[]
   teamMeetingMessages     TeamMeetingMessage[]
+  notifications           Notification[]
+}
+
+/// In-app alerts (applications, accept/reject). Email is sent separately when configured.
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  type      String
+  title     String
+  body      String?   @db.Text
+  link      String?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([userId, readAt])
 }
 
 model AuditLog {

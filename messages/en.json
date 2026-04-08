@@ -86,6 +86,13 @@
     "teams": "Team workspaces",
     "admin": "Admin"
   },
+  "notifications": {
+    "ariaLabel": "Notifications",
+    "title": "Notifications",
+    "markAllRead": "Mark all read",
+    "loading": "Loading…",
+    "empty": "No notifications yet."
+  },
   "teamWorkspace": {
     "pageTitle": "Team workspaces",
     "pageLead": "When you accept a co-founder on your idea, a private workspace opens for your team: discussion, shared links, and meeting plans.",

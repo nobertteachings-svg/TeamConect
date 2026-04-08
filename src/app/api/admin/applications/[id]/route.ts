@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/require-admin";
 import { writeAuditLog } from "@/lib/audit-log";
+import { notifyApplicationStatusOutcomes } from "@/lib/cofounder-application-notify";
+import { syncTeamOnApplicationStatusChange } from "@/lib/team-sync";
+import { getCoFounderSlotSnapshot } from "@/lib/team-slots";
 
 const STATUSES = new Set(["pending", "accepted", "rejected"]);
 
@@ -19,11 +23,14 @@ export async function PATCH(
     reason?: string;
   };
 
-  const existing = await prisma.coFounderApplication.findUnique({
+  const app = await prisma.coFounderApplication.findUnique({
     where: { id },
-    select: { id: true },
+    include: {
+      idea: { include: { founder: true } },
+    },
   });
-  if (!existing) {
+
+  if (!app) {
     return NextResponse.json({ error: "Application not found" }, { status: 404 });
   }
 
@@ -43,9 +50,80 @@ export async function PATCH(
     return NextResponse.json({ error: "No valid fields" }, { status: 400 });
   }
 
-  const updated = await prisma.coFounderApplication.update({
+  const previousStatus = app.status;
+  const founderUserId = app.idea.founder.userId;
+  const statusChanging =
+    data.status !== undefined && data.status !== app.status;
+
+  const updatePayload: Prisma.CoFounderApplicationUpdateInput = {};
+  if (data.adminNote !== undefined) updatePayload.adminNote = data.adminNote;
+  if (data.status !== undefined) updatePayload.status = data.status;
+
+  let teamIdOut: string | null = null;
+
+  if (statusChanging && data.status !== undefined) {
+    const newStatus = data.status;
+
+    if (newStatus === "accepted" && previousStatus !== "accepted") {
+      const snap = await getCoFounderSlotSnapshot(prisma, app.ideaId);
+      if (!snap) {
+        return NextResponse.json({ error: "Not found" }, { status: 404 });
+      }
+      const alreadyMember = await prisma.teamMember.findFirst({
+        where: {
+          role: "MEMBER",
+          userId: app.userId,
+          team: { ideaId: app.ideaId },
+        },
+        select: { id: true },
+      });
+      if (!alreadyMember && snap.remaining < 1) {
+        return NextResponse.json(
+          {
+            error:
+              "The team is full. Increase co-founder slots on the idea or reject an accepted member first.",
+          },
+          { status: 400 }
+        );
+      }
+    }
+
+    const team = await prisma.$transaction(async (tx) => {
+      await tx.coFounderApplication.update({
+        where: { id },
+        data: updatePayload,
+      });
+      await syncTeamOnApplicationStatusChange(tx, {
+        ideaId: app.ideaId,
+        applicantUserId: app.userId,
+        founderUserId,
+        previousStatus,
+        newStatus,
+      });
+      const t = await tx.startupTeam.findUnique({
+        where: { ideaId: app.ideaId },
+        select: { id: true },
+      });
+      return t;
+    });
+    teamIdOut = team?.id ?? null;
+
+    void notifyApplicationStatusOutcomes({
+      previousStatus,
+      newStatus,
+      applicantUserId: app.userId,
+      idea: { slug: app.idea.slug, title: app.idea.title },
+      teamId: teamIdOut,
+    });
+  } else if (Object.keys(updatePayload).length > 0) {
+    await prisma.coFounderApplication.update({
+      where: { id },
+      data: updatePayload,
+    });
+  }
+
+  const updated = await prisma.coFounderApplication.findUnique({
     where: { id },
-    data,
     select: {
       id: true,
       status: true,
@@ -64,5 +142,5 @@ export async function PATCH(
     reason: body.reason?.trim() || null,
   });
 
-  return NextResponse.json({ application: updated });
+  return NextResponse.json({ application: updated, teamId: teamIdOut });
 }

@@ -2,6 +2,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
+import { NotificationsBell } from "./notifications-bell";
 import { DashboardNav } from "./dashboard-nav";
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
@@ -54,6 +55,7 @@ export default async function DashboardLayout({
         <div className="mb-8 flex flex-col gap-4 rounded-2xl border border-stone-200/80 bg-white/90 px-5 py-4 shadow-tc backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between">
           <h1 className="text-xl font-bold tracking-tight text-brand-green sm:text-2xl">{t("dashboard.title")}</h1>
           <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+            <NotificationsBell />
             <div className="max-w-[min(100%,280px)] rounded-lg bg-stone-50 px-3 py-2 text-right sm:text-left">
               {user.name?.trim() ? (
                 <>

@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth-config";
 import { checkApiRateLimit } from "@/lib/rate-limit";
+import { notifyApplicationStatusOutcomes } from "@/lib/cofounder-application-notify";
 import { syncTeamOnApplicationStatusChange } from "@/lib/team-sync";
 import { getCoFounderSlotSnapshot } from "@/lib/team-slots";
 
@@ -72,6 +73,14 @@ export async function PATCH(
       select: { id: true },
     });
     return team;
+  });
+
+  void notifyApplicationStatusOutcomes({
+    previousStatus,
+    newStatus: status,
+    applicantUserId: app.userId,
+    idea: { slug: app.idea.slug, title: app.idea.title },
+    teamId: result?.id ?? null,
   });
 
   return NextResponse.json({ success: true, teamId: result?.id ?? null });

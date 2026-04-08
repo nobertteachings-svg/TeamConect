@@ -553,3 +553,179 @@ export async function sendNewCoFounderApplicationEmail(params: {
     tags: [{ name: "category", value: "cofounder-application" }],
   });
 }
+
+/** Applicant: confirmation that their application was delivered. */
+export async function sendCoFounderApplicationSubmittedEmail(params: {
+  to: string;
+  ideaTitle: string;
+  ideaPublicUrl: string;
+  dashboardUrl: string;
+}): Promise<void> {
+  const safeTitle = escapeHtml(params.ideaTitle);
+  const subject = `Application sent — ${params.ideaTitle}`;
+  const bodyHtml = `
+    <p style="margin:0 0 16px 0;">Hello,</p>
+    <p style="margin:0 0 16px 0;">Thank you for applying on <strong>${SITE_NAME}</strong>. We’ve received your co-founder application for <strong>${safeTitle}</strong>.</p>
+    <p style="margin:0 0 20px 0;font-size:14px;color:${STONE_600};">The founder has been notified by email. You’ll hear from them if they’d like to move forward.</p>
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:20px 0;">
+      <tr>
+        <td style="border-radius:10px;background-color:${BRAND_PRIMARY};text-align:center;">
+          <a href="${params.ideaPublicUrl}" style="display:inline-block;padding:14px 28px;font-size:14px;font-weight:600;color:#ffffff;text-decoration:none;">View idea listing</a>
+        </td>
+      </tr>
+    </table>
+    <p style="margin:16px 0 0 0;font-size:14px;color:${STONE_600};">Track applications you’ve sent from your <a href="${params.dashboardUrl}" style="color:${BRAND_ACCENT};text-decoration:none;">dashboard</a>.</p>
+  `;
+
+  await sendBrandedEmail({
+    to: [params.to],
+    subject,
+    preheader: `Your application to ${params.ideaTitle} was submitted.`,
+    headerTitle: "Application received",
+    bodyHtml,
+    footerExtra: `Questions? Reply to this email or visit <a href="${siteBaseUrl()}" style="color:${BRAND_ACCENT};text-decoration:none;">${SITE_NAME}</a>.`,
+    text: [
+      `${SITE_NAME} — application received`,
+      "",
+      `You applied to: ${params.ideaTitle}`,
+      "",
+      "The founder has been notified. You can view the listing:",
+      params.ideaPublicUrl,
+      "",
+      "Your dashboard:",
+      params.dashboardUrl,
+    ].join("\n"),
+    tags: [{ name: "category", value: "cofounder-application-applicant" }],
+  });
+}
+
+/** Applicant: founder accepted their application (team workspace link when available). */
+export async function sendCoFounderApplicationAcceptedEmail(params: {
+  to: string;
+  ideaTitle: string;
+  teamWorkspaceUrl: string | null;
+  ideaPublicUrl: string;
+}): Promise<void> {
+  const safeTitle = escapeHtml(params.ideaTitle);
+  const subject = `You’re in — ${params.ideaTitle}`;
+  const ctaRow = params.teamWorkspaceUrl
+    ? `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:20px 0;">
+      <tr>
+        <td style="border-radius:10px;background-color:${BRAND_PRIMARY};text-align:center;">
+          <a href="${params.teamWorkspaceUrl}" style="display:inline-block;padding:14px 28px;font-size:14px;font-weight:600;color:#ffffff;text-decoration:none;">Open team workspace</a>
+        </td>
+      </tr>
+    </table>`
+    : "";
+  const bodyHtml = `
+    <p style="margin:0 0 16px 0;">Hello,</p>
+    <p style="margin:0 0 16px 0;">Great news — the founder of <strong>${safeTitle}</strong> has <strong>accepted</strong> your co-founder application on <strong>${SITE_NAME}</strong>.</p>
+    <p style="margin:0 0 20px 0;font-size:14px;color:${STONE_600};">You can coordinate in your private team workspace: discussion, shared links, and meetings.</p>
+    ${ctaRow}
+    <p style="margin:16px 0 0 0;font-size:14px;color:${STONE_600};"><a href="${params.ideaPublicUrl}" style="color:${BRAND_ACCENT};text-decoration:none;">View the public idea page</a></p>
+  `;
+
+  await sendBrandedEmail({
+    to: [params.to],
+    subject,
+    preheader: `Accepted: ${params.ideaTitle}. Open your team workspace on ${SITE_NAME}.`,
+    headerTitle: "Application accepted",
+    bodyHtml,
+    footerExtra: `Need help? Reply to this email or visit <a href="${siteBaseUrl()}" style="color:${BRAND_ACCENT};text-decoration:none;">our site</a>.`,
+    text: [
+      `${SITE_NAME} — application accepted`,
+      "",
+      `Idea: ${params.ideaTitle}`,
+      "",
+      params.teamWorkspaceUrl
+        ? `Open your team workspace:\n${params.teamWorkspaceUrl}\n`
+        : "",
+      `Idea page:\n${params.ideaPublicUrl}`,
+    ].join("\n"),
+    tags: [{ name: "category", value: "cofounder-accepted" }],
+  });
+}
+
+/** Applicant: application was not accepted (pending → rejected). */
+export async function sendCoFounderApplicationRejectedEmail(params: {
+  to: string;
+  ideaTitle: string;
+  browseIdeasUrl: string;
+}): Promise<void> {
+  const safeTitle = escapeHtml(params.ideaTitle);
+  const subject = `Update on your application — ${params.ideaTitle}`;
+  const bodyHtml = `
+    <p style="margin:0 0 16px 0;">Hello,</p>
+    <p style="margin:0 0 16px 0;">Thanks for your interest in <strong>${safeTitle}</strong> on <strong>${SITE_NAME}</strong>. The founder has decided not to move forward with your application at this time.</p>
+    <p style="margin:0 0 20px 0;font-size:14px;color:${STONE_600};">That’s a normal part of matching — other ideas may be a better fit.</p>
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:20px 0;">
+      <tr>
+        <td style="border-radius:10px;background-color:${BRAND_PRIMARY};text-align:center;">
+          <a href="${params.browseIdeasUrl}" style="display:inline-block;padding:14px 28px;font-size:14px;font-weight:600;color:#ffffff;text-decoration:none;">Browse more ideas</a>
+        </td>
+      </tr>
+    </table>
+  `;
+
+  await sendBrandedEmail({
+    to: [params.to],
+    subject,
+    preheader: `Update on ${params.ideaTitle}.`,
+    headerTitle: "Application update",
+    bodyHtml,
+    footerExtra: `Discover more on <a href="${siteBaseUrl()}" style="color:${BRAND_ACCENT};text-decoration:none;">${SITE_NAME}</a>.`,
+    text: [
+      `${SITE_NAME} — application update`,
+      "",
+      `Regarding: ${params.ideaTitle}`,
+      "",
+      "The founder is not moving forward with your application right now.",
+      "",
+      "Browse other ideas:",
+      params.browseIdeasUrl,
+    ].join("\n"),
+    tags: [{ name: "category", value: "cofounder-rejected" }],
+  });
+}
+
+/** Applicant: was accepted, then status moved to rejected (removed from team). */
+export async function sendCoFounderApplicationRevokedEmail(params: {
+  to: string;
+  ideaTitle: string;
+  browseIdeasUrl: string;
+}): Promise<void> {
+  const safeTitle = escapeHtml(params.ideaTitle);
+  const subject = `Team access updated — ${params.ideaTitle}`;
+  const bodyHtml = `
+    <p style="margin:0 0 16px 0;">Hello,</p>
+    <p style="margin:0 0 16px 0;">Your co-founder status for <strong>${safeTitle}</strong> on <strong>${SITE_NAME}</strong> has been updated. You no longer have access to that team workspace.</p>
+    <p style="margin:0 0 20px 0;font-size:14px;color:${STONE_600};">This can happen when a founder adjusts the team. You’re welcome to explore other ideas on the platform.</p>
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:20px 0;">
+      <tr>
+        <td style="border-radius:10px;background-color:${BRAND_PRIMARY};text-align:center;">
+          <a href="${params.browseIdeasUrl}" style="display:inline-block;padding:14px 28px;font-size:14px;font-weight:600;color:#ffffff;text-decoration:none;">Browse ideas</a>
+        </td>
+      </tr>
+    </table>
+  `;
+
+  await sendBrandedEmail({
+    to: [params.to],
+    subject,
+    preheader: `Your team access for ${params.ideaTitle} was removed.`,
+    headerTitle: "Team access update",
+    bodyHtml,
+    footerExtra: `Visit <a href="${siteBaseUrl()}" style="color:${BRAND_ACCENT};text-decoration:none;">${SITE_NAME}</a> for more opportunities.`,
+    text: [
+      `${SITE_NAME} — team access update`,
+      "",
+      `Idea: ${params.ideaTitle}`,
+      "",
+      "You no longer have access to this team workspace.",
+      "",
+      "Browse other ideas:",
+      params.browseIdeasUrl,
+    ].join("\n"),
+    tags: [{ name: "category", value: "cofounder-revoked" }],
+  });
+}

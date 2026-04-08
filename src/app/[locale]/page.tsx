@@ -77,10 +77,17 @@ const PILLAR_ICONS = {
   community: CalendarSparkIcon,
 } as const;
 
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ preview?: string }>;
+}) {
   const locale = await getLocale();
+  const sp = await searchParams;
   const session = await getCurrentUser();
-  if (session?.id) {
+  const showLandingWhileSignedIn =
+    sp.preview === "1" || sp.preview === "true" || sp.preview === "yes";
+  if (session?.id && !showLandingWhileSignedIn) {
     redirect(`/${locale}/dashboard`);
   }
 

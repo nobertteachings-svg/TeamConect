@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth-config";
-import { sendNewCoFounderApplicationEmail } from "@/lib/mail";
+import { notifyAfterCoFounderApplicationSubmitted } from "@/lib/cofounder-application-notify";
 import { checkApiRateLimit } from "@/lib/rate-limit";
 import { cofounderApplicationBodySchema } from "@/lib/schemas/public-api";
 import { getCoFounderSlotSnapshot } from "@/lib/team-slots";
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
       where: { id: data.ideaId, isPublic: true, deletedAt: null },
       include: {
         founder: {
-          include: { user: { select: { id: true, email: true } } },
+          include: { user: { select: { id: true, email: true, preferredLang: true } } },
         },
       },
     });
@@ -70,20 +70,21 @@ export async function POST(request: Request) {
 
     const applicant = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { name: true, email: true },
+      select: { name: true, email: true, preferredLang: true },
     });
-    const founderEmail = idea.founder.user.email?.trim();
-    if (founderEmail) {
-      const base = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://teamconect.com").replace(/\/$/, "");
-      const applicantLabel = applicant?.name?.trim() || applicant?.email?.trim() || "A candidate";
-      void sendNewCoFounderApplicationEmail({
-        to: founderEmail,
-        ideaTitle: idea.title,
-        applicantLabel,
-        dashboardUrl: `${base}/en/dashboard/cofounders/${idea.id}`,
-        ideaPublicUrl: `${base}/en/cofounders/${idea.slug}`,
-      }).catch((err) => console.error("Co-founder application notification email:", err));
-    }
+    const applicantLabel = applicant?.name?.trim() || applicant?.email?.trim() || "A candidate";
+    void notifyAfterCoFounderApplicationSubmitted({
+      founderUserId: idea.founder.user.id,
+      founderPreferredLang: idea.founder.user.preferredLang,
+      founderEmail: idea.founder.user.email,
+      applicantUserId: session.user.id,
+      applicantPreferredLang: applicant?.preferredLang,
+      applicantEmail: applicant?.email,
+      applicantLabel,
+      ideaId: idea.id,
+      ideaTitle: idea.title,
+      ideaSlug: idea.slug,
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {

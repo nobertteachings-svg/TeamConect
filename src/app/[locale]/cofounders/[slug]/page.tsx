@@ -6,8 +6,10 @@ import { getTranslations } from "next-intl/server";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { ApplyCoFounderButton } from "@/components/cofounder/apply-cofounder-button";
+import { FormattedIdeaParagraph } from "@/components/cofounder/formatted-idea-paragraph";
 import { authOptions } from "@/lib/auth-config";
 import { canViewFullIdeaDetails } from "@/lib/idea-protection";
+import { splitIdeaParagraphs, stripRedundantTitleFromBody } from "@/lib/idea-display";
 import { formatStoredCountry } from "@/lib/countries";
 import { getCoFounderSlotSnapshot } from "@/lib/team-slots";
 
@@ -79,7 +81,7 @@ export default async function StartupIdeaDetailPage({
 
         <div className="container mx-auto px-4 sm:px-6 py-8 max-w-3xl">
           <div className="flex flex-wrap items-center gap-2 mb-2">
-            <h1 className="text-3xl sm:text-4xl font-bold text-brand-green tracking-tight text-balance">
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-brand-green text-balance">
               {idea.title}
             </h1>
             {isTeaserOnly && (
@@ -105,44 +107,62 @@ export default async function StartupIdeaDetailPage({
               </>
             ) : null}
           </p>
-          <div className="flex flex-wrap gap-2 mt-5">
+          <div className="mt-5 flex flex-wrap gap-2">
             {idea.rolesNeeded.map((r) => (
               <span
                 key={r}
-                className="px-3 py-1 bg-brand-green/10 text-brand-green rounded-full text-sm font-medium"
+                className="rounded-full bg-brand-green/10 px-3 py-1 text-sm font-medium text-brand-green"
               >
                 {r}
               </span>
             ))}
-            <span className="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm">
+            <span className="rounded-full bg-stone-100 px-3 py-1 text-sm text-stone-700">
               {tStages(idea.stage as "IDEA" | "VALIDATING" | "BUILDING" | "LAUNCHED" | "FUNDED")}
             </span>
           </div>
 
           {isTeaserOnly && !canSeeFull && (
-            <div className="mt-8 p-5 rounded-2xl border border-amber-200/80 bg-gradient-to-br from-amber-50/90 to-white text-sm text-amber-950 shadow-sm">
+            <div className="mt-8 rounded-2xl border border-amber-200/80 bg-gradient-to-br from-amber-50/90 to-white p-5 text-sm text-amber-950 shadow-sm">
               <p className="font-semibold text-amber-950">{t("ideaDetail.teaserOnlyTitle")}</p>
-              <p className="mt-2 text-amber-900/90 leading-relaxed">{t("ideaDetail.teaserOnlyBody")}</p>
+              <p className="mt-2 leading-relaxed text-amber-900/90">{t("ideaDetail.teaserOnlyBody")}</p>
             </div>
           )}
 
-          <div className="mt-10 prose prose-stone prose-lg max-w-none">
+          <div className="mx-auto mt-10 max-w-2xl space-y-8">
             {canSeeFull ? (
               <>
-                <h2 className="text-lg font-semibold text-brand-green not-prose mb-3">{t("ideaDetail.description")}</h2>
-                <p className="whitespace-pre-wrap text-stone-700 leading-relaxed">{idea.description}</p>
-                {idea.pitch && (
-                  <>
-                    <h2 className="text-lg font-semibold text-brand-green not-prose mt-8 mb-3">{t("ideaDetail.pitch")}</h2>
-                    <p className="whitespace-pre-wrap text-stone-700 leading-relaxed">{idea.pitch}</p>
-                  </>
-                )}
+                <section className="rounded-2xl border border-stone-200/90 bg-white p-6 shadow-sm sm:p-8">
+                  <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-stone-500">
+                    {t("ideaDetail.description")}
+                  </h2>
+                  <div className="mt-5 space-y-5 text-[15px] text-stone-700 sm:text-base">
+                    {descriptionParagraphs.map((para, i) => (
+                      <FormattedIdeaParagraph key={i} text={para} />
+                    ))}
+                  </div>
+                </section>
+                {idea.pitch && pitchParagraphs.length > 0 ? (
+                  <section className="rounded-2xl border border-stone-200/90 bg-gradient-to-b from-stone-50/80 to-white p-6 shadow-sm sm:p-8">
+                    <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-stone-500">
+                      {t("ideaDetail.pitch")}
+                    </h2>
+                    <div className="mt-5 space-y-5 text-[15px] text-stone-700 sm:text-base">
+                      {pitchParagraphs.map((para, i) => (
+                        <FormattedIdeaParagraph key={i} text={para} />
+                      ))}
+                    </div>
+                  </section>
+                ) : null}
               </>
             ) : (
-              <>
-                <h2 className="text-lg font-semibold text-brand-green not-prose mb-3">{t("ideaDetail.publicTeaser")}</h2>
-                <p className="whitespace-pre-wrap text-stone-700 leading-relaxed">{teaserText}</p>
-              </>
+              <section className="rounded-2xl border border-stone-200/90 bg-white p-6 shadow-sm sm:p-8">
+                <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-stone-500">
+                  {t("ideaDetail.publicTeaser")}
+                </h2>
+                <div className="mt-5 text-[15px] text-stone-700 sm:text-base">
+                  <FormattedIdeaParagraph text={teaserText} />
+                </div>
+              </section>
             )}
           </div>
 

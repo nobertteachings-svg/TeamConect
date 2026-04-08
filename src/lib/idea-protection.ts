@@ -1,4 +1,5 @@
 import type { IdeaProtection } from "@prisma/client";
+import { blurbFromDescription } from "./idea-display";
 
 export function canViewFullIdeaDetails(params: {
   protectionMode: IdeaProtection;
@@ -18,6 +19,8 @@ export function publicListingBlurb(params: {
   protectionMode: IdeaProtection;
   publicTeaser: string | null;
   description: string;
+  /** When set, description is cleaned (duplicate title / headings) and shortened for the card. */
+  title?: string;
 }): string {
   if (params.protectionMode === "TEASER_ONLY") {
     return (
@@ -25,5 +28,8 @@ export function publicListingBlurb(params: {
       "Protected idea — open for the public teaser."
     );
   }
-  return params.description;
+  if (params.title?.trim()) {
+    return blurbFromDescription(params.description, params.title);
+  }
+  return params.description.trim();
 }

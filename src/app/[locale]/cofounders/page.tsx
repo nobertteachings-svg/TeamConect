@@ -140,6 +140,7 @@ export default async function CoFoundersPage({
                       protectionMode: idea.protectionMode,
                       publicTeaser: idea.publicTeaser,
                       description: idea.description,
+                      title: idea.title,
                     })}
                   </p>
                   <div className="flex flex-wrap gap-2 mt-4">
