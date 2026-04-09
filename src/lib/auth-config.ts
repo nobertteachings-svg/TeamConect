@@ -4,6 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
+import { maybeGrantBootstrapAdmin } from "@/lib/admin-bootstrap";
 import { verifyOtpCode } from "@/lib/otp";
 
 export const authOptions: NextAuthOptions = {
@@ -17,6 +18,7 @@ export const authOptions: NextAuthOptions = {
             data: { lastLoginAt: new Date() },
           })
           .catch(() => {});
+        await maybeGrantBootstrapAdmin(user.id, user.email).catch(() => {});
       }
     },
   },

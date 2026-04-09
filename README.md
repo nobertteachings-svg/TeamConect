@@ -93,7 +93,18 @@ Local integration DB: `docker compose -f docker-compose.test.yml up -d` (see fil
 
 ## Grant Admin Role
 
-To access the admin panel, add `ADMIN` to a user's roles in the database:
+### Option A — Environment bootstrap (sign in normally)
+
+Set in `.env` (see `.env.example`):
+
+- `ADMIN_BOOTSTRAP_EMAIL` — your GitHub/Google/email-OTP address (comma-separated for multiple).
+- `ADMIN_BOOTSTRAP_MODE` — `first` (default): grant **only if the database has no ADMIN yet** (good for first production deploy). `match`: grant on every sign-in while the user still lacks ADMIN (handy locally; in production requires `ADMIN_BOOTSTRAP_ALLOW_IN_PRODUCTION=1`).
+
+Sign in with that account once. Open **Dashboard → Admin**. Then remove or narrow these env vars if you no longer want automatic grants.
+
+### Option B — Database
+
+Add `ADMIN` to a user's roles:
 
 ```sql
 UPDATE "User" SET roles = array_append(roles, 'ADMIN') WHERE email = 'your@email.com';
